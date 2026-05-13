@@ -1,0 +1,16 @@
+{
+  "name": "ah-portfolio",
+  "version": "2.0.0",
+  "description": "Antone Holmes Portfolio with Notion CMS",
+  "scripts": {
+    "dev": "node build-data.js && python -m http.server 8000",
+    "build": "node build-data.js"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.x"
+  }
+}
