@@ -8,6 +8,17 @@
     --border: #e5e5e5;
     --accent: #4b5563;
     --accent-light: #6b7280;
+    
+    /* Customizable colors (will be overridden by Notion) */
+    --section-header-color: #9ca3af;
+    --job-title-color: #4b5563;
+    --hero-stats-color: #4b5563;
+    --border-color: #e5e5e5;
+    --divider-color: #e5e5e5;
+    
+    /* Blur effect */
+    --blur-intensity: 35;
+    --blur-amount: 0px;
 }
 
 .dark-theme {
@@ -20,6 +31,12 @@
     --border: #262626;
     --accent: #9ca3af;
     --accent-light: #d1d5db;
+    
+    --section-header-color: #9ca3af;
+    --job-title-color: #9ca3af;
+    --hero-stats-color: #9ca3af;
+    --border-color: #262626;
+    --divider-color: #262626;
 }
 
 * {
@@ -39,45 +56,6 @@ body {
     line-height: 1.6;
     transition: background-color 0.3s ease, color 0.3s ease;
     -webkit-font-smoothing: antialiased;
-}
-
-/* Theme Toggle */
-.theme-toggle {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background-color: var(--bg-card);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-
-.theme-toggle:hover {
-    border-color: var(--accent);
-    transform: scale(1.05);
-}
-
-.sun-icon {
-    display: none;
-}
-
-.moon-icon {
-    display: block;
-}
-
-.dark-theme .sun-icon {
-    display: block;
-}
-
-.dark-theme .moon-icon {
-    display: none;
 }
 
 /* Layout */
@@ -109,11 +87,28 @@ body {
 
 .nav-header {
     padding: 0 2rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.nav-profile-photo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 2px solid var(--border);
+    margin: 0 auto 1rem auto;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.nav-profile-photo:hover {
+    border-color: var(--accent);
+    transform: scale(1.02);
 }
 
 .nav-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: -0.025em;
     margin-bottom: 0.25rem;
@@ -123,6 +118,42 @@ body {
     font-size: 0.875rem;
     color: var(--text-secondary);
     font-weight: 500;
+}
+
+/* Text-based Theme Toggle */
+.theme-toggle-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+}
+
+.theme-option {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.theme-option:hover {
+    color: var(--text-primary);
+}
+
+.theme-option.active {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.theme-divider {
+    color: var(--text-muted);
+    font-size: 0.875rem;
 }
 
 .nav-links {
@@ -188,10 +219,16 @@ body {
     max-width: 1200px;
 }
 
-/* Sections */
+/* Sections with Blur Effect */
 .section {
     margin-bottom: 4rem;
     scroll-margin-top: 2rem;
+    transition: filter 0.5s ease, opacity 0.5s ease;
+}
+
+.section.blurred {
+    filter: blur(var(--blur-amount));
+    opacity: 0.4;
 }
 
 .section-title {
@@ -199,8 +236,54 @@ body {
     font-weight: 700;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--section-header-color);
     margin-bottom: 2rem;
+}
+
+/* Certifications Section */
+.certifications-section {
+    padding: 2rem 0 1rem 0;
+}
+
+.certifications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+}
+
+.cert-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.cert-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    filter: grayscale(20%);
+    transition: all 0.3s ease;
+}
+
+.cert-image:hover {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+.cert-name {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    text-align: center;
+    font-weight: 500;
+}
+
+.cert-placeholder {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-style: italic;
+    grid-column: 1 / -1;
 }
 
 /* Hero Section */
@@ -218,7 +301,7 @@ body {
     text-align: center;
     padding: 2rem 1.5rem;
     background-color: var(--bg-card);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     border-radius: 2px;
     transition: all 0.3s ease;
 }
@@ -232,7 +315,7 @@ body {
     font-size: 2.5rem;
     font-weight: 700;
     letter-spacing: -0.025em;
-    color: var(--accent);
+    color: var(--hero-stats-color);
     margin-bottom: 0.5rem;
 }
 
@@ -245,7 +328,7 @@ body {
 /* Content Card */
 .content-card {
     background-color: var(--bg-card);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     border-radius: 2px;
     padding: 2rem;
 }
@@ -260,7 +343,7 @@ body {
 .experience-block {
     margin-bottom: 3rem;
     padding-bottom: 3rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--divider-color);
 }
 
 .experience-block:last-child {
@@ -298,7 +381,7 @@ body {
 .role-block {
     margin-bottom: 2rem;
     padding-left: 1.5rem;
-    border-left: 2px solid var(--border);
+    border-left: 2px solid var(--border-color);
 }
 
 .role-block:last-child {
@@ -318,6 +401,7 @@ body {
     font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1.4;
+    color: var(--job-title-color);
 }
 
 .role-date {
@@ -359,7 +443,7 @@ body {
 
 .education-item {
     background-color: var(--bg-card);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     border-radius: 2px;
     padding: 1.5rem;
 }
@@ -368,6 +452,7 @@ body {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    color: var(--job-title-color);
 }
 
 .school {
@@ -382,11 +467,45 @@ body {
     font-weight: 500;
 }
 
+/* Social & Projects */
+.social-item, .project-item {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.social-item:last-child, .project-item:last-child {
+    border-bottom: none;
+}
+
+.item-header {
+    margin-bottom: 1rem;
+}
+
+.item-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--job-title-color);
+}
+
+.item-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.item-description {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
 /* Footer */
 .resume-footer {
     margin-top: 4rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--divider-color);
     text-align: center;
 }
 
@@ -408,6 +527,10 @@ body {
     .education-grid {
         grid-template-columns: 1fr;
     }
+    
+    .certifications-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
@@ -424,6 +547,16 @@ body {
     }
     
     .nav-header {
+        padding: 0 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .nav-profile-photo {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .theme-toggle-text {
         padding: 0 1.5rem;
         margin-bottom: 1.5rem;
     }
@@ -468,8 +601,13 @@ body {
         align-self: flex-start;
     }
     
-    .theme-toggle {
-        top: 1rem;
-        right: 1rem;
+    .certifications-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .cert-image {
+        width: 70px;
+        height: 70px;
     }
 }
