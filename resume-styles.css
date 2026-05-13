@@ -219,16 +219,20 @@ body {
     max-width: 1200px;
 }
 
-/* Sections with Blur Effect */
+/* Scrollable content sections */
 .section {
     margin-bottom: 4rem;
-    scroll-margin-top: 8rem; /* offset for sticky hero header */
+    scroll-margin-top: 8rem;
     transition: filter 0.5s ease, opacity 0.5s ease;
 }
 
-/* Hero section itself doesn't need scroll offset */
+/* Hero is a structural layer — never blurs, never fades, always on top */
 .hero-section {
     scroll-margin-top: 0;
+    filter: none !important;
+    opacity: 1 !important;
+    /* Isolation prevents children's filter from leaking into stacking context */
+    isolation: isolate;
 }
 
 .section.blurred {
@@ -342,16 +346,15 @@ body {
     grid-column: 1 / -1;
 }
 
-/* Hero Section - Combined Layout - STICKY FROZEN PANE */
+/* Hero Section — sticky frozen pane, always above scrolling sections */
 .hero-section {
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 90;           /* above .section blur layers (no z-index) and mobile nav z-200 only on mobile */
     background-color: var(--bg-page);
     padding: 1.5rem 0 1rem 0;
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 2rem;
-    /* Bleed to edges so no background gap shows on sides */
     margin-left: -4rem;
     margin-right: -4rem;
     padding-left: 4rem;
@@ -756,11 +759,17 @@ body {
         padding-right: 1.25rem;
     }
 
-    /* Blur fix: CSS filter on child of a sticky container creates
-       a stacking context that clips on mobile. Use opacity fallback. */
+    /* Blur fix on mobile: use opacity fallback instead of filter */
     .section.blurred {
         filter: none;
         opacity: 0.25;
+    }
+
+    /* Hero never blurs or fades on any screen size */
+    .hero-section.blurred,
+    .hero-section {
+        filter: none !important;
+        opacity: 1 !important;
     }
 
     /* Layout adjustments */

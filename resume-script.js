@@ -40,6 +40,8 @@ themeOptions.forEach(option => {
 // Smooth Scroll Navigation
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = document.querySelectorAll('.section');
+// Blur pool excludes the hero — it should never blur or become transparent
+const blurSections = document.querySelectorAll('.section:not(#hero)');
 
 // Handle nav link clicks
 navLinks.forEach(link => {
@@ -49,11 +51,20 @@ navLinks.forEach(link => {
         const targetSection = document.getElementById(targetId);
         
         if (targetSection) {
-            // Account for sticky hero header height
-            const stickyHeader = document.getElementById('hero');
-            const offset = (targetId === 'hero') ? 0 : (stickyHeader ? stickyHeader.offsetHeight + 24 : 80);
-            const top = targetSection.getBoundingClientRect().top + window.pageYOffset - offset;
-            window.scrollTo({ top, behavior: 'smooth' });
+            if (targetId === 'hero') {
+                // Overview = scroll to absolute top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Other sections: offset below the sticky hero bar
+                const heroEl = document.getElementById('hero');
+                const heroH = heroEl ? heroEl.offsetHeight : 0;
+                const navEl = document.querySelector('.side-nav');
+                // On mobile the nav is sticky at top; on desktop it's a fixed sidebar (no vertical offset needed)
+                const mobileNavH = (window.innerWidth <= 768 && navEl) ? navEl.offsetHeight : 0;
+                const totalOffset = mobileNavH + heroH + 16;
+                const top = targetSection.getBoundingClientRect().top + window.pageYOffset - totalOffset;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
         }
     });
 });
@@ -69,9 +80,11 @@ function applyBlurEffect() {
 
 function updateActiveSection() {
     let current = '';
-    const stickyHeader = document.getElementById('hero');
-    const stickyHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
-    const offset = stickyHeight + 32;
+    const heroEl = document.getElementById('hero');
+    const heroH = heroEl ? heroEl.offsetHeight : 0;
+    const navEl = document.querySelector('.side-nav');
+    const mobileNavH = (window.innerWidth <= 768 && navEl) ? navEl.offsetHeight : 0;
+    const offset = mobileNavH + heroH + 16;
     
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
@@ -88,9 +101,9 @@ function updateActiveSection() {
         }
     });
     
-    // Apply blur effect ONLY if intensity > 0 AND we have an active section
-    if (blurIntensity > 0 && current) {
-        sections.forEach(section => {
+    // Apply blur effect — never blurs #hero
+    if (blurIntensity > 0 && current && current !== 'hero') {
+        blurSections.forEach(section => {
             if (section.getAttribute('id') === current) {
                 section.classList.remove('blurred');
             } else {
@@ -98,10 +111,7 @@ function updateActiveSection() {
             }
         });
     } else {
-        // Remove blur from all sections if intensity is 0 or no active section
-        sections.forEach(section => {
-            section.classList.remove('blurred');
-        });
+        blurSections.forEach(section => section.classList.remove('blurred'));
     }
 }
 
