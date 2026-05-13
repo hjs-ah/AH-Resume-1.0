@@ -36,11 +36,17 @@ async function fetchSettings() {
       
       // Section Headers
       impactSectionHeader: page.properties['Impact Section Header']?.rich_text[0]?.plain_text || 'Impact',
+      impactSectionSubheader: page.properties['Impact Section Subheader']?.rich_text[0]?.plain_text || '',
       profileSectionHeader: page.properties['Profile Section Header']?.rich_text[0]?.plain_text || 'Career Profile',
+      profileSectionSubheader: page.properties['Profile Section Subheader']?.rich_text[0]?.plain_text || '',
       experienceSectionHeader: page.properties['Experience Section Header']?.rich_text[0]?.plain_text || 'Professional Experience',
+      experienceSectionSubheader: page.properties['Experience Section Subheader']?.rich_text[0]?.plain_text || '',
       educationSectionHeader: page.properties['Education Section Header']?.rich_text[0]?.plain_text || 'Education',
+      educationSectionSubheader: page.properties['Education Section Subheader']?.rich_text[0]?.plain_text || '',
       socialSectionHeader: page.properties['Social Section Header']?.rich_text[0]?.plain_text || 'Social Responsibility',
+      socialSectionSubheader: page.properties['Social Section Subheader']?.rich_text[0]?.plain_text || '',
       projectsSectionHeader: page.properties['Projects Section Header']?.rich_text[0]?.plain_text || 'Case Studies & Projects',
+      projectsSectionSubheader: page.properties['Projects Section Subheader']?.rich_text[0]?.plain_text || '',
     };
 
     console.log('✅ Settings extracted');

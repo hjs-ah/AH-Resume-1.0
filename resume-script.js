@@ -85,14 +85,19 @@ function updateActiveSection() {
         }
     });
     
-    // Apply blur effect
-    if (blurIntensity > 0) {
+    // Apply blur effect ONLY if intensity > 0 AND we have an active section
+    if (blurIntensity > 0 && current) {
         sections.forEach(section => {
             if (section.getAttribute('id') === current) {
                 section.classList.remove('blurred');
             } else {
                 section.classList.add('blurred');
             }
+        });
+    } else {
+        // Remove blur from all sections if intensity is 0 or no active section
+        sections.forEach(section => {
+            section.classList.remove('blurred');
         });
     }
 }
@@ -160,7 +165,6 @@ function loadSettings(settings) {
     // Update section headers
     const headerMap = {
         'impact-header': settings.impactSectionHeader,
-        'certifications-header': 'Certifications', // Static for now
         'profile-header': settings.profileSectionHeader,
         'experience-header': settings.experienceSectionHeader,
         'education-header': settings.educationSectionHeader,
@@ -172,6 +176,23 @@ function loadSettings(settings) {
         const element = document.getElementById(id);
         if (element && headerMap[id]) {
             element.textContent = headerMap[id];
+        }
+    });
+    
+    // Update section subheaders
+    const subheaderMap = {
+        'impact-subheader': settings.impactSectionSubheader,
+        'profile-subheader': settings.profileSectionSubheader,
+        'experience-subheader': settings.experienceSectionSubheader,
+        'education-subheader': settings.educationSectionSubheader,
+        'social-subheader': settings.socialSectionSubheader,
+        'projects-subheader': settings.projectsSectionSubheader
+    };
+    
+    Object.keys(subheaderMap).forEach(id => {
+        const element = document.getElementById(id);
+        if (element && subheaderMap[id]) {
+            element.textContent = subheaderMap[id];
         }
     });
 }
@@ -219,8 +240,25 @@ function loadCertifications(certs) {
     
     container.innerHTML = certs.map(cert => `
         <div class="cert-badge">
-            ${cert.imageUrl ? `<img src="${cert.imageUrl}" alt="${cert.name}" class="cert-image">` : ''}
-            <div class="cert-name">${cert.name}</div>
+            ${cert.imageUrl ? `
+                <div class="cert-image-container">
+                    <img src="${cert.imageUrl}" alt="${cert.name}" class="cert-image">
+                </div>
+            ` : ''}
+            <div class="cert-details">
+                <div class="cert-name">${cert.name}</div>
+                ${cert.title ? `<div class="cert-issuer">${cert.title}</div>` : ''}
+                ${cert.description ? `
+                    <a href="${cert.description}" target="_blank" rel="noopener noreferrer" class="cert-link">
+                        View Credential
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" x2="21" y1="14" y2="3"></line>
+                        </svg>
+                    </a>
+                ` : ''}
+            </div>
         </div>
     `).join('');
 }
