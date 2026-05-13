@@ -18,14 +18,7 @@
                     <h2 id="nav-name">Antone Holmes</h2>
                     <p class="nav-subtitle" id="nav-subtitle">Resume</p>
                 </div>
-                
-                <!-- Text-based Theme Toggle -->
-                <div class="theme-toggle-text">
-                    <button class="theme-option active" data-theme="light">Light</button>
-                    <span class="theme-divider">/</span>
-                    <button class="theme-option" data-theme="dark">Dark</button>
-                </div>
-                
+
                 <ul class="nav-links">
                     <li><a href="#hero" class="nav-link active">Overview</a></li>
                     <li><a href="#profile" class="nav-link">Profile</a></li>
@@ -34,7 +27,7 @@
                     <li><a href="#social" class="nav-link">Social</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
                 </ul>
-                
+
                 <div class="nav-footer">
                     <a href="mailto:antoneholmes@icloud.com" class="contact-link">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -55,35 +48,68 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Combined Certifications + Impact Section -->
+            <!-- Impact / Overview — sticky frozen pane -->
             <section id="hero" class="section hero-section">
                 <h2 class="section-title" id="impact-header">Impact</h2>
                 <p class="section-subheader" id="impact-subheader"></p>
-                
+
                 <div class="hero-combined-layout">
-                    <!-- Certifications -->
-                    <div class="certifications-container">
-                        <div class="certifications-grid" id="certifications-container">
-                            <!-- Certifications will be loaded from Notion -->
-                            <div class="cert-placeholder">Certifications loading...</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Impact Stats -->
+                    <!-- Stats row (top) -->
                     <div class="hero-stats-container">
                         <div class="hero-grid">
                             <div class="hero-stat">
-                                <div class="stat-number">12+</div>
-                                <div class="stat-label">Case Studies Delivered</div>
+                                <div class="stat-ring-wrap">
+                                    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- outer track -->
+                                        <circle class="ring-track"  cx="60" cy="60" r="54"/>
+                                        <!-- outer animated -->
+                                        <circle class="ring-outer"  cx="60" cy="60" r="54"/>
+                                        <!-- inner track -->
+                                        <circle class="ring-inner-track" cx="60" cy="60" r="42"/>
+                                        <!-- inner animated -->
+                                        <circle class="ring-inner" cx="60" cy="60" r="42"/>
+                                    </svg>
+                                    <div class="stat-content">
+                                        <div class="stat-number">12+</div>
+                                        <div class="stat-label">Case Studies Delivered</div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="hero-stat">
-                                <div class="stat-number">50+</div>
-                                <div class="stat-label">People Promoted</div>
+                                <div class="stat-ring-wrap">
+                                    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                                        <circle class="ring-track"  cx="60" cy="60" r="54"/>
+                                        <circle class="ring-outer"  cx="60" cy="60" r="54"/>
+                                        <circle class="ring-inner-track" cx="60" cy="60" r="42"/>
+                                        <circle class="ring-inner" cx="60" cy="60" r="42"/>
+                                    </svg>
+                                    <div class="stat-content">
+                                        <div class="stat-number">50+</div>
+                                        <div class="stat-label">People Promoted</div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="hero-stat">
-                                <div class="stat-number">8</div>
-                                <div class="stat-label">Executive Sponsorships</div>
+                                <div class="stat-ring-wrap">
+                                    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                                        <circle class="ring-track"  cx="60" cy="60" r="54"/>
+                                        <circle class="ring-outer"  cx="60" cy="60" r="54"/>
+                                        <circle class="ring-inner-track" cx="60" cy="60" r="42"/>
+                                        <circle class="ring-inner" cx="60" cy="60" r="42"/>
+                                    </svg>
+                                    <div class="stat-content">
+                                        <div class="stat-number">8</div>
+                                        <div class="stat-label">Executive Sponsorships</div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Badges row (below stats) -->
+                    <div class="certifications-container">
+                        <div class="certifications-grid" id="certifications-container">
+                            <div class="cert-placeholder">Certifications loading...</div>
                         </div>
                     </div>
                 </div>
@@ -104,36 +130,28 @@
             <section id="experience" class="section">
                 <h2 class="section-title" id="experience-header">Professional Experience</h2>
                 <p class="section-subheader" id="experience-subheader"></p>
-                <div id="experience-container">
-                    <!-- Experience will be loaded from Notion -->
-                </div>
+                <div id="experience-container"></div>
             </section>
 
             <!-- Education -->
             <section id="education" class="section">
                 <h2 class="section-title" id="education-header">Education</h2>
                 <p class="section-subheader" id="education-subheader"></p>
-                <div class="education-grid" id="education-container">
-                    <!-- Education will be loaded from Notion -->
-                </div>
+                <div class="education-grid" id="education-container"></div>
             </section>
 
             <!-- Social Responsibility -->
             <section id="social" class="section">
                 <h2 class="section-title" id="social-header">Social Responsibility</h2>
                 <p class="section-subheader" id="social-subheader"></p>
-                <div id="social-container">
-                    <!-- Social content will be loaded from Notion -->
-                </div>
+                <div id="social-container"></div>
             </section>
 
             <!-- Case Studies & Projects -->
             <section id="projects" class="section">
-                <h2 class="section-title" id="projects-header">Case Studies & Projects</h2>
+                <h2 class="section-title" id="projects-header">Case Studies &amp; Projects</h2>
                 <p class="section-subheader" id="projects-subheader"></p>
-                <div id="projects-container">
-                    <!-- Projects will be loaded from Notion -->
-                </div>
+                <div id="projects-container"></div>
             </section>
 
             <!-- Footer -->

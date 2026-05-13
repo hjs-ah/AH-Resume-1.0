@@ -1,41 +1,4 @@
-// Theme Toggle (Text-based, Light default)
-const html = document.documentElement;
-const themeOptions = document.querySelectorAll('.theme-option');
-
-// Set light mode as default
-const currentTheme = localStorage.getItem('theme') || 'light';
-if (currentTheme === 'dark') {
-    html.classList.add('dark-theme');
-}
-
-// Update active theme button
-themeOptions.forEach(option => {
-    if (option.dataset.theme === currentTheme) {
-        option.classList.add('active');
-    } else {
-        option.classList.remove('active');
-    }
-});
-
-// Theme toggle handler
-themeOptions.forEach(option => {
-    option.addEventListener('click', () => {
-        const theme = option.dataset.theme;
-        
-        // Update active state
-        themeOptions.forEach(opt => opt.classList.remove('active'));
-        option.classList.add('active');
-        
-        // Apply theme
-        if (theme === 'dark') {
-            html.classList.add('dark-theme');
-        } else {
-            html.classList.remove('dark-theme');
-        }
-        
-        localStorage.setItem('theme', theme);
-    });
-});
+// Light mode only — no theme toggle
 
 // Smooth Scroll Navigation
 const navLinks = document.querySelectorAll('.nav-link');
@@ -79,30 +42,51 @@ function applyBlurEffect() {
 }
 
 function updateActiveSection() {
-    let current = '';
+    // Find which non-hero section is closest to the top of the viewport
     const heroEl = document.getElementById('hero');
     const heroH = heroEl ? heroEl.offsetHeight : 0;
     const navEl = document.querySelector('.side-nav');
     const mobileNavH = (window.innerWidth <= 768 && navEl) ? navEl.offsetHeight : 0;
-    const offset = mobileNavH + heroH + 16;
-    
+    const viewportOffset = mobileNavH + heroH + 16;
+
+    // Build list of scrollable sections (excluding hero)
+    const scrollableSections = Array.from(blurSections);
+
+    // Determine which section is "active" = last one whose top is above the viewport threshold
+    let current = '';
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
-        if (window.pageYOffset >= sectionTop - offset) {
+        if (window.pageYOffset >= sectionTop - viewportOffset) {
             current = section.getAttribute('id');
         }
     });
-    
-    // Update nav links
+
+    // If nothing scrolled yet, default to the first non-hero section as active
+    // so all others are blurred from initial load
+    if (!current || current === 'hero') {
+        current = scrollableSections.length > 0
+            ? scrollableSections[0].getAttribute('id')
+            : '';
+    }
+
+    // Update nav active state
     navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
+        const href = link.getAttribute('href');
+        if (href === `#${current}` || (current && href === '#hero' && current === 'hero')) {
             link.classList.add('active');
         }
     });
-    
-    // Apply blur effect — never blurs #hero
-    if (blurIntensity > 0 && current && current !== 'hero') {
+    // Keep Overview active when at very top
+    if (window.pageYOffset < 50) {
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#hero') link.classList.add('active');
+        });
+    }
+
+    // Blur: when intensity > 0, always blur every non-hero section except the active one
+    if (blurIntensity > 0 && current) {
         blurSections.forEach(section => {
             if (section.getAttribute('id') === current) {
                 section.classList.remove('blurred');
