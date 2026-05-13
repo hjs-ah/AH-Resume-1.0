@@ -632,87 +632,155 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* ---- Page layout ---- */
+    .page-container {
+        flex-direction: column;
+    }
+
+    /* ---- Sidebar: fixed at top, collapsible ---- */
     .side-nav {
         width: 100%;
         height: auto;
-        position: relative;
+        position: sticky;
+        top: 0;
+        z-index: 200;
         border-right: none;
         border-bottom: 1px solid var(--border);
+        background-color: var(--bg-nav);
     }
-    
+
     .nav-content {
-        padding: 1.5rem 0;
+        padding: 0;
     }
-    
+
+    /* Collapsed header bar — always visible */
     .nav-header {
-        padding: 0 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .nav-profile-photo {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .theme-toggle-text {
-        padding: 0 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .nav-links {
         display: flex;
-        overflow-x: auto;
-        padding: 0 1.5rem;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.875rem 1.25rem;
+        margin-bottom: 0;
+        text-align: left;
+        cursor: pointer;
+        user-select: none;
     }
-    
-    .nav-link {
-        padding: 0.625rem 1rem;
-        border-left: none;
-        border-bottom: 2px solid transparent;
-        white-space: nowrap;
+
+    .nav-profile-photo {
+        width: 36px;
+        height: 36px;
+        margin: 0;
+        flex-shrink: 0;
     }
-    
-    .nav-link.active {
-        border-left: none;
-        border-bottom-color: var(--accent);
+
+    .nav-header h2 {
+        font-size: 1rem;
+        flex: 1;
     }
-    
-    .nav-footer {
-        flex-direction: row;
-        padding: 1.5rem;
+
+    .nav-subtitle {
+        display: none;
+    }
+
+    /* Chevron toggle icon injected by JS */
+    .nav-toggle-icon {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        transition: transform 0.25s ease;
+        margin-left: auto;
+        line-height: 1;
+    }
+
+    .side-nav.nav-open .nav-toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    /* Collapsible body */
+    .nav-collapsible {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .side-nav.nav-open .nav-collapsible {
+        max-height: 600px;
+    }
+
+    /* Vertical nav links inside collapsible */
+    .theme-toggle-text {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        justify-content: flex-start;
         border-top: 1px solid var(--border);
     }
-    
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 0;
+        border-top: 1px solid var(--border);
+    }
+
+    .nav-link {
+        padding: 0.75rem 1.5rem;
+        border-left: 2px solid transparent;
+        border-bottom: none;
+        white-space: nowrap;
+    }
+
+    .nav-link.active {
+        border-left: 2px solid var(--accent);
+        border-bottom: none;
+        background-color: var(--bg-page);
+    }
+
+    .nav-footer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0.875rem 1.25rem;
+        border-top: 1px solid var(--border);
+        gap: 0.5rem;
+    }
+
+    /* ---- Main content ---- */
     .main-content {
         margin-left: 0;
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1.25rem;
     }
-    
+
+    /* Sticky hero: sits below sticky nav bar (~56px) */
     .hero-section {
-        margin-left: -1.5rem;
-        margin-right: -1.5rem;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+        top: 56px;
+        margin-left: -1.25rem;
+        margin-right: -1.25rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
     }
-    
+
+    /* Blur fix: CSS filter on child of a sticky container creates
+       a stacking context that clips on mobile. Use opacity fallback. */
+    .section.blurred {
+        filter: none;
+        opacity: 0.25;
+    }
+
+    /* Layout adjustments */
     .experience-header,
     .role-header {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .date-range,
     .role-date {
         align-self: flex-start;
     }
-    
+
     .certifications-grid {
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-        gap: 1.5rem;
+        gap: 1rem;
     }
-    
+
     .cert-image {
-        width: 70px;
-        height: 70px;
+        width: 44px;
+        height: 44px;
     }
 }

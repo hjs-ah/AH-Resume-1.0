@@ -20,33 +20,42 @@ async function fetchSettings() {
     }
 
     const page = response.results[0];
+    const rt = (prop) => page.properties[prop]?.rich_text[0]?.plain_text || '';
 
     const settings = {
       name: page.properties['Name']?.title[0]?.plain_text || '',
-      subtitle: page.properties['Subtitle']?.rich_text[0]?.plain_text || '',
+      subtitle: rt('Subtitle'),
       profilePhotoUrl: page.properties['Profile Photo URL']?.url || '',
-      blurIntensity: page.properties['Blur Intensity']?.number || 35,
-      
+      blurIntensity: page.properties['Blur Intensity']?.number ?? 35,
+
       // Colors
-      sectionHeaderColor: page.properties['Section Header Color']?.rich_text[0]?.plain_text || '',
-      jobTitleColor: page.properties['Job Title Color']?.rich_text[0]?.plain_text || '',
-      heroStatsColor: page.properties['Hero Stats Color']?.rich_text[0]?.plain_text || '',
-      borderColor: page.properties['Border Color']?.rich_text[0]?.plain_text || '',
-      dividerColor: page.properties['Divider Color']?.rich_text[0]?.plain_text || '',
-      
+      sectionHeaderColor: rt('Section Header Color'),
+      jobTitleColor: rt('Job Title Color'),
+      heroStatsColor: rt('Hero Stats Color'),
+      borderColor: rt('Border Color'),
+      dividerColor: rt('Divider Color'),
+
       // Section Headers
-      impactSectionHeader: page.properties['Impact Section Header']?.rich_text[0]?.plain_text || 'Impact',
-      impactSectionSubheader: page.properties['Impact Section Subheader']?.rich_text[0]?.plain_text || '',
-      profileSectionHeader: page.properties['Profile Section Header']?.rich_text[0]?.plain_text || 'Career Profile',
-      profileSectionSubheader: page.properties['Profile Section Subheader']?.rich_text[0]?.plain_text || '',
-      experienceSectionHeader: page.properties['Experience Section Header']?.rich_text[0]?.plain_text || 'Professional Experience',
-      experienceSectionSubheader: page.properties['Experience Section Subheader']?.rich_text[0]?.plain_text || '',
-      educationSectionHeader: page.properties['Education Section Header']?.rich_text[0]?.plain_text || 'Education',
-      educationSectionSubheader: page.properties['Education Section Subheader']?.rich_text[0]?.plain_text || '',
-      socialSectionHeader: page.properties['Social Section Header']?.rich_text[0]?.plain_text || 'Social Responsibility',
-      socialSectionSubheader: page.properties['Social Section Subheader']?.rich_text[0]?.plain_text || '',
-      projectsSectionHeader: page.properties['Projects Section Header']?.rich_text[0]?.plain_text || 'Case Studies & Projects',
-      projectsSectionSubheader: page.properties['Projects Section Subheader']?.rich_text[0]?.plain_text || '',
+      impactSectionHeader: rt('Impact Section Header') || 'Impact',
+      impactSectionSubheader: rt('Impact Section Subheader'),
+      profileSectionHeader: rt('Profile Section Header') || 'Career Profile',
+      profileSectionSubheader: rt('Profile Section Subheader'),
+      experienceSectionHeader: rt('Experience Section Header') || 'Professional Experience',
+      experienceSectionSubheader: rt('Experience Section Subheader'),
+      educationSectionHeader: rt('Education Section Header') || 'Education',
+      educationSectionSubheader: rt('Education Section Subheader'),
+      socialSectionHeader: rt('Social Section Header') || 'Social Responsibility',
+      socialSectionSubheader: rt('Social Section Subheader'),
+      projectsSectionHeader: rt('Projects Section Header') || 'Case Studies & Projects',
+      projectsSectionSubheader: rt('Projects Section Subheader'),
+
+      // Left nav link labels (leave blank in Notion to use defaults)
+      navLabelOverview:   rt('Nav Label: Overview'),
+      navLabelProfile:    rt('Nav Label: Profile'),
+      navLabelExperience: rt('Nav Label: Experience'),
+      navLabelEducation:  rt('Nav Label: Education'),
+      navLabelSocial:     rt('Nav Label: Social'),
+      navLabelProjects:   rt('Nav Label: Projects'),
     };
 
     console.log('✅ Settings extracted');
@@ -63,16 +72,9 @@ async function fetchContent() {
       database_id: CONTENT_DB_ID,
       filter: {
         property: 'Status',
-        select: {
-          equals: 'Published'
-        }
+        select: { equals: 'Published' }
       },
-      sorts: [
-        {
-          property: 'Order',
-          direction: 'ascending'
-        }
-      ]
+      sorts: [{ property: 'Order', direction: 'ascending' }]
     });
 
     console.log(`📦 Found ${response.results.length} published items`);
@@ -101,11 +103,7 @@ async function main() {
   const settings = await fetchSettings();
   const content = await fetchContent();
 
-  const data = {
-    settings,
-    content,
-    lastUpdated: new Date().toISOString(),
-  };
+  const data = { settings, content, lastUpdated: new Date().toISOString() };
 
   fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
 

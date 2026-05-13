@@ -198,6 +198,23 @@ function loadSettings(settings) {
             element.textContent = subheaderMap[id];
         }
     });
+
+    // Update left nav link labels
+    const navLabelMap = {
+        'hero':       settings.navLabelOverview,
+        'profile':    settings.navLabelProfile,
+        'experience': settings.navLabelExperience,
+        'education':  settings.navLabelEducation,
+        'social':     settings.navLabelSocial,
+        'projects':   settings.navLabelProjects
+    };
+
+    navLinks.forEach(link => {
+        const targetId = link.getAttribute('href')?.substring(1);
+        if (targetId && navLabelMap[targetId]) {
+            link.textContent = navLabelMap[targetId];
+        }
+    });
 }
 
 // Load Content from Notion
@@ -397,4 +414,52 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set initial active section
     updateActiveSection();
     applyBlurEffect();
+
+    // Mobile collapsible nav
+    initMobileNav();
 });
+
+function initMobileNav() {
+    const isMobile = () => window.innerWidth <= 768;
+    const sideNav = document.querySelector('.side-nav');
+    const navHeader = document.querySelector('.nav-header');
+    if (!sideNav || !navHeader) return;
+
+    // Inject chevron icon into nav header
+    if (!navHeader.querySelector('.nav-toggle-icon')) {
+        const icon = document.createElement('span');
+        icon.className = 'nav-toggle-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.innerHTML = '&#9660;'; // ▼
+        navHeader.appendChild(icon);
+    }
+
+    // Wrap collapsible nav body if not already wrapped
+    const navContent = document.querySelector('.nav-content');
+    if (navContent && !navContent.querySelector('.nav-collapsible')) {
+        const collapsible = document.createElement('div');
+        collapsible.className = 'nav-collapsible';
+        // Move everything except nav-header into the collapsible wrapper
+        Array.from(navContent.children).forEach(child => {
+            if (!child.classList.contains('nav-header')) {
+                collapsible.appendChild(child);
+            }
+        });
+        navContent.appendChild(collapsible);
+    }
+
+    // Toggle on header click (mobile only)
+    navHeader.addEventListener('click', () => {
+        if (!isMobile()) return;
+        sideNav.classList.toggle('nav-open');
+    });
+
+    // Close nav when a link is clicked on mobile
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if (isMobile()) {
+                sideNav.classList.remove('nav-open');
+            }
+        });
+    });
+}
