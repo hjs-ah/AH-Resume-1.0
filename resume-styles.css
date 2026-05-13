@@ -222,8 +222,13 @@ body {
 /* Sections with Blur Effect */
 .section {
     margin-bottom: 4rem;
-    scroll-margin-top: 2rem;
+    scroll-margin-top: 8rem; /* offset for sticky hero header */
     transition: filter 0.5s ease, opacity 0.5s ease;
+}
+
+/* Hero section itself doesn't need scroll offset */
+.hero-section {
+    scroll-margin-top: 0;
 }
 
 .section.blurred {
@@ -284,12 +289,12 @@ body {
     width: 50px;
     height: 50px;
     object-fit: contain;
-    filter: grayscale(20%);
-    transition: all 0.3s ease;
+    filter: grayscale(100%) opacity(0.6);
+    transition: filter 0.35s ease;
 }
 
 .cert-badge:hover .cert-image {
-    filter: grayscale(0%);
+    filter: grayscale(0%) opacity(1);
 }
 
 .cert-details {
@@ -337,9 +342,20 @@ body {
     grid-column: 1 / -1;
 }
 
-/* Hero Section - Combined Layout */
+/* Hero Section - Combined Layout - STICKY FROZEN PANE */
 .hero-section {
-    padding: 2rem 0 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--bg-page);
+    padding: 1.5rem 0 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+    /* Bleed to edges so no background gap shows on sides */
+    margin-left: -4rem;
+    margin-right: -4rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
 }
 
 .hero-combined-layout {
@@ -587,6 +603,13 @@ body {
         padding: 3rem 2rem;
     }
     
+    .hero-section {
+        margin-left: -2rem;
+        margin-right: -2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    
     .hero-combined-layout {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -663,6 +686,13 @@ body {
     .main-content {
         margin-left: 0;
         padding: 2rem 1.5rem;
+    }
+    
+    .hero-section {
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
     
     .experience-header,

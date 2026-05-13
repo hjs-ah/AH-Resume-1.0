@@ -49,10 +49,11 @@ navLinks.forEach(link => {
         const targetSection = document.getElementById(targetId);
         
         if (targetSection) {
-            targetSection.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+            // Account for sticky hero header height
+            const stickyHeader = document.getElementById('hero');
+            const offset = (targetId === 'hero') ? 0 : (stickyHeader ? stickyHeader.offsetHeight + 24 : 80);
+            const top = targetSection.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
         }
     });
 });
@@ -68,11 +69,13 @@ function applyBlurEffect() {
 
 function updateActiveSection() {
     let current = '';
+    const stickyHeader = document.getElementById('hero');
+    const stickyHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
+    const offset = stickyHeight + 32;
     
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.pageYOffset >= sectionTop - 150) {
+        if (window.pageYOffset >= sectionTop - offset) {
             current = section.getAttribute('id');
         }
     });
@@ -377,7 +380,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Load data from Notion
     try {
-        const response = await fetch('/data.json');
+        const response = await fetch('./data.json');
         const data = await response.json();
         
         if (data.settings) {
