@@ -3,44 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antone Holmes - Resume</title>
+    <title id="page-title">Antone Holmes - Resume</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="resume-styles.css">
 </head>
 <body>
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" aria-label="Toggle theme">
-        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2"></path>
-            <path d="M12 20v2"></path>
-            <path d="m4.93 4.93 1.41 1.41"></path>
-            <path d="m17.66 17.66 1.41 1.41"></path>
-            <path d="M2 12h2"></path>
-            <path d="M20 12h2"></path>
-            <path d="m6.34 17.66-1.41 1.41"></path>
-            <path d="m19.07 4.93-1.41 1.41"></path>
-        </svg>
-        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-        </svg>
-    </button>
-
     <div class="page-container">
         <!-- Fixed Navigation -->
         <nav class="side-nav">
             <div class="nav-content">
                 <div class="nav-header">
-                    <h2>Antone Holmes</h2>
-                    <p class="nav-subtitle">Resume</p>
+                    <img src="https://hjs-ah.github.io/AH-FE-2.0/ProHeadshot_web-copy.jpg" alt="Profile Photo" class="nav-profile-photo" id="nav-profile-photo">
+                    <h2 id="nav-name">Antone Holmes</h2>
+                    <p class="nav-subtitle" id="nav-subtitle">Resume</p>
                 </div>
+                
+                <!-- Text-based Theme Toggle -->
+                <div class="theme-toggle-text">
+                    <button class="theme-option active" data-theme="light">Light</button>
+                    <span class="theme-divider">/</span>
+                    <button class="theme-option" data-theme="dark">Dark</button>
+                </div>
+                
                 <ul class="nav-links">
                     <li><a href="#hero" class="nav-link active">Overview</a></li>
+                    <li><a href="#certifications" class="nav-link">Certifications</a></li>
                     <li><a href="#profile" class="nav-link">Profile</a></li>
                     <li><a href="#experience" class="nav-link">Experience</a></li>
                     <li><a href="#education" class="nav-link">Education</a></li>
+                    <li><a href="#social" class="nav-link">Social</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
                 </ul>
+                
                 <div class="nav-footer">
                     <a href="mailto:antoneholmes@icloud.com" class="contact-link">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -61,8 +56,18 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Hero Section -->
+            <!-- Certifications Section -->
+            <section id="certifications" class="section certifications-section">
+                <h2 class="section-title" id="certifications-header">Certifications</h2>
+                <div class="certifications-grid" id="certifications-container">
+                    <!-- Certifications will be loaded from Notion -->
+                    <div class="cert-placeholder">Certifications loading...</div>
+                </div>
+            </section>
+
+            <!-- Hero/Impact Section -->
             <section id="hero" class="section hero-section">
+                <h2 class="section-title" id="impact-header">Impact</h2>
                 <div class="hero-grid">
                     <div class="hero-stat">
                         <div class="stat-number">12+</div>
@@ -81,7 +86,7 @@
 
             <!-- Career Profile -->
             <section id="profile" class="section">
-                <h2 class="section-title">Career Profile</h2>
+                <h2 class="section-title" id="profile-header">Career Profile</h2>
                 <div class="content-card">
                     <p class="profile-text">
                         Strategic sales and GTM leader scaling Startup, SMB, and Partner ecosystems across NAMER for AWS and Comcast Business. Designs operational-excellence, partner co-sell, and enablement programming and frameworks that drive ARR growth, quota over-attainment, and durable talent outcomes. Coaches for individual growth, organizational success, and sustainable output.
@@ -91,120 +96,39 @@
 
             <!-- Professional Experience -->
             <section id="experience" class="section">
-                <h2 class="section-title">Professional Experience</h2>
-                
-                <!-- AWS -->
-                <div class="experience-block">
-                    <div class="experience-header">
-                        <div>
-                            <h3 class="company-name">Amazon Web Services</h3>
-                            <p class="role-scope">Scope of Role: Director-level owner of strategy and execution; cross-functional domain; 40-50 team members</p>
-                        </div>
-                        <div class="date-range">2022 – 2026</div>
-                    </div>
-
-                    <!-- Role 1 -->
-                    <div class="role-block">
-                        <div class="role-header">
-                            <h4 class="role-title">District Manager (Head of Inside Sales-East) | Acquisition & Early Stage Startups</h4>
-                            <span class="role-date">2025 – 2026</span>
-                        </div>
-                        <ul class="achievements">
-                            <li>Grew Acquisition and Early district usage 31%/20% through strategy and cross-functional ownership.</li>
-                            <li>Achiever's Circle 2025 winner (top 6% sales leaders across AWS, 122.5% quota).</li>
-                        </ul>
-                    </div>
-
-                    <!-- Role 2 -->
-                    <div class="role-block">
-                        <div class="role-header">
-                            <h4 class="role-title">District Manager Inside Sales-East | Engaged Startups</h4>
-                            <span class="role-date">2023 – 2024</span>
-                        </div>
-                        <ul class="achievements">
-                            <li>Grew district ARR 22.3%/19% YoY.</li>
-                            <li>Led District to #1 ranked national Private Pricing contract wins across Inside Sales for 2024 (8 vs 2.4).</li>
-                            <li>Led District to #2 ranked Partner Attached sales volume (ARR and quantity).</li>
-                            <li>Architected Operational Excellence Framework across peer Frontline leaders resulting +14% YoY job satisfaction.</li>
-                            <li>Executive sponsor for Startup Sales Migration goals (80+ Field and Inside sales teams) improving attainment 15% YoY (2024-2025) through tiger team, collaboration with Partner orgs, and sales strategy.</li>
-                            <li>Refined enablement mechanism to improve internal job transition leading to +12% onboarding satisfaction.</li>
-                            <li>Grew Startup Field sales headcount 8% expanding seller coverage to HQ2 for Field Account Managers (Q3 2024).</li>
-                        </ul>
-                    </div>
-
-                    <!-- Role 3 -->
-                    <div class="role-block">
-                        <div class="role-header">
-                            <h4 class="role-title">Co-Sell Inside Sales Manager</h4>
-                            <span class="role-date">2022</span>
-                        </div>
-                        <ul class="achievements">
-                            <li>Achiever's Circle 2022 (top 6%, 146.5%/100% quota); ranked 2nd in Startup Inside Sales.</li>
-                            <li>Launched NAMER-Inside Sales Employee Engagement expanding volunteer participation from 1 hub to all NAMER hubs (500+ hrs YoY-2021-2024 supporting local nonprofits and Amazon's Global Month of Volunteering).</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Comcast -->
-                <div class="experience-block">
-                    <div class="experience-header">
-                        <div>
-                            <h3 class="company-name">Comcast Business</h3>
-                            <p class="role-scope">Scope of role: 2nd-level leader; cross-functional domain and team ownership; 45-50 team members</p>
-                        </div>
-                        <div class="date-range">2015 – 2022</div>
-                    </div>
-
-                    <!-- Role 1 -->
-                    <div class="role-block">
-                        <div class="role-header">
-                            <h4 class="role-title">Senior Manager of Leaders and Web Chat Channel</h4>
-                            <span class="role-date">2019 – 2022</span>
-                        </div>
-                        <ul class="achievements">
-                            <li>Led 45–50 professionals and 4 frontline managers to 30% YoY revenue; ranked #2 at 116% vs 105% peers.</li>
-                            <li>Led Central Division Outbound sales strategy; +18% YoY Business Internet conversion via leader-sourced tiger team, new KPIs, and attrition management.</li>
-                            <li>Leader of Web Chat sales and operations; led team to +6% growth YoY from 2019-2021.</li>
-                            <li>Scaled SMB CB Mobile pilot 20→120 sellers nationally; architected enablement with Sr. Sales and Ops.</li>
-                            <li>Authored national referral playbook adopted across Inside/Field/National/Enterprise Sales orgs.</li>
-                            <li>Forecasted HR and cost-of-sale at 95%+ accuracy; improved division performance via +30% frontline tenure.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Role 2 -->
-                    <div class="role-block">
-                        <div class="role-header">
-                            <h4 class="role-title">Frontline Manager</h4>
-                            <span class="role-date">2015 – 2019</span>
-                        </div>
-                        <ul class="achievements">
-                            <li>Coached team to 2018 President's Club win at 180%+ quota; #1 Central Division attrition/eNPS '17–'19.</li>
-                            <li>Facilitated Miller Heiman training to 100+ sellers and 11 leaders improving multi-product sell-in +20%; scaled to 2nd-line managers nationwide.</li>
-                        </ul>
-                    </div>
+                <h2 class="section-title" id="experience-header">Professional Experience</h2>
+                <div id="experience-container">
+                    <!-- Experience will be loaded from Notion -->
                 </div>
             </section>
 
             <!-- Education -->
             <section id="education" class="section">
-                <h2 class="section-title">Education</h2>
-                <div class="education-grid">
-                    <div class="education-item">
-                        <h3 class="degree">M.A., Education, Training, IT</h3>
-                        <p class="school">Indiana University of Pennsylvania</p>
-                        <p class="grad-year">2023</p>
-                    </div>
-                    <div class="education-item">
-                        <h3 class="degree">B.S., Business Administration</h3>
-                        <p class="school">Pierce College</p>
-                        <p class="grad-year">2021</p>
-                    </div>
+                <h2 class="section-title" id="education-header">Education</h2>
+                <div class="education-grid" id="education-container">
+                    <!-- Education will be loaded from Notion -->
+                </div>
+            </section>
+
+            <!-- Social Responsibility -->
+            <section id="social" class="section">
+                <h2 class="section-title" id="social-header">Social Responsibility</h2>
+                <div id="social-container">
+                    <!-- Social content will be loaded from Notion -->
+                </div>
+            </section>
+
+            <!-- Case Studies & Projects -->
+            <section id="projects" class="section">
+                <h2 class="section-title" id="projects-header">Case Studies & Projects</h2>
+                <div id="projects-container">
+                    <!-- Projects will be loaded from Notion -->
                 </div>
             </section>
 
             <!-- Footer -->
             <footer class="resume-footer">
-                <p>&copy; <span id="current-year"></span> Antone Holmes. All rights reserved.</p>
+                <p>&copy; <span id="current-year"></span> <span id="footer-name">Antone Holmes</span>. All rights reserved.</p>
             </footer>
         </main>
     </div>
