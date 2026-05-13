@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Load data from Notion
     try {
-        const response = await fetch('/api/data.json');
+        const response = await fetch('/data.json');
         const data = await response.json();
         
         if (data.settings) {
