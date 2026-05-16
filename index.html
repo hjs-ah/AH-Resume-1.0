@@ -1,166 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Antone Holmes - Resume</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="resume-styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antone Holmes</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;width:100%}
+  body{
+    font-family:'Barlow',sans-serif;
+    background:#f2f0ec;
+    color:#1a1a1a;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  .page{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    min-height:100vh;
+    position:relative;
+  }
+  .left{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:3rem 3rem 2.5rem 3.5rem;
+    position:relative;
+    z-index:2;
+  }
+  .wordmark{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:900;
+    font-size:clamp(3.5rem,7vw,6.5rem);
+    line-height:0.88;
+    letter-spacing:-0.02em;
+    text-transform:uppercase;
+    color:#111;
+  }
+  .wordmark .first{display:block}
+  .wordmark .last{
+    display:block;
+    color:transparent;
+    -webkit-text-stroke:2px #111;
+  }
+  .tagline{
+    font-size:0.8125rem;
+    font-weight:500;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:#888;
+    margin-top:1.25rem;
+  }
+  .bio{
+    font-size:1rem;
+    font-weight:300;
+    line-height:1.7;
+    color:#444;
+    max-width:380px;
+    margin-top:auto;
+    padding-top:3rem;
+  }
+  .cta-group{
+    display:flex;
+    flex-direction:column;
+    gap:0.75rem;
+    margin-top:2.5rem;
+  }
+  .cta-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:1rem 1.375rem;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:0.875rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    text-decoration:none;
+    border:1.5px solid #1a1a1a;
+    background:transparent;
+    color:#1a1a1a;
+    cursor:pointer;
+    transition:color 0.22s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta-btn::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:#1a1a1a;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    z-index:0;
+  }
+  .cta-btn:hover::before{transform:scaleX(1)}
+  .cta-btn:hover{color:#f2f0ec}
+  .cta-btn span,.cta-btn svg{position:relative;z-index:1}
+  .cta-btn.primary{background:#1a1a1a;color:#f2f0ec}
+  .cta-btn.primary::before{background:#3a3a3a}
+  .arrow{
+    width:16px;height:16px;
+    stroke-width:2;
+    fill:none;
+    transition:stroke 0.22s ease,transform 0.22s ease;
+  }
+  .cta-btn:not(.primary) .arrow{stroke:#1a1a1a}
+  .cta-btn:not(.primary):hover .arrow{stroke:#f2f0ec;transform:translate(3px,-3px)}
+  .cta-btn.primary .arrow{stroke:#f2f0ec}
+  .cta-btn.primary:hover .arrow{transform:translate(3px,-3px)}
+  .right{
+    position:relative;
+    overflow:hidden;
+  }
+  .photo-frame{
+    width:100%;
+    height:100%;
+    min-height:100vh;
+    position:relative;
+  }
+  .photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center top;
+    display:block;
+    filter:grayscale(15%) contrast(1.04);
+  }
+  .photo-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to right,#f2f0ec 0%,transparent 18%),
+               linear-gradient(to top,#f2f0ec 0%,transparent 15%);
+  }
+  .corner-label{
+    position:absolute;
+    bottom:2.25rem;
+    right:2rem;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:0.7rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:#999;
+    writing-mode:vertical-rl;
+    text-orientation:mixed;
+  }
+  .rule{
+    width:40px;
+    height:2px;
+    background:#1a1a1a;
+    margin-bottom:1.5rem;
+  }
+  .footer-strip{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:2rem;
+    padding-top:1.25rem;
+    border-top:1px solid #ccc9c2;
+  }
+  .footer-strip a{
+    font-size:0.75rem;
+    font-weight:500;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#888;
+    text-decoration:none;
+    transition:color 0.2s;
+  }
+  .footer-strip a:hover{color:#1a1a1a}
+  .footer-dot{width:4px;height:4px;border-radius:50%;background:#ccc9c2}
+  .hello-accent{
+    position:absolute;
+    top:2rem;
+    left:-1.5rem;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:900;
+    font-size:clamp(2rem,4vw,3.5rem);
+    text-transform:uppercase;
+    color:transparent;
+    -webkit-text-stroke:1.5px #bbb;
+    letter-spacing:-0.02em;
+    pointer-events:none;
+    z-index:3;
+    white-space:nowrap;
+  }
+  @media(max-width:768px){
+    .page{grid-template-columns:1fr;grid-template-rows:auto 55vh}
+    .left{padding:2rem 1.75rem}
+    .right{min-height:0}
+    .hello-accent{display:none}
+    .wordmark{font-size:clamp(3rem,14vw,5rem)}
+  }
+</style>
 </head>
 <body>
-    <div class="page-container">
-        <!-- Fixed Navigation -->
-        <nav class="side-nav">
-            <div class="nav-content">
-                <div class="nav-header">
-                    <img src="https://hjs-ah.github.io/AH-FE-2.0/ProHeadshot_web-copy.jpg" alt="Profile Photo" class="nav-profile-photo" id="nav-profile-photo">
-                    <h2 id="nav-name">Antone Holmes</h2>
-                    <p class="nav-subtitle" id="nav-subtitle">Resume</p>
-                </div>
+<div class="page">
 
-                <ul class="nav-links">
-                    <li><a href="#hero" class="nav-link active">Overview</a></li>
-                    <li><a href="#profile" class="nav-link">Profile</a></li>
-                    <li><a href="#experience" class="nav-link">Experience</a></li>
-                    <li><a href="#education" class="nav-link">Education</a></li>
-                    <li><a href="#social" class="nav-link">Social</a></li>
-                    <li><a href="#projects" class="nav-link">Projects</a></li>
-                </ul>
-
-                <div class="nav-footer">
-                    <a href="mailto:antoneholmes@icloud.com" class="contact-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                        </svg>
-                        <span>Contact</span>
-                    </a>
-                    <a href="https://linkedin.com/in/antone-h" target="_blank" class="contact-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path>
-                        </svg>
-                        <span>LinkedIn</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Impact / Overview — sticky frozen pane -->
-            <section id="hero" class="section hero-section">
-                <h2 class="section-title" id="impact-header">Impact</h2>
-                <p class="section-subheader" id="impact-subheader"></p>
-
-                <div class="hero-combined-layout">
-                    <!-- Stats row (top) -->
-                    <div class="hero-stats-container">
-                        <div class="hero-grid">
-                            <div class="hero-stat">
-                                <div class="stat-ring-wrap">
-                                    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                                        <!-- outer track -->
-                                        <circle class="ring-track"  cx="60" cy="60" r="54"/>
-                                        <!-- outer animated -->
-                                        <circle class="ring-outer"  cx="60" cy="60" r="54"/>
-                                        <!-- inner track -->
-                                        <circle class="ring-inner-track" cx="60" cy="60" r="42"/>
-                                        <!-- inner animated -->
-                                        <circle class="ring-inner" cx="60" cy="60" r="42"/>
-                                    </svg>
-                                    <div class="stat-content">
-                                        <div class="stat-number">12+</div>
-                                        <div class="stat-label">Case Studies Delivered</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="hero-stat">
-                                <div class="stat-ring-wrap">
-                                    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                                        <circle class="ring-track"  cx="60" cy="60" r="54"/>
-                                        <circle class="ring-outer"  cx="60" cy="60" r="54"/>
-                                        <circle class="ring-inner-track" cx="60" cy="60" r="42"/>
-                                        <circle class="ring-inner" cx="60" cy="60" r="42"/>
-                                    </svg>
-                                    <div class="stat-content">
-                                        <div class="stat-number">50+</div>
-                                        <div class="stat-label">People Promoted</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="hero-stat">
-                                <div class="stat-ring-wrap">
-                                    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                                        <circle class="ring-track"  cx="60" cy="60" r="54"/>
-                                        <circle class="ring-outer"  cx="60" cy="60" r="54"/>
-                                        <circle class="ring-inner-track" cx="60" cy="60" r="42"/>
-                                        <circle class="ring-inner" cx="60" cy="60" r="42"/>
-                                    </svg>
-                                    <div class="stat-content">
-                                        <div class="stat-number">8</div>
-                                        <div class="stat-label">Executive Sponsorships</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Badges row (below stats) -->
-                    <div class="certifications-container">
-                        <div class="certifications-grid" id="certifications-container">
-                            <div class="cert-placeholder">Certifications loading...</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Career Profile -->
-            <section id="profile" class="section">
-                <h2 class="section-title" id="profile-header">Career Profile</h2>
-                <p class="section-subheader" id="profile-subheader"></p>
-                <div class="content-card">
-                    <p class="profile-text">
-                        Strategic sales and GTM leader scaling Startup, SMB, and Partner ecosystems across NAMER for AWS and Comcast Business. Designs operational-excellence, partner co-sell, and enablement programming and frameworks that drive ARR growth, quota over-attainment, and durable talent outcomes. Coaches for individual growth, organizational success, and sustainable output.
-                    </p>
-                </div>
-            </section>
-
-            <!-- Professional Experience -->
-            <section id="experience" class="section">
-                <h2 class="section-title" id="experience-header">Professional Experience</h2>
-                <p class="section-subheader" id="experience-subheader"></p>
-                <div id="experience-container"></div>
-            </section>
-
-            <!-- Education -->
-            <section id="education" class="section">
-                <h2 class="section-title" id="education-header">Education</h2>
-                <p class="section-subheader" id="education-subheader"></p>
-                <div class="education-grid" id="education-container"></div>
-            </section>
-
-            <!-- Social Responsibility -->
-            <section id="social" class="section">
-                <h2 class="section-title" id="social-header">Social Responsibility</h2>
-                <p class="section-subheader" id="social-subheader"></p>
-                <div id="social-container"></div>
-            </section>
-
-            <!-- Case Studies & Projects -->
-            <section id="projects" class="section">
-                <h2 class="section-title" id="projects-header">Case Studies &amp; Projects</h2>
-                <p class="section-subheader" id="projects-subheader"></p>
-                <div id="projects-container"></div>
-            </section>
-
-            <!-- Footer -->
-            <footer class="resume-footer">
-                <p>&copy; <span id="current-year"></span> <span id="footer-name">Antone Holmes</span>. All rights reserved.</p>
-            </footer>
-        </main>
+  <div class="left">
+    <div>
+      <div class="rule"></div>
+      <div class="wordmark">
+        <span class="first">Antone</span>
+        <span class="last">Holmes</span>
+      </div>
+      <p class="tagline">Sales &amp; GTM Leader &nbsp;·&nbsp; Educator &nbsp;·&nbsp; Builder</p>
     </div>
 
-    <script src="resume-script.js"></script>
+    <div>
+      <p class="bio">
+        Strategic leader scaling Partner ecosystems and revenue across Startup, SMB, and Enterprise at AWS and Comcast. Founder, educator, and community builder rooted in Philadelphia.
+      </p>
+
+      <div class="cta-group">
+        <a href="resume.html" class="cta-btn primary">
+          <span>View My Resume</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H6M13 3V10"/></svg>
+        </a>
+        <a href="#" class="cta-btn">
+          <span>VOW Center &amp; Outreach</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H6M13 3V10"/></svg>
+        </a>
+        <a href="#" class="cta-btn">
+          <span>Academic Work</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H6M13 3V10"/></svg>
+        </a>
+      </div>
+
+      <div class="footer-strip">
+        <a href="mailto:antoneholmes@icloud.com">Email</a>
+        <div class="footer-dot"></div>
+        <a href="https://linkedin.com/in/antone-h" target="_blank">LinkedIn</a>
+        <div class="footer-dot"></div>
+        <a href="https://github.com/hjs-ah" target="_blank">GitHub</a>
+        <div class="footer-dot"></div>
+        <a href="#" target="_blank">Hampton University</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="photo-frame">
+      <img src="Headshot_WhiteButtonUp_SD_.jpeg" alt="Antone Holmes">
+      <div class="photo-overlay"></div>
+    </div>
+    <span class="hello-accent">Say Hello.</span>
+    <span class="corner-label">Philadelphia, PA &nbsp;·&nbsp; 2025</span>
+  </div>
+
+</div>
 </body>
 </html>
