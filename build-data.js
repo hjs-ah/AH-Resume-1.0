@@ -53,24 +53,14 @@ async function fetchAllContent() {
   console.log('📦 Fetching all published content rows...');
   const rows = await safeQuery(
     CONTENT_DB,
-    { property: 'Status', select: { equals: 'Published' } },
+    { or: [
+      { property: 'Status', select: { equals: 'Published' } },
+      { property: 'Published', checkbox: { equals: true } },
+    ]},
     [{ property: 'Order', direction: 'ascending' }]
   );
   console.log('   Total published rows: ' + rows.length);
-
-  // Also try the checkbox-based Published field as fallback
-  let extra = [];
-  if (rows.length === 0) {
-    console.log('   Trying Published checkbox...');
-    extra = await safeQuery(
-      CONTENT_DB,
-      { property: 'Published', checkbox: { equals: true } },
-      [{ property: 'Order', direction: 'ascending' }]
-    );
-    console.log('   Checkbox rows: ' + extra.length);
-  }
-
-  return [...rows, ...extra];
+  return rows;
 }
 
 // ─── SETTINGS ──────────────────────────────────────────────────────────────────
@@ -237,8 +227,8 @@ async function main() {
       desc:        _rtFull(r.properties, 'Description'),
       imageUrl:    _url(r.properties, 'Image URL') || _files(r.properties, 'Image'),
       link:        _url(r.properties, 'Link'),
-      stackTags:   _multi(r.properties, 'Tags'),
-      filterTags:  _multi(r.properties, 'Filter Tags'),
+      stackTags:   _rtFull(r.properties, 'Bullets').split(/\s+/).filter(Boolean),
+      filterTags:  _rtFull(r.properties, 'Tags').split(/\s+/).filter(Boolean),
       order:       _num(r.properties, 'Order') || 0,
     })) : projectRows.map(r => ({  // fall back to Project rows
       name:       _title(r.properties, 'Name'),
