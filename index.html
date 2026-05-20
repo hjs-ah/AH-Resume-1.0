@@ -1295,48 +1295,56 @@ async function loadData() {
     const res = await fetch('/data.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     data = await res.json();
-    console.log('✅ data.json loaded:', data._buildTime);
-  } catch (e) {
-    console.warn('⚠️ data.json not found — using static fallback content');
-    return; // static HTML fallback already in place
+    console.log('data.json loaded:', data._buildTime);
+  } catch(e) {
+    console.warn('data.json not available — using static fallback. Error:', e.message);
+    return;
   }
 
   const s = data.settings || {};
 
-  // ── Settings ────────────────────────────────────────
+  // ── Settings ──────────────────────────────────────────
+  if (s.accentColor) document.documentElement.style.setProperty('--accent', s.accentColor);
+  if (s.borderColor) document.documentElement.style.setProperty('--border', s.borderColor);
+
   if (s.name) {
-    document.querySelector('.name')?.childNodes[0] && (document.querySelector('.name').childNodes[0].textContent = s.name.split(' ')[0]);
-    const outlineEl = document.querySelector('.name .outline');
-    if (outlineEl) outlineEl.textContent = s.name.split(' ').slice(1).join(' ') || s.name;
-    const titleEl = document.querySelector('title');
-    if (titleEl) titleEl.textContent = s.name + ' — Portfolio';
+    const nameEl = document.querySelector('.name');
+    if (nameEl) {
+      const parts = s.name.trim().split(' ');
+      const first = parts[0];
+      const rest = parts.slice(1).join(' ');
+      nameEl.innerHTML = first + (rest ? '<br><span class="outline">' + rest + '</span>' : '');
+    }
+    document.title = s.name + ' \u2014 Portfolio';
   }
-  if (s.tagline) {
-    const tl = document.querySelector('.title-line');
-    if (tl) tl.textContent = s.tagline;
-  }
+  if (s.tagline) { const tl = document.querySelector('.title-line'); if (tl) tl.textContent = s.tagline; }
   if (s.profilePhotoUrl) {
     const ph = document.querySelector('.photo-ph');
     if (ph) {
       const img = document.createElement('img');
       img.src = s.profilePhotoUrl;
       img.alt = s.name || 'Profile';
-      img.onerror = () => img.remove();
+      img.onerror = function() { this.remove(); };
       ph.parentElement.insertBefore(img, ph);
       ph.style.display = 'none';
     }
   }
-  if (s.accentColor) document.documentElement.style.setProperty('--accent', s.accentColor);
-  if (s.borderColor) document.documentElement.style.setProperty('--border', s.borderColor);
 
   // Nav labels
-  const navMap = { home:'navHome', cv:'navCV', resume:'navResume', cases:'navCases', portfolio:'navPortfolio', changelog:'navChangelog' };
+  const navPages = ['home','cv','resume','cases','portfolio','changelog'];
+  const navKeys  = ['navHome','navCV','navResume','navCases','navPortfolio','navChangelog'];
   document.querySelectorAll('.nav-btn').forEach(btn => {
-    const page = btn.getAttribute('onclick')?.match(/showPage\('(\w+)'/)?.[1];
-    if (page && navMap[page] && s[navMap[page]]) btn.querySelector('span').textContent = s[navMap[page]];
+    const onclick = btn.getAttribute('onclick') || '';
+    const match = onclick.match(/showPage\('(\w+)'/);
+    if (!match) return;
+    const page = match[1];
+    const keyIdx = navPages.indexOf(page);
+    if (keyIdx >= 0 && s[navKeys[keyIdx]]) {
+      btn.querySelector('span').textContent = s[navKeys[keyIdx]];
+    }
   });
 
-  // ── Impact stats ────────────────────────────────────
+  // ── Impact stats ──────────────────────────────────────
   const stats = data.impactStats || [];
   if (stats.length) {
     const grid = document.getElementById('impact-grid');
@@ -1348,179 +1356,304 @@ async function loadData() {
     }
   }
 
-  // ── Credentials ─────────────────────────────────────
+  // ── Credentials ───────────────────────────────────────
   const creds = data.credentials || [];
   if (creds.length) {
     const cr = document.querySelector('.cred-row');
     if (cr) {
-      cr.innerHTML = creds.map(c => {
-        const img = c.imageUrl
-          ? '<img src="' + c.imageUrl + '" alt="' + c.name + '" style="width:100%;height:100%;object-fit:contain">'
-          : '<span class="chip-img-text">' + (c.name.substring(0,3).toUpperCase()) + '</span>';
-        return '<div class="cred-chip"><div class="chip-img">' + img + '</div>'
-          + '<div><div class="chip-text">' + c.name + '</div><div class="chip-sub">' + c.subtitle + '</div></div></div>';
-      }).join('');
+      cr.innerHTML = '';
+      creds.forEach(function(c) {
+        const chip = document.createElement('div');
+        chip.className = 'cred-chip';
+        const imgWrap = document.createElement('div');
+        imgWrap.className = 'chip-img';
+        if (c.imageUrl) {
+          const img = document.createElement('img');
+          img.src = c.imageUrl;
+          img.alt = c.name;
+          imgWrap.appendChild(img);
+        } else {
+          const span = document.createElement('span');
+          span.className = 'chip-img-text';
+          span.textContent = c.name.substring(0,3).toUpperCase();
+          imgWrap.appendChild(span);
+        }
+        const text = document.createElement('div');
+        const primary = document.createElement('div');
+        primary.className = 'chip-text';
+        primary.textContent = c.name;
+        const sub = document.createElement('div');
+        sub.className = 'chip-sub';
+        sub.textContent = c.subtitle || '';
+        text.appendChild(primary);
+        text.appendChild(sub);
+        chip.appendChild(imgWrap);
+        chip.appendChild(text);
+        cr.appendChild(chip);
+      });
     }
   }
 
-  // ── Home: Updates ───────────────────────────────────
+  // ── Home: Updates ────────────────────────────────────
   const updates = data.home?.updates || [];
   if (updates.length) {
     const tagColors = { Work:'tag-work', Faith:'tag-faith', Academic:'tag-academic', Community:'tag-life' };
     const wc = document.getElementById('working-cards');
     if (wc) {
-      wc.innerHTML = updates.map(u => {
+      wc.innerHTML = '';
+      updates.forEach(function(u) {
         const tc = tagColors[u.tag] || 'tag-work';
-        const dateStr = u.date ? new Date(u.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : u.date;
-        return '<div class="update-card" data-tags="' + (u.tag||'') + '">'
-          + '<div class="update-date">' + dateStr + '</div>'
-          + '<div class="update-body"><span class="update-tag-chip ' + tc + '" onclick="filterCards('working',document.querySelector('[data-tag=' + (u.tag||'all') + ']'))">' + (u.tag||'') + '</span>'
-          + '<div class="update-title">' + u.title + '</div>'
-          + '<div class="update-excerpt">' + u.excerpt + '</div></div></div>';
-      }).join('');
+        const dateStr = u.date ? new Date(u.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
+        const card = document.createElement('div');
+        card.className = 'update-card';
+        card.dataset.tags = u.tag || '';
+        const dateEl = document.createElement('div');
+        dateEl.className = 'update-date';
+        dateEl.textContent = dateStr;
+        const body = document.createElement('div');
+        body.className = 'update-body';
+        const chip = document.createElement('span');
+        chip.className = 'update-tag-chip ' + tc;
+        chip.textContent = u.tag || '';
+        chip.onclick = (function(tag) { return function() {
+          var btn = document.querySelector('[data-tag="' + tag + '"]');
+          if (btn) filterCards('working', btn);
+        }; })(u.tag || 'all');
+        const titleEl = document.createElement('div');
+        titleEl.className = 'update-title';
+        titleEl.textContent = u.title;
+        const excerptEl = document.createElement('div');
+        excerptEl.className = 'update-excerpt';
+        excerptEl.textContent = u.excerpt;
+        body.appendChild(chip); body.appendChild(titleEl); body.appendChild(excerptEl);
+        card.appendChild(dateEl); card.appendChild(body);
+        wc.appendChild(card);
+      });
     }
   }
 
-  // ── Home: Reflections ────────────────────────────────
+  // ── Home: Reflections ─────────────────────────────────
   const reflections = data.home?.reflections || [];
   if (reflections.length) {
-    const tagColors = { Faith:'tag-faith', Leadership:'tag-faith', Community:'tag-life' };
+    const refTagColors = { Faith:'tag-faith', Leadership:'tag-faith', Community:'tag-life' };
     const rc = document.getElementById('reflections-cards');
     if (rc) {
-      rc.innerHTML = reflections.map((r, i) => {
-        const tc = tagColors[r.tag] || 'tag-life';
-        const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : r.date;
+      rc.innerHTML = '';
+      reflections.forEach(function(r, i) {
+        const tc = refTagColors[r.tag] || 'tag-life';
+        const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
         const modalId = 'notion-r' + i;
-        // Store full text for modal
         window['_modal_' + modalId] = { title: r.title, tag: r.tag, date: dateStr, body: r.fullText || r.excerpt, tagClass: tc };
-        return '<div class="reflection-card" data-tags="' + (r.tag||'') + '">'
-          + '<div class="reflection-top">'
-          + '<div class="update-date" style="min-width:48px;font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex-shrink:0">' + dateStr + '</div>'
-          + '<div class="reflection-body"><span class="update-tag-chip ' + tc + '">' + (r.tag||'') + '</span>'
-          + '<div class="update-title">' + r.title + '</div>'
-          + '<div class="update-excerpt">' + r.excerpt + '</div>'
-          + '<div class="reflection-actions">'
-          + '<button class="read-more-btn" onclick="openDynamicModal('' + modalId + '')">Read More →</button>'
-          + '<button class="popup-icon-btn" onclick="openDynamicModal('' + modalId + '')">'
-          + '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"/></svg>'
-          + '</button></div></div></div></div>';
-      }).join('');
+
+        const card = document.createElement('div');
+        card.className = 'reflection-card';
+        card.dataset.tags = r.tag || '';
+
+        const top = document.createElement('div');
+        top.className = 'reflection-top';
+
+        const dateEl = document.createElement('div');
+        dateEl.className = 'update-date';
+        dateEl.style.cssText = 'min-width:48px;font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex-shrink:0';
+        dateEl.textContent = dateStr;
+
+        const body = document.createElement('div');
+        body.className = 'reflection-body';
+
+        const chip = document.createElement('span');
+        chip.className = 'update-tag-chip ' + tc;
+        chip.textContent = r.tag || '';
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'update-title';
+        titleEl.textContent = r.title;
+
+        const excerptEl = document.createElement('div');
+        excerptEl.className = 'update-excerpt';
+        excerptEl.textContent = r.excerpt;
+
+        const actions = document.createElement('div');
+        actions.className = 'reflection-actions';
+
+        const readBtn = document.createElement('button');
+        readBtn.className = 'read-more-btn';
+        readBtn.textContent = 'Read More \u2192';
+        readBtn.onclick = (function(id) { return function() { openDynamicModal(id); }; })(modalId);
+
+        const popupBtn = document.createElement('button');
+        popupBtn.className = 'popup-icon-btn';
+        popupBtn.title = 'Open in window';
+        popupBtn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"/></svg>';
+        popupBtn.onclick = (function(id) { return function() { openDynamicModal(id); }; })(modalId);
+
+        actions.appendChild(readBtn); actions.appendChild(popupBtn);
+        body.appendChild(chip); body.appendChild(titleEl); body.appendChild(excerptEl); body.appendChild(actions);
+        top.appendChild(dateEl); top.appendChild(body);
+        card.appendChild(top);
+        rc.appendChild(card);
+      });
     }
   }
 
-  // ── Home: Articles ──────────────────────────────────
+  // ── Home: Articles ────────────────────────────────────
   const articles = data.home?.articles || [];
   if (articles.length) {
-    const ac = document.querySelector('.blog-section:last-child');
-    if (ac) {
-      const existingCards = ac.querySelectorAll('.article-card');
-      existingCards.forEach(e => e.remove());
-      articles.forEach(a => {
-        const dateStr = a.date ? new Date(a.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : a.date;
+    const allBlogSections = document.querySelectorAll('.blog-section');
+    const articleSection = allBlogSections[allBlogSections.length - 1];
+    if (articleSection) {
+      articleSection.querySelectorAll('.article-card').forEach(function(e) { e.remove(); });
+      articles.forEach(function(a) {
+        const dateStr = a.date ? new Date(a.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
         const card = document.createElement('a');
         card.className = 'article-card';
         card.href = a.url || '#';
         if (a.url) { card.target = '_blank'; card.rel = 'noopener'; }
-        card.innerHTML = '<div><div class="article-meta">' + (a.platform||'') + ' · ' + dateStr + '</div>'
-          + '<div class="article-title">' + a.title + '</div></div>'
-          + '<div class="article-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
-        ac.appendChild(card);
+        const left = document.createElement('div');
+        const meta = document.createElement('div');
+        meta.className = 'article-meta';
+        meta.textContent = (a.platform || '') + ' \u00b7 ' + dateStr;
+        const title = document.createElement('div');
+        title.className = 'article-title';
+        title.textContent = a.title;
+        left.appendChild(meta); left.appendChild(title);
+        const arrow = document.createElement('div');
+        arrow.className = 'article-arrow';
+        arrow.innerHTML = '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        card.appendChild(left); card.appendChild(arrow);
+        articleSection.appendChild(card);
       });
     }
   }
 
-  // ── Resume ──────────────────────────────────────────
+  // ── Resume ────────────────────────────────────────────
   const resume = data.resume || [];
   if (resume.length) {
-    // Group by company
     const companies = {};
-    resume.forEach(r => { if (!companies[r.company]) companies[r.company] = []; companies[r.company].push(r); });
-    const expContainer = document.querySelector('#view-resume .exp-block')?.parentElement;
-    if (expContainer) {
-      const blocks = expContainer.querySelectorAll('.exp-block');
-      blocks.forEach(b => b.remove());
-      Object.entries(companies).forEach(([co, roles]) => {
-        const org = roles[0].org || co.replace(/\s+/g,'');
+    resume.forEach(function(r) {
+      if (!companies[r.company]) companies[r.company] = [];
+      companies[r.company].push(r);
+    });
+    const resumeView = document.getElementById('view-resume');
+    if (resumeView) {
+      resumeView.querySelectorAll('.exp-block').forEach(function(b) { b.remove(); });
+      const insertBefore = resumeView.querySelector('.cv-two-col');
+      const parent = insertBefore ? insertBefore.parentElement : resumeView;
+      Object.entries(companies).forEach(function(entry) {
+        const co = entry[0], roles = entry[1];
+        const org = roles[0].org || '';
         const block = document.createElement('div');
         block.className = 'exp-block';
         block.dataset.org = org;
-        block.innerHTML = '<div class="exp-co">' + co + '</div>'
-          + (roles[0].scope ? '<div class="exp-scope">' + roles[0].scope + '</div>' : '')
-          + '<div class="exp-dates">' + (roles[0].dateRange || '') + '</div>'
-          + roles.map(r => '<div class="role-block"><div class="role-title">' + r.role + '</div>'
-            + '<div class="role-date">' + r.dateRange + '</div>'
-            + (r.bullets.length ? '<ul class="bullets">' + r.bullets.map(b => '<li>' + b + '</li>').join('') + '</ul>' : '')
-            + '</div>').join('');
-        expContainer.appendChild(block);
+        const coEl = document.createElement('div'); coEl.className = 'exp-co'; coEl.textContent = co;
+        const scopeEl = document.createElement('div'); scopeEl.className = 'exp-scope'; scopeEl.textContent = roles[0].scope || '';
+        const datesEl = document.createElement('div'); datesEl.className = 'exp-dates'; datesEl.textContent = roles[0].dateRange || '';
+        block.appendChild(coEl); block.appendChild(scopeEl); block.appendChild(datesEl);
+        roles.forEach(function(r) {
+          const rb = document.createElement('div'); rb.className = 'role-block';
+          const rt = document.createElement('div'); rt.className = 'role-title'; rt.textContent = r.role;
+          const rd = document.createElement('div'); rd.className = 'role-date'; rd.textContent = r.dateRange;
+          rb.appendChild(rt); rb.appendChild(rd);
+          if (r.bullets && r.bullets.length) {
+            const ul = document.createElement('ul'); ul.className = 'bullets';
+            r.bullets.forEach(function(b) {
+              if (!b.trim()) return;
+              const li = document.createElement('li'); li.textContent = b; ul.appendChild(li);
+            });
+            rb.appendChild(ul);
+          }
+          block.appendChild(rb);
+        });
+        parent.appendChild(block);
       });
     }
   }
 
-  // ── Cases ───────────────────────────────────────────
+  // ── Cases ─────────────────────────────────────────────
   const cases = data.cases || [];
   if (cases.length) {
     const cl = document.getElementById('cases-list');
     if (cl) {
-      cl.innerHTML = cases.map((c, i) => {
-        const caseTagsStr = (c.tags || []).join(' ');
-        return '<div class="case-card" data-case-tags="' + caseTagsStr + '">'
-          + '<div class="case-num">(' + String(i+1).padStart(3,'0') + ')</div>'
-          + '<div class="case-title">' + c.name + '</div>'
-          + (c.sub ? '<div class="case-sub">' + c.sub + '</div>' : '')
-          + '<div class="case-desc">' + c.desc + '</div>'
-          + '<div class="case-tags">' + (c.tags||[]).map(t => '<span class="case-tag">' + t + '</span>').join('') + '</div>'
-          + '</div>';
-      }).join('');
+      cl.innerHTML = '';
+      cases.forEach(function(c, i) {
+        const card = document.createElement('div');
+        card.className = 'case-card';
+        card.dataset.caseTags = (c.tags || []).join(' ');
+        const num = document.createElement('div'); num.className = 'case-num'; num.textContent = '(' + String(i+1).padStart(3,'0') + ')';
+        const title = document.createElement('div'); title.className = 'case-title'; title.textContent = c.name;
+        const sub = document.createElement('div'); sub.className = 'case-sub'; sub.textContent = c.sub || '';
+        const desc = document.createElement('div'); desc.className = 'case-desc'; desc.textContent = c.desc;
+        const tags = document.createElement('div'); tags.className = 'case-tags';
+        (c.tags || []).forEach(function(t) {
+          const span = document.createElement('span'); span.className = 'case-tag'; span.textContent = t; tags.appendChild(span);
+        });
+        card.appendChild(num); card.appendChild(title); card.appendChild(sub); card.appendChild(desc); card.appendChild(tags);
+        cl.appendChild(card);
+      });
     }
   }
 
-  // ── Portfolio ───────────────────────────────────────
+  // ── Portfolio ─────────────────────────────────────────
   const portfolio = data.portfolio || [];
   if (portfolio.length) {
     const pg = document.getElementById('portfolio-grid');
     if (pg) {
-      pg.innerHTML = portfolio.map(p => {
-        const filterTagsStr = (p.filterTags || []).join(' ');
-        const thumb = p.imageUrl
-          ? '<img src="' + p.imageUrl + '" alt="' + p.name + '">'
-          : '<span>Screenshot placeholder</span>';
-        return '<a href="' + (p.link||'#') + '" class="portfolio-card" data-tags="' + filterTagsStr + '" '
-          + (p.link ? 'target="_blank" rel="noopener"' : '') + '>'
-          + '<div class="portfolio-thumb">' + thumb + '</div>'
-          + '<div class="portfolio-body">'
-          + '<div class="portfolio-type">' + (p.type||'') + '</div>'
-          + '<div class="portfolio-title">' + p.name + '</div>'
-          + '<div class="portfolio-desc">' + p.desc + '</div>'
-          + '<div class="portfolio-tags-row">' + (p.stackTags||[]).map(t => '<span class="portfolio-tag">' + t + '</span>').join('') + '</div>'
-          + '</div></a>';
-      }).join('');
+      pg.innerHTML = '';
+      portfolio.forEach(function(p) {
+        const card = document.createElement('a');
+        card.className = 'portfolio-card';
+        card.href = p.link || '#';
+        card.dataset.tags = (p.filterTags || []).join(' ');
+        if (p.link) { card.target = '_blank'; card.rel = 'noopener'; }
+        const thumb = document.createElement('div');
+        thumb.className = 'portfolio-thumb';
+        if (p.imageUrl) {
+          const img = document.createElement('img'); img.src = p.imageUrl; img.alt = p.name; thumb.appendChild(img);
+        } else { thumb.textContent = 'Screenshot placeholder'; }
+        const body = document.createElement('div');
+        body.className = 'portfolio-body';
+        const type = document.createElement('div'); type.className = 'portfolio-type'; type.textContent = p.type || '';
+        const title = document.createElement('div'); title.className = 'portfolio-title'; title.textContent = p.name;
+        const desc = document.createElement('div'); desc.className = 'portfolio-desc'; desc.textContent = p.desc;
+        const tagRow = document.createElement('div'); tagRow.className = 'portfolio-tags-row';
+        (p.stackTags || []).forEach(function(t) {
+          const span = document.createElement('span'); span.className = 'portfolio-tag'; span.textContent = t; tagRow.appendChild(span);
+        });
+        body.appendChild(type); body.appendChild(title); body.appendChild(desc); body.appendChild(tagRow);
+        card.appendChild(thumb); card.appendChild(body);
+        pg.appendChild(card);
+      });
     }
   }
 
-  // ── Changelog ───────────────────────────────────────
+  // ── Changelog ─────────────────────────────────────────
   const changelog = data.changelog || [];
   if (changelog.length) {
     const typeClassMap = { Feature:'cl-feature', Fix:'cl-fix', Design:'cl-design', Content:'cl-content', Infrastructure:'cl-infrastructure' };
     const cl2 = document.getElementById('changelog-list');
     if (cl2) {
-      cl2.innerHTML = changelog.map(entry => {
+      cl2.innerHTML = '';
+      changelog.forEach(function(entry) {
         const tc = typeClassMap[entry.type] || 'cl-feature';
-        const dateStr = entry.date ? new Date(entry.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : entry.date;
-        return '<div class="changelog-entry" data-cl-type="' + (entry.type||'') + '">'
-          + '<div class="cl-left">'
+        const dateStr = entry.date ? new Date(entry.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
+        const row = document.createElement('div');
+        row.className = 'changelog-entry';
+        row.dataset.clType = entry.type || '';
+        row.innerHTML = '<div class="cl-left">'
           + '<div class="cl-version">' + (entry.version||'') + '</div>'
           + '<div class="cl-date">' + dateStr + '</div>'
           + '<span class="cl-type ' + tc + '">' + (entry.type||'') + '</span>'
           + '</div>'
           + '<div class="cl-right">'
           + (entry.scope ? '<div class="cl-scope">' + entry.scope + '</div>' : '')
-          + '<div class="cl-summary">' + entry.summary + '</div>'
+          + '<div class="cl-summary">' + (entry.summary||'') + '</div>'
           + (entry.detail ? '<div class="cl-detail">' + entry.detail + '</div>' : '')
-          + '</div></div>';
-      }).join('');
+          + '</div>';
+        cl2.appendChild(row);
+      });
     }
   }
 }
+
 
 /* ── Dynamic modal for Notion reflections ────────────── */
 function openDynamicModal(id) {
@@ -1528,44 +1661,65 @@ function openDynamicModal(id) {
   if (!stored) return;
   let overlay = document.getElementById('dynamic-modal');
   if (!overlay) {
+    // Build entirely with DOM — no innerHTML quoting issues
     overlay = document.createElement('div');
     overlay.id = 'dynamic-modal';
     overlay.className = 'modal-overlay';
-    overlay.onclick = e => { if (e.target === overlay) overlay.classList.remove('open'); };
-    overlay.innerHTML = '<div class="modal-box"><button class="modal-close" onclick="document.getElementById('dynamic-modal').classList.remove('open')">'
-      + '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>'
-      + '<div id="dyn-date" class="modal-date"></div><span id="dyn-tag" class="modal-tag"></span>'
-      + '<div id="dyn-title" class="modal-title"></div><div id="dyn-body" class="modal-body"></div></div>';
+    overlay.onclick = function(e) { if (e.target === overlay) { overlay.classList.remove('open'); document.body.style.overflow = ''; } };
+
+    const box = document.createElement('div');
+    box.className = 'modal-box';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    closeBtn.onclick = function() { overlay.classList.remove('open'); document.body.style.overflow = ''; };
+
+    const dateEl = document.createElement('div'); dateEl.id = 'dyn-date'; dateEl.className = 'modal-date';
+    const tagEl  = document.createElement('span'); tagEl.id  = 'dyn-tag';  tagEl.className  = 'modal-tag';
+    const titleEl= document.createElement('div'); titleEl.id = 'dyn-title';titleEl.className= 'modal-title';
+    const bodyEl = document.createElement('div'); bodyEl.id  = 'dyn-body'; bodyEl.className = 'modal-body';
+
+    box.appendChild(closeBtn); box.appendChild(dateEl); box.appendChild(tagEl);
+    box.appendChild(titleEl); box.appendChild(bodyEl);
+    overlay.appendChild(box);
     document.body.appendChild(overlay);
   }
   document.getElementById('dyn-date').textContent = stored.date;
   const tagEl = document.getElementById('dyn-tag');
-  tagEl.textContent = stored.tag;
-  tagEl.className = 'modal-tag ' + stored.tagClass;
-  document.getElementById('dyn-title').textContent = stored.title;
-  document.getElementById('dyn-body').innerHTML = stored.body.split('\n\n').map(p => '<p>' + p + '</p>').join('');
+  tagEl.textContent = stored.tag || '';
+  tagEl.className = 'modal-tag ' + (stored.tagClass || '');
+  document.getElementById('dyn-title').textContent = stored.title || '';
+  const bodyEl = document.getElementById('dyn-body');
+  bodyEl.innerHTML = '';
+  (stored.body || '').split('\n\n').forEach(function(para) {
+    if (!para.trim()) return;
+    const p = document.createElement('p');
+    p.textContent = para;
+    bodyEl.appendChild(p);
+  });
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-setImpactCount(5); // fallback — overridden by loadData()
-loadData();
-
 /* ── Card filtering (home: working + reflections) ────── */
 function filterCards(section, clickedBtn) {
+  if (!clickedBtn) return;
   const tag = clickedBtn.dataset.tag;
-  const barId = section === 'working' ? 'working-tag-bar' : null;
 
-  // Update active state on the correct tag bar
-  const allBtns = clickedBtn.closest('.tag-bar').querySelectorAll('.filter-tag');
-  allBtns.forEach(b => b.classList.remove('active'));
+  // Update active state — walk up to tag-bar safely
+  const bar = clickedBtn.closest('.tag-bar') || clickedBtn.closest('.blog-section');
+  if (bar) {
+    bar.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+  }
   clickedBtn.classList.add('active');
 
   // Filter cards
   const containerId = section === 'working' ? 'working-cards' : 'reflections-cards';
   const cards = document.querySelectorAll('#' + containerId + ' [data-tags]');
   cards.forEach(card => {
-    if (tag === 'all' || card.dataset.tags.includes(tag)) {
+    const cardTags = card.dataset.tags || '';
+    if (tag === 'all' || cardTags.includes(tag)) {
       card.classList.remove('hidden');
     } else {
       card.classList.add('hidden');
@@ -1606,7 +1760,7 @@ function filterPortfolio(clickedBtn) {
     if (activePortfolioTags.has('all')) {
       card.classList.remove('hidden');
     } else {
-      const cardTags = card.dataset.tags.split(' ');
+      const cardTags = (card.dataset.tags || '').split(' ');
       const match = [...activePortfolioTags].some(t => cardTags.includes(t));
       card.classList.toggle('hidden', !match);
     }
@@ -1674,8 +1828,9 @@ function filterResume(clickedChip) {
   const org = clickedChip.dataset.org;
   document.querySelectorAll('#resume-org-bar .tool-chip').forEach(c => c.classList.remove('active'));
   clickedChip.classList.add('active');
-  document.querySelectorAll('#view-resume .exp-block[data-org]').forEach(block => {
-    block.style.display = (org === 'all' || block.dataset.org.includes(org)) ? '' : 'none';
+  document.querySelectorAll('#view-resume .exp-block').forEach(block => {
+    const blockOrg = block.dataset.org || '';
+    block.style.display = (org === 'all' || blockOrg.includes(org)) ? '' : 'none';
   });
 }
 
@@ -1789,6 +1944,12 @@ document.addEventListener('keydown', e => {
   }
 });
 
+
+/* ── Init — run after ALL functions defined ─────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  setImpactCount(5);
+  loadData();
+});
 </script>
 
 </body>
