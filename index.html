@@ -13,7 +13,7 @@
   --left-w:320px; --r:6px;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden}
+html,body{height:100%}
 body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;display:flex}
 
 /* ══ LEFT PANEL ══════════════════════════════════════════ */
@@ -322,9 +322,164 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 .cl-detail{font-size:.85rem;line-height:1.7;color:var(--ink-2)}
 .cl-section-label{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.875rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
 .cl-type-filter{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.75rem}
+
+/* ══ MOBILE HEADER BAR ═══════════════════════════════════ */
+.mobile-bar{
+  display:none;
+  position:sticky;top:0;z-index:200;
+  height:52px;min-height:52px;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  align-items:center;
+  justify-content:space-between;
+  padding:0 1.25rem;
+  flex-shrink:0;
+}
+.mobile-bar-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:1.1rem;
+  letter-spacing:-.02em;color:var(--ink);
+}
+.mobile-bar-name .outline{color:transparent;-webkit-text-stroke:1px var(--ink)}
+.burger{
+  width:36px;height:36px;
+  border:1px solid var(--border);border-radius:var(--r);
+  background:none;cursor:pointer;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:5px;
+  padding:0;transition:border-color .16s;flex-shrink:0;
+}
+.burger:hover{border-color:var(--ink-3)}
+.burger span{
+  width:16px;height:1.5px;background:var(--ink-2);
+  border-radius:2px;transition:all .22s ease;display:block;
+}
+.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Drawer overlay */
+.drawer-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(17,17,16,.4);
+  z-index:150;
+  opacity:0;transition:opacity .25s;
+}
+.drawer-overlay.open{opacity:1}
+
+/* ══ RESPONSIVE BREAKPOINTS ══════════════════════════════ */
+@media(max-width:768px){
+  /* Body: stack vertically */
+  body{flex-direction:column;overflow:hidden}
+  html,body{height:100%;overflow:hidden}
+
+  /* Mobile top bar */
+  .mobile-bar{display:flex}
+
+  /* Right panel: full width, fills remaining height */
+  .right-panel{
+    height:calc(100vh - 52px);
+    overflow-y:auto;
+    width:100%;
+  }
+
+  /* Page padding — tighter on mobile */
+  .page-view{padding:1.5rem 1.25rem}
+
+  /* Left panel: slide-in drawer from left */
+  .left-panel{
+    position:fixed;
+    top:0;left:0;bottom:0;
+    width:min(300px, 85vw);
+    min-width:0;
+    height:100%;
+    z-index:160;
+    transform:translateX(-100%);
+    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:none;
+  }
+  .left-panel.drawer-open{
+    transform:translateX(0);
+    box-shadow:8px 0 32px rgba(17,17,16,.12);
+  }
+  .drawer-overlay{display:block}
+
+  /* Photo block — shorter on mobile */
+  .photo-block{height:180px}
+
+  /* Identity padding */
+  .identity{padding:0 1.25rem 1rem}
+
+  /* Nav section padding matches identity */
+  .nav-section{padding:0 1.25rem}
+
+  /* Left footer */
+  .left-footer{padding:.75rem 1.25rem}
+
+  /* Home headline */
+  .home-headline{font-size:clamp(1.875rem,7vw,2.5rem)}
+
+  /* CTAs: stack on very small screens */
+  .home-ctas{flex-wrap:wrap;gap:.5rem}
+  .btn-solid,.btn-ghost{flex:1;min-width:120px;text-align:center;justify-content:center}
+
+  /* CV two-col → single col */
+  .cv-two-col{grid-template-columns:1fr;gap:1.25rem}
+
+  /* Portfolio grid → single col */
+  .portfolio-grid{grid-template-columns:1fr}
+
+  /* Resume metric/skill grid → single col (already flex-wrap, just adjust) */
+  .cv-two-col > div + div{margin-top:0}
+
+  /* Tool filter bars: allow horizontal scroll instead of wrap overflow */
+  .tool-filter-bar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:.375rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tool-filter-bar::-webkit-scrollbar{display:none}
+
+  /* Update cards: reduce date column width */
+  .update-date{min-width:38px;font-size:.5rem}
+
+  /* Changelog: reduce left column width */
+  .cl-left{min-width:60px}
+
+  /* Page title */
+  .page-title{font-size:1.875rem}
+
+  /* Modal: full-screen on mobile */
+  .modal-box{
+    width:100%;max-height:90vh;
+    border-radius:14px 14px 0 0;
+    position:fixed;bottom:0;left:0;right:0;
+    transform:translateY(100%);
+    margin:0;
+  }
+  .modal-overlay{align-items:flex-end}
+  .modal-overlay.open .modal-box{transform:translateY(0)}
+}
+
+@media(max-width:480px){
+  .page-view{padding:1.25rem 1rem}
+  .home-headline{font-size:clamp(1.75rem,8vw,2.25rem)}
+  .filter-tag{font-size:.6rem;padding:.25rem .575rem}
+  .impact-num{font-size:1rem}
+  .impact-lbl{font-size:.425rem}
+}
 </style>
 </head>
 <body>
+
+
+<!-- ── MOBILE TOP BAR ────────────────────────────────── -->
+<div class="mobile-bar">
+  <div class="mobile-bar-name">Antone <span class="outline">Holmes</span></div>
+  <button class="burger" id="burger-btn" onclick="toggleDrawer()" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<!-- Drawer overlay -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 
 <!-- ══ LEFT PANEL ═════════════════════════════════════════ -->
 <aside class="left-panel">
@@ -1591,6 +1746,47 @@ function filterChangelog(clickedBtn) {
     entry.style.display = (type === 'all' || entry.dataset.clType === type) ? '' : 'none';
   });
 }
+
+
+/* ── Mobile drawer ───────────────────────────────────── */
+function toggleDrawer() {
+  const panel = document.querySelector('.left-panel');
+  const overlay = document.getElementById('drawer-overlay');
+  const burger = document.getElementById('burger-btn');
+  const isOpen = panel.classList.contains('drawer-open');
+  if (isOpen) {
+    panel.classList.remove('drawer-open');
+    overlay.classList.remove('open');
+    burger.classList.remove('open');
+    document.body.style.overflow = '';
+  } else {
+    panel.classList.add('drawer-open');
+    overlay.classList.add('open');
+    burger.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closeDrawer() {
+  document.querySelector('.left-panel').classList.remove('drawer-open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('burger-btn').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close drawer when a nav button is tapped on mobile
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (window.innerWidth <= 768) closeDrawer();
+  });
+});
+
+// Close drawer on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeDrawer();
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
 
 </script>
 
