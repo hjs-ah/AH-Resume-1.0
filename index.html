@@ -4,281 +4,1595 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Antone Holmes</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-html, body {
-  height: 100%;
-  overflow: hidden;
+/* ══ TOKENS ══════════════════════════════════════════════ */
+:root {
+  --bg:#f7f7f5; --panel:#fff; --ink:#111110; --ink-2:#3d3c3a;
+  --ink-3:#8a8882; --border:#e4e3df; --accent:#b5863a; --dark:#111110;
+  --left-w:320px; --r:6px;
 }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;display:flex}
 
-body {
-  font-family: 'Barlow', sans-serif;
-  background: #0e0d0b;
-  color: #f0ede8;
-}
+/* ══ LEFT PANEL ══════════════════════════════════════════ */
+.left-panel{width:var(--left-w);min-width:var(--left-w);height:100vh;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.left-panel::-webkit-scrollbar{display:none}
 
-/* ── FULL-BLEED PHOTO BACKDROP ───────────────────────────────────── */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-}
+.photo-block{width:100%;height:220px;flex-shrink:0;background:#e2dfd8;overflow:hidden;position:relative}
+.photo-block img{width:100%;height:100%;object-fit:cover;object-position:center 12%;display:block}
+.photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.photo-ph .mono{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:4rem;color:#c4c0b8;line-height:1}
+.photo-ph .note{font-size:.6rem;color:#b4b0a8;letter-spacing:.06em;text-align:center}
+.photo-block::after{content:'';position:absolute;bottom:0;left:0;right:0;height:56px;background:linear-gradient(transparent,var(--panel))}
 
-.backdrop img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
-  /* Desaturate slightly, keep it dignified */
-  filter: grayscale(20%) brightness(0.72) contrast(1.06);
-}
+.identity{padding:0 1.5rem 1rem;flex-shrink:0}
+.name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.75rem;letter-spacing:-.02em;line-height:1;color:var(--ink);margin-bottom:.2rem}
+.name .outline{color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.title-line{font-size:.7rem;font-weight:500;color:var(--ink-3);line-height:1.5;margin-bottom:.75rem}
 
-/* Gradient veil — heavier at bottom for text legibility */
-.backdrop::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to bottom,
-      rgba(14,13,11,0.30) 0%,
-      rgba(14,13,11,0.18) 30%,
-      rgba(14,13,11,0.55) 65%,
-      rgba(14,13,11,0.90) 100%
-    );
-}
+/* ── Impact grid ── */
+.impact-grid{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:.75rem;display:grid}
+.impact-grid[data-count="3"]{grid-template-columns:repeat(3,1fr)}
+.impact-grid[data-count="4"]{grid-template-columns:repeat(2,1fr)}
+.impact-grid[data-count="5"]{grid-template-columns:repeat(6,1fr)}
+.impact-grid[data-count="5"] .impact-cell{grid-column:span 2}
+.impact-grid[data-count="5"] .impact-cell:nth-child(4){grid-column:2/span 2}
+.impact-grid[data-count="5"] .impact-cell:nth-child(5){grid-column:4/span 2}
+.impact-grid[data-count="6"]{grid-template-columns:repeat(3,1fr)}
+.impact-cell{padding:.45rem .35rem;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.impact-grid[data-count="3"] .impact-cell:nth-child(3n),
+.impact-grid[data-count="4"] .impact-cell:nth-child(2n),
+.impact-grid[data-count="5"] .impact-cell:nth-child(3),
+.impact-grid[data-count="5"] .impact-cell:nth-child(5),
+.impact-grid[data-count="6"] .impact-cell:nth-child(3n){border-right:none}
+.impact-grid[data-count="3"] .impact-cell,
+.impact-grid[data-count="4"] .impact-cell:nth-child(3),
+.impact-grid[data-count="4"] .impact-cell:nth-child(4),
+.impact-grid[data-count="5"] .impact-cell:nth-child(4),
+.impact-grid[data-count="5"] .impact-cell:nth-child(5),
+.impact-grid[data-count="6"] .impact-cell:nth-child(4),
+.impact-grid[data-count="6"] .impact-cell:nth-child(5),
+.impact-grid[data-count="6"] .impact-cell:nth-child(6){border-bottom:none}
+.impact-num{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-.03em;color:var(--ink);line-height:1;margin-bottom:.15rem}
+.impact-lbl{font-size:.475rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);line-height:1.2}
 
-/* ── CENTERED CONTENT LAYER ──────────────────────────────────────── */
-.stage {
-  position: relative;
-  z-index: 1;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  padding-bottom: clamp(2.5rem, 6vh, 4.5rem);
-  text-align: center;
-}
+/* ── Credential chips — image-fitted ── */
+.cred-row{display:flex;flex-direction:column;align-items:flex-start;gap:.3rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);margin-bottom:.75rem}
+.cred-chip{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem .35rem .45rem;border:1px solid var(--border);border-radius:4px;transition:border-color .16s;width:auto;align-self:flex-start}
+.cred-chip:hover{border-color:var(--ink-3)}
+/* Image container — fixed 28×28, image fills it exactly */
+.chip-img{width:28px;height:28px;flex-shrink:0;border-radius:3px;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.chip-img img{width:100%;height:100%;object-fit:contain;display:block}
+/* Fallback text when no image */
+.chip-img-text{font-size:.5rem;font-weight:800;color:var(--ink-3);letter-spacing:.03em;line-height:1;text-align:center}
+.chip-text{font-size:.675rem;font-weight:600;color:var(--ink-2);line-height:1.15}
+.chip-sub{font-size:.575rem;font-weight:400;color:var(--ink-3)}
 
-/* ── NAME BLOCK ──────────────────────────────────────────────────── */
-.identity {
-  margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
-}
+/* ── Navigate ── */
+.nav-section{padding:0 1.5rem;flex-shrink:0;width:100%}
+.nav-label{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.45rem}
+.nav-btns{display:flex;flex-direction:column;gap:.275rem;width:100%}
+.nav-btn{display:flex;align-items:center;justify-content:space-between;padding:.5rem .75rem;border:1px solid var(--border);border-radius:var(--r);background:transparent;color:var(--ink-2);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.775rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .18s;position:relative;overflow:hidden;width:100%;box-sizing:border-box}
+.nav-btn::before{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .22s cubic-bezier(.4,0,.2,1);z-index:0}
+.nav-btn:hover::before,.nav-btn.active::before{transform:scaleX(1)}
+.nav-btn span,.nav-btn svg{position:relative;z-index:1}
+.nav-btn:hover,.nav-btn.active{color:#fff;border-color:var(--ink)}
 
-.name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-size: clamp(3.25rem, 9vw, 7rem);
-  line-height: 0.9;
-  letter-spacing: -0.015em;
-  text-transform: uppercase;
-  color: #f5f2ed;
-  /* Subtle text shadow to lift from dark and light backgrounds */
-  text-shadow: 0 2px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.5);
-}
+.left-footer{margin-top:auto;padding:.875rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:.875rem;flex-shrink:0}
+.left-footer a{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;transition:color .15s}
+.left-footer a:hover{color:var(--accent)}
 
-.name .outline {
-  color: transparent;
-  -webkit-text-stroke: 1.5px rgba(245,242,237,0.75);
-  text-shadow: none;
-}
+/* ══ RIGHT PANEL ═════════════════════════════════════════ */
+.right-panel{flex:1;height:100vh;overflow-y:auto;background:#ffffff}
+.page-view{display:none;padding:2.5rem 3rem;min-height:100%;animation:slideIn .24s ease both}
+.page-view.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
 
-.rule {
-  width: 36px;
-  height: 1.5px;
-  background: rgba(245,242,237,0.5);
-  margin: 1rem auto;
-}
+.page-header{margin-bottom:1.875rem;padding-bottom:1.375rem;border-bottom:1px solid var(--border)}
+.page-eyebrow{font-size:.575rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2.25rem;letter-spacing:-.025em;color:var(--ink);line-height:1}
+.page-sub{font-size:.85rem;color:var(--ink-3);margin-top:.4rem;line-height:1.6}
 
-.tagline {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(240,237,232,0.65);
-}
+/* ══ TAG FILTER BAR (shared: home + portfolio) ════════ */
+.tag-bar{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem;align-items:center}
+.tag-bar-label{font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-right:.25rem}
+.filter-tag{font-size:.65rem;font-weight:700;letter-spacing:.07em;padding:.3rem .7rem;border:1px solid var(--border);border-radius:20px;cursor:pointer;background:var(--panel);color:var(--ink-3);transition:all .16s;user-select:none}
+.filter-tag:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.filter-tag.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filter-tag.accent-tag.active{background:var(--accent);border-color:var(--accent)}
 
-/* ── CTA BUTTONS ─────────────────────────────────────────────────── */
-.cta-group {
-  display: flex;
-  gap: 1px; /* thin seam between buttons */
-  width: min(680px, 90vw);
-}
+/* ══ HOME ════════════════════════════════════════════════ */
+.home-hero{padding-bottom:1.75rem;border-bottom:1px solid var(--border);margin-bottom:1.875rem}
+.home-headline{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(1.75rem,3.2vw,2.75rem);letter-spacing:-.025em;line-height:1;color:var(--ink);margin-bottom:.875rem}
+.home-headline .outline{color:transparent;-webkit-text-stroke:2px var(--ink)}
+.home-bio{font-size:.9rem;line-height:1.8;color:var(--ink-2);max-width:54ch;margin-bottom:1.375rem}
+.home-ctas{display:flex;gap:.625rem}
+.btn-solid{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.375rem;background:var(--ink);color:#fff;border:1.5px solid var(--ink);border-radius:var(--r);text-decoration:none;cursor:pointer;transition:background .18s}
+.btn-solid:hover{background:var(--accent);border-color:var(--accent)}
+.btn-ghost{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.375rem;background:transparent;color:var(--ink);border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:border-color .18s;text-decoration:none}
+.btn-ghost:hover{border-color:var(--ink)}
 
-.cta-btn {
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.125rem 1rem 1rem;
-  background: rgba(14,13,11,0.55);
-  border: 1px solid rgba(245,242,237,0.14);
-  color: #f0ede8;
-  text-decoration: none;
-  cursor: pointer;
-  overflow: hidden;
-  transition: background 0.28s ease, border-color 0.28s ease;
-  /* Frosted glass feel */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
+.section-eyebrow{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.75rem;padding-bottom:.45rem;border-bottom:1px solid var(--border)}
+.blog-section{margin-bottom:2rem}
 
-/* Wipe fill on hover */
-.cta-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(245,242,237,0.10);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* Update / Working-on cards */
+.update-card{display:flex;gap:1.125rem;padding:1rem 0;border-bottom:1px solid var(--border);transition:opacity .2s}
+.update-card:last-child{border-bottom:none}
+.update-card.hidden{display:none}
+.update-date{font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);min-width:48px;padding-top:.15rem;flex-shrink:0}
+.update-body{flex:1}
+.update-tag-chip{font-size:.575rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .5rem;border-radius:3px;margin-bottom:.35rem;display:inline-block;cursor:pointer;transition:opacity .15s}
+.update-tag-chip:hover{opacity:.75}
+.tag-work{background:#eff6ff;color:#1d4ed8}
+.tag-writing{background:#f0fdf4;color:#15803d}
+.tag-faith{background:#fefce8;color:#854d0e}
+.tag-life{background:#fdf4ff;color:#7e22ce}
+.tag-academic{background:#fef2f2;color:#b91c1c}
+.update-title{font-weight:600;font-size:.875rem;color:var(--ink);margin-bottom:.2rem;line-height:1.35}
+.update-excerpt{font-size:.8rem;color:var(--ink-2);line-height:1.6}
 
-.cta-btn:hover::before { transform: scaleY(1); }
-.cta-btn:hover { border-color: rgba(245,242,237,0.32); }
+/* Reflection cards — with read more */
+.reflection-card{padding:1rem 0;border-bottom:1px solid var(--border)}
+.reflection-card:last-child{border-bottom:none}
+.reflection-card.hidden{display:none}
+.reflection-top{display:flex;gap:1.125rem;align-items:flex-start}
+.reflection-body{flex:1}
+.reflection-actions{display:flex;align-items:center;gap:.875rem;margin-top:.625rem}
+.read-more-btn{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;transition:opacity .15s}
+.read-more-btn:hover{opacity:.7}
+.popup-icon-btn{width:24px;height:24px;border:1px solid var(--border);border-radius:4px;background:var(--panel);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s;flex-shrink:0}
+.popup-icon-btn:hover{border-color:var(--ink-3)}
+.popup-icon-btn svg{width:12px;height:12px;stroke:var(--ink-3)}
 
-/* Primary (first button) gets a slightly brighter base */
-.cta-btn.primary {
-  background: rgba(245,242,237,0.12);
-  border-color: rgba(245,242,237,0.28);
-}
-.cta-btn.primary:hover { background: rgba(245,242,237,0.20); }
+/* Article cards */
+.article-card{padding:1.125rem 1.375rem;background:var(--panel);border:1px solid var(--border);border-radius:var(--r);margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;text-decoration:none;color:inherit;transition:box-shadow .18s}
+.article-card:hover{box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.article-meta{font-size:.575rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.3rem}
+.article-title{font-weight:600;font-size:.9rem;color:var(--ink);line-height:1.35}
+.article-arrow{width:28px;height:28px;border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .18s,background .18s}
+.article-card:hover .article-arrow{border-color:var(--ink);background:var(--ink)}
+.article-card:hover .article-arrow path{stroke:#fff}
 
-.btn-label {
-  position: relative;
-  z-index: 1;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: clamp(0.8rem, 1.6vw, 0.9375rem);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #f0ede8;
-  line-height: 1;
-  margin-bottom: 0.45rem;
-  transition: color 0.2s;
-}
+/* ══ CV — ACADEMIC FORMAT ════════════════════════════════ */
+.cv-two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem}
+.cv-sec{margin-bottom:1.875rem}
+.cv-sec-label{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
 
-/* Description — hidden by default, slides up on hover */
-.btn-desc {
-  position: relative;
-  z-index: 1;
-  font-family: 'Barlow', sans-serif;
-  font-size: clamp(0.65rem, 1.1vw, 0.725rem);
-  font-weight: 400;
-  color: rgba(240,237,232,0.55);
-  line-height: 1.45;
-  max-width: 16ch;
-  text-align: center;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
-}
+.skill-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem}
+.skill-pill{font-size:.65rem;font-weight:600;letter-spacing:.04em;padding:.275rem .7rem;border:1px solid var(--border);border-radius:20px;color:var(--ink-2)}
 
-.cta-btn:hover .btn-desc {
-  max-height: 3rem;
-  opacity: 1;
-  margin-top: 0;
-}
+.edu-item{padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--r);margin-bottom:.5rem}
+.edu-degree{font-weight:600;font-size:.875rem;color:var(--ink);margin-bottom:.175rem}
+.edu-school{font-size:.75rem;color:var(--ink-3)}
+.edu-year{font-size:.7rem;color:var(--ink-3);margin-top:.125rem}
 
-/* Arrow */
-.btn-arrow {
-  position: absolute;
-  top: 0.9rem;
-  right: 0.9rem;
-  z-index: 1;
-  opacity: 0;
-  transform: translate(0, 4px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
+/* Publication / article entries */
+.pub-entry{padding:.875rem 0;border-bottom:1px solid var(--border);display:flex;gap:.875rem}
+.pub-entry:last-child{border-bottom:none}
+.pub-year{font-size:.6rem;font-weight:700;color:var(--ink-3);min-width:36px;padding-top:.1rem;flex-shrink:0}
+.pub-body{}
+.pub-type-chip{font-size:.525rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.15rem .45rem;border-radius:3px;display:inline-block;margin-bottom:.3rem}
+.pub-journal{background:#eff6ff;color:#1e40af}
+.pub-conf{background:#f0fdf4;color:#166534}
+.pub-chapter{background:#fefce8;color:#854d0e}
+.pub-article{background:#f5f3ff;color:#6d28d9}
+.pub-title{font-weight:600;font-size:.875rem;color:var(--ink);line-height:1.35;margin-bottom:.2rem}
+.pub-detail{font-size:.75rem;color:var(--ink-3);line-height:1.5;font-style:italic}
+.pub-link{font-size:.65rem;font-weight:600;color:var(--accent);text-decoration:none;letter-spacing:.06em;transition:opacity .15s;display:inline-flex;align-items:center;gap:.25rem;margin-top:.25rem}
+.pub-link:hover{opacity:.7}
 
-.cta-btn:hover .btn-arrow { opacity: 0.6; transform: translate(2px, -2px); }
+.metric-card{padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--r);margin-bottom:.5rem;display:flex;align-items:center;gap:.875rem}
+.metric-card-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.625rem;color:var(--ink);min-width:48px;line-height:1}
+.metric-card-desc{font-size:.775rem;color:var(--ink-2);line-height:1.5}
 
-/* ── CORNER ACCENTS ──────────────────────────────────────────────── */
-.corner {
-  position: fixed;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 600;
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(240,237,232,0.35);
-}
-.corner-tl { top: 1.75rem; left: 2rem; }
-.corner-tr { top: 1.75rem; right: 2rem; text-align: right; }
-.corner-br { bottom: 1.75rem; right: 2rem; writing-mode: vertical-rl; }
+/* ══ PRO RESUME ══════════════════════════════════════════ */
+.exp-block{margin-bottom:2.25rem;padding-bottom:2.25rem;border-bottom:1px solid var(--border)}
+.exp-block:last-child{border-bottom:none;margin-bottom:0}
+.exp-co{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.02em;margin-bottom:.2rem}
+.exp-scope{font-size:.775rem;color:var(--ink-3);font-style:italic;margin-bottom:.4rem}
+.exp-dates{font-size:.75rem;font-weight:600;color:var(--accent);margin-bottom:1rem}
+.role-block{padding-left:1.125rem;border-left:2px solid var(--border);margin-bottom:1rem}
+.role-block:last-child{margin-bottom:0}
+.role-title{font-weight:600;font-size:.9rem;color:var(--ink-2);margin-bottom:.175rem}
+.role-date{font-size:.725rem;color:var(--ink-3);margin-bottom:.55rem}
+.bullets{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.bullets li{font-size:.85rem;line-height:1.65;color:var(--ink-2);padding-left:1.125rem;position:relative}
+.bullets li::before{content:'·';position:absolute;left:0;color:var(--accent);font-weight:700;font-size:1rem}
 
-/* ── MOBILE ──────────────────────────────────────────────────────── */
-@media (max-width: 600px) {
-  html, body { overflow: auto; }
-  .stage { justify-content: flex-end; padding-bottom: 2rem; }
-  .cta-group { flex-direction: column; gap: 1px; width: 90vw; }
-  .cta-btn { padding: 1rem 1.25rem; }
-  .btn-desc { max-width: 100%; }
-  .corner-tr, .corner-br { display: none; }
-  .backdrop img { object-position: center 10%; }
-}
+/* ══ CASES ════════════════════════════════════════════════ */
+.case-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:1.625rem;margin-bottom:.875rem;transition:box-shadow .18s}
+.case-card:hover{box-shadow:0 3px 16px rgba(0,0,0,.06)}
+.case-num{font-size:.55rem;font-weight:700;letter-spacing:.2em;color:var(--ink-3);margin-bottom:.35rem}
+.case-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-.015em;color:var(--ink);margin-bottom:.275rem}
+.case-sub{font-size:.775rem;color:var(--ink-3);margin-bottom:.8rem}
+.case-desc{font-size:.85rem;line-height:1.7;color:var(--ink-2);margin-bottom:.875rem}
+.case-tags{display:flex;gap:.35rem;flex-wrap:wrap}
+.case-tag{font-size:.575rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .575rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
+
+/* ══ PORTFOLIO ═══════════════════════════════════════════ */
+
+/* ── Section title rows ── */
+.port-section-title{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.875rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.port-section-title .tooltip-trigger{width:16px;height:16px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.55rem;font-weight:700;color:var(--ink-3);transition:border-color .15s}
+.port-section-title .tooltip-trigger:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── Social links ── */
+.platform-bar{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.875rem}
+.platform-link{display:flex;align-items:center;gap:.5rem;padding:.55rem .9rem;border:1px solid var(--border);border-radius:var(--r);text-decoration:none;color:var(--ink-2);font-size:.725rem;font-weight:600;letter-spacing:.03em;transition:border-color .18s,color .18s}
+.platform-link:hover{border-color:var(--ink);color:var(--ink)}
+.platform-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+/* ── Tag filter section ── */
+.portfolio-tag-bar{margin-bottom:1.75rem}
+.port-filter-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+
+/* ── Portfolio grid ── */
+.portfolio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.875rem}
+.portfolio-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:box-shadow .2s;text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.portfolio-card:hover{box-shadow:0 3px 16px rgba(0,0,0,.07)}
+.portfolio-card.hidden{display:none}
+.portfolio-thumb{width:100%;aspect-ratio:16/9;background:var(--bg);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);font-size:.6rem;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;font-weight:600;overflow:hidden}
+.portfolio-thumb img{width:100%;height:100%;object-fit:cover}
+.portfolio-body{padding:1.125rem;flex:1;display:flex;flex-direction:column;gap:.3rem}
+.portfolio-type{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.portfolio-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.0625rem;letter-spacing:-.01em;color:var(--ink);line-height:1.15}
+.portfolio-desc{font-size:.775rem;color:var(--ink-3);line-height:1.55;flex:1}
+.portfolio-tags-row{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.4rem}
+.portfolio-tag{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.225rem .5rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
+
+/* ══ MODAL — reflection popup ════════════════════════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(17,17,16,.45);backdrop-filter:blur(3px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;width:min(560px,90vw);max-height:80vh;overflow-y:auto;padding:2rem;position:relative;transform:translateY(12px);transition:transform .22s ease;scrollbar-width:thin}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-close{position:absolute;top:1rem;right:1rem;width:28px;height:28px;border:1px solid var(--border);border-radius:50%;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s}
+.modal-close:hover{border-color:var(--ink)}
+.modal-close svg{width:12px;height:12px;stroke:var(--ink-3)}
+.modal-tag{font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.2rem .5rem;border-radius:3px;display:inline-block;margin-bottom:.75rem}
+.modal-date{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.375rem}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:var(--ink);line-height:1.1;margin-bottom:.875rem}
+.modal-body{font-size:.9rem;line-height:1.8;color:var(--ink-2)}
+.modal-body p{margin-bottom:.875rem}
+.modal-body p:last-child{margin-bottom:0}
+
+/* ══ FIRST-VISIT TOOLTIP — portfolio tags ════════════════ */
+.fv-overlay{position:fixed;inset:0;background:rgba(17,17,16,.5);backdrop-filter:blur(2px);z-index:900;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.fv-overlay.show{opacity:1;pointer-events:all}
+.fv-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;width:min(420px,88vw);padding:2rem;position:relative}
+.fv-illo{width:100%;height:90px;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1.25rem}
+/* Illustrative tag demo row */
+.fv-tag-demo{font-size:.65rem;font-weight:700;letter-spacing:.07em;padding:.3rem .7rem;border-radius:20px;border:1.5px solid var(--border);color:var(--ink-3);background:var(--panel);cursor:default;transition:all .4s}
+.fv-tag-demo.lit{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fv-arrow{font-size:1rem;color:var(--ink-3);animation:bounce .8s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.fv-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-.015em;color:var(--ink);margin-bottom:.5rem}
+.fv-desc{font-size:.8125rem;color:var(--ink-2);line-height:1.65;margin-bottom:1.25rem}
+.fv-got-it{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.775rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.375rem;background:var(--ink);color:#fff;border:none;border-radius:var(--r);cursor:pointer;transition:background .18s;width:100%}
+.fv-got-it:hover{background:var(--accent)}
+
+/* ══ ORIGINAL CONCEPTS ══════════════════════════════════ */
+.concept-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin-bottom:.875rem;transition:box-shadow .18s}
+.concept-card:hover{box-shadow:0 3px 16px rgba(0,0,0,.06)}
+.concept-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.5rem}
+.concept-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:-.015em;color:var(--ink);line-height:1.15}
+.concept-status{font-size:.525rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .6rem;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.cs-active{background:#f0fdf4;color:#166534}
+.cs-developing{background:#eff6ff;color:#1e40af}
+.cs-concept{background:#fefce8;color:#854d0e}
+.cs-published{background:#fdf4ff;color:#7e22ce}
+.concept-domain{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
+.concept-desc{font-size:.875rem;line-height:1.7;color:var(--ink-2);margin-bottom:.875rem}
+.concept-tags{display:flex;gap:.35rem;flex-wrap:wrap}
+.concept-tag{font-size:.575rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .55rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
+/* ══ VOLUNTEER ═══════════════════════════════════════════ */
+.vol-entry{padding:.875rem 0;border-bottom:1px solid var(--border);display:flex;gap:.875rem}
+.vol-entry:last-child{border-bottom:none}
+.vol-year{font-size:.6rem;font-weight:700;color:var(--ink-3);min-width:36px;padding-top:.1rem;flex-shrink:0}
+.vol-title{font-weight:600;font-size:.9rem;color:var(--ink);margin-bottom:.15rem;line-height:1.3}
+.vol-org{font-size:.775rem;color:var(--accent);margin-bottom:.25rem}
+.vol-desc{font-size:.8rem;line-height:1.6;color:var(--ink-2)}
+/* ══ TOOL LOGO FILTER ════════════════════════════════════ */
+.tool-filter-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem;align-items:center}
+.tool-filter-label{font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-right:.25rem}
+.tool-chip{display:flex;align-items:center;gap:.45rem;padding:.35rem .7rem;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .16s;background:#fff;color:var(--ink-3);user-select:none}
+.tool-chip:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.tool-chip.active{border-color:var(--ink);background:var(--ink);color:#fff}
+.tool-chip.active .tool-logo-img{filter:brightness(0) invert(1)}
+.tool-logo-img{width:16px;height:16px;object-fit:contain;flex-shrink:0;display:block}
+.tool-chip-label{font-size:.65rem;font-weight:600;letter-spacing:.04em}
+.tool-chip.all-chip.active{background:var(--accent);border-color:var(--accent)}
+
+/* ══ CHANGELOG ══════════════════════════════════════════ */
+.changelog-entry{padding:1.25rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:auto 1fr;gap:.875rem}
+.changelog-entry:last-child{border-bottom:none}
+.cl-left{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;min-width:72px}
+.cl-version{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.875rem;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.cl-date{font-size:.575rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.cl-type{font-size:.525rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .5rem;border-radius:20px;white-space:nowrap;align-self:flex-end}
+.cl-feature{background:#eff6ff;color:#1e40af}
+.cl-fix{background:#fef2f2;color:#b91c1c}
+.cl-design{background:#fdf4ff;color:#7e22ce}
+.cl-content{background:#f0fdf4;color:#166534}
+.cl-infrastructure{background:#fefce8;color:#854d0e}
+.cl-right{}
+.cl-summary{font-weight:600;font-size:.9375rem;color:var(--ink);margin-bottom:.3rem;line-height:1.35}
+.cl-scope{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.cl-detail{font-size:.85rem;line-height:1.7;color:var(--ink-2)}
+.cl-section-label{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.875rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+.cl-type-filter{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.75rem}
 </style>
 </head>
 <body>
 
-<!-- Full-bleed photo backdrop -->
-<div class="backdrop">
-  <img src="Headshot_WhiteButtonUp_SD_.jpeg" alt="Antone Holmes">
-</div>
-
-<!-- Corner labels -->
-<span class="corner corner-tl">Philadelphia, PA</span>
-<span class="corner corner-tr">Sales &middot; GTM &middot; Education</span>
-<span class="corner corner-br">2026</span>
-
-<!-- Centered stage content -->
-<div class="stage">
+<!-- ══ LEFT PANEL ═════════════════════════════════════════ -->
+<aside class="left-panel">
+  <div class="photo-block">
+    <!-- LIVE: <img src="headshots/Headshot_WhiteButtonUp_SD_.jpeg" alt="Antone Holmes"> -->
+    <div class="photo-ph"><span class="mono">AH</span><span class="note">headshots/</span></div>
+  </div>
 
   <div class="identity">
-    <div class="name">
-      <span>Antone</span><br>
-      <span class="outline">Holmes</span>
+    <div class="name">Antone<br><span class="outline">Holmes</span></div>
+    <p class="title-line">Sales &amp; GTM Leader · Educator · Builder</p>
+
+    <div class="impact-grid" data-count="5" id="impact-grid">
+      <div class="impact-cell"><div class="impact-num">12+</div><div class="impact-lbl">Case Studies</div></div>
+      <div class="impact-cell"><div class="impact-num">50+</div><div class="impact-lbl">Promoted</div></div>
+      <div class="impact-cell"><div class="impact-num">10+</div><div class="impact-lbl">Yrs Leader</div></div>
+      <div class="impact-cell"><div class="impact-num">8</div><div class="impact-lbl">Exec Sponsors</div></div>
+      <div class="impact-cell"><div class="impact-num">3</div><div class="impact-lbl">Orgs Founded</div></div>
     </div>
-    <div class="rule"></div>
-    <p class="tagline">Sales &amp; GTM Leader &nbsp;&middot;&nbsp; Educator &nbsp;&middot;&nbsp; Builder</p>
+
+    <!-- Credential chips — images fitted to icon box -->
+    <div class="cred-row">
+      <div class="cred-chip">
+        <div class="chip-img">
+          <!-- LIVE: <img src="badges/aws-saa.png" alt="AWS"> -->
+          <span class="chip-img-text">AWS</span>
+        </div>
+        <div><div class="chip-text">AWS Certified</div><div class="chip-sub">Solutions Architect</div></div>
+      </div>
+      <div class="cred-chip">
+        <div class="chip-img">
+          <!-- LIVE: <img src="schools/hampton.png" alt="Hampton University"> -->
+          <span class="chip-img-text">HU</span>
+        </div>
+        <div><div class="chip-text">Hampton University</div><div class="chip-sub">PhD Candidate</div></div>
+      </div>
+      <div class="cred-chip">
+        <div class="chip-img">
+          <!-- LIVE: <img src="schools/iup.png" alt="IUP"> -->
+          <span class="chip-img-text">IUP</span>
+        </div>
+        <div><div class="chip-text">Indiana Univ. of PA</div><div class="chip-sub">M.A. Communications</div></div>
+      </div>
+      <div class="cred-chip">
+        <div class="chip-img">
+          <!-- LIVE: <img src="schools/pierce.png" alt="Pierce College"> -->
+          <span class="chip-img-text">PC</span>
+        </div>
+        <div><div class="chip-text">Pierce College</div><div class="chip-sub">B.S. Business Administration</div></div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <p class="nav-label">Navigate</p>
+      <div class="nav-btns">
+        <button class="nav-btn active" onclick="showPage('home',this)"><span>Home</span><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg></button>
+        <button class="nav-btn" onclick="showPage('cv',this)"><span>CV</span><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg></button>
+        <button class="nav-btn" onclick="showPage('resume',this)"><span>Pro Resume</span><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg></button>
+        <button class="nav-btn" onclick="showPage('cases',this)"><span>Cases</span><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg></button>
+        <button class="nav-btn" onclick="showPage('portfolio',this)"><span>Portfolio</span><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg></button>
+        <button class="nav-btn" id="nav-changelog" onclick="showPage('changelog',this)"><span>Updates</span><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg></button>
+      </div>
+    </div>
   </div>
 
-  <div class="cta-group">
+  <div class="left-footer">
+    <a href="mailto:antoneholmes@icloud.com">Email</a>
+    <a href="https://linkedin.com/in/antone-h" target="_blank">LinkedIn</a>
+    <a href="https://github.com/hjs-ah" target="_blank">GitHub</a>
+  </div>
+</aside>
 
-    <a href="resume.html" class="cta-btn primary">
-      <svg class="btn-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none">
-        <path d="M2 12L12 2M12 2H5M12 2V9" stroke="#f0ede8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="btn-label">CV</span>
-      <span class="btn-desc">Full career history, skills &amp; credentials in one place</span>
-    </a>
+<!-- ══ RIGHT PANEL ════════════════════════════════════════ -->
+<main class="right-panel">
 
-    <a href="resume.html#projects" class="cta-btn">
-      <svg class="btn-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none">
-        <path d="M2 12L12 2M12 2H5M12 2V9" stroke="#f0ede8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="btn-label">Pro Resume</span>
-      <span class="btn-desc">Focused view built for recruiters &amp; hiring teams</span>
-    </a>
+  <!-- ── HOME ─────────────────────────────────────────── -->
+  <div id="view-home" class="page-view active">
+    <div class="home-hero">
+      <p class="page-eyebrow">Hi, I'm Antone</p>
+      <h1 class="home-headline">Strategic Sales &amp;<br><span class="outline">GTM Leader</span><br>With 10+ Years</h1>
+      <p class="home-bio">Scaling Partner ecosystems and revenue across Startup, SMB, and Enterprise at AWS and Comcast. Founder, doctoral candidate, and community builder rooted in Philadelphia.</p>
+      <div class="home-ctas">
+        <a href="mailto:antoneholmes@icloud.com" class="btn-solid">Get In Touch</a>
+        <button class="btn-ghost" onclick="showPage('cv',document.querySelectorAll('.nav-btn')[1])">View Full CV</button>
+      </div>
+    </div>
 
-    <a href="resume.html#projects" class="cta-btn">
-      <svg class="btn-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none">
-        <path d="M2 12L12 2M12 2H5M12 2V9" stroke="#f0ede8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="btn-label">Cases</span>
-      <span class="btn-desc">GTM strategies, programs, &amp; outcomes I&rsquo;ve led</span>
-    </a>
+    <!-- Working On — filterable -->
+    <div class="blog-section">
+      <p class="section-eyebrow">What I've Been Working On</p>
+      <div class="tag-bar" id="working-tag-bar">
+        <span class="tag-bar-label">Filter:</span>
+        <span class="filter-tag active accent-tag" data-tag="all" onclick="filterCards('working',this)">All</span>
+        <span class="filter-tag" data-tag="Work" onclick="filterCards('working',this)">Work</span>
+        <span class="filter-tag" data-tag="Faith" onclick="filterCards('working',this)">Faith</span>
+        <span class="filter-tag" data-tag="Academic" onclick="filterCards('working',this)">Academic</span>
+        <span class="filter-tag" data-tag="Community" onclick="filterCards('working',this)">Community</span>
+      </div>
+      <div id="working-cards">
+        <div class="update-card" data-tags="Work">
+          <div class="update-date">May 2026</div>
+          <div class="update-body">
+            <span class="update-tag-chip tag-work" onclick="filterCards('working',document.querySelector('[data-tag=Work]'))">Work</span>
+            <div class="update-title">Launched TBI — Truth Bible Institute community rollout</div>
+            <div class="update-excerpt">Finalizing the Google Forms interest survey with curriculum lead Vashti and standing up the shared Notion planning workspace for the fall 2026 cohort.</div>
+          </div>
+        </div>
+        <div class="update-card" data-tags="Faith">
+          <div class="update-date">Apr 2026</div>
+          <div class="update-body">
+            <span class="update-tag-chip tag-faith" onclick="filterCards('working',document.querySelector('[data-tag=Faith]'))">Faith</span>
+            <div class="update-title">Builder's Conference — VOW Center annual leadership weekend</div>
+            <div class="update-excerpt">Led planning and execution of the annual Builder's Conference with programming focused on men's development, stewardship, and community activation.</div>
+          </div>
+        </div>
+        <div class="update-card" data-tags="Academic">
+          <div class="update-date">Mar 2026</div>
+          <div class="update-body">
+            <span class="update-tag-chip tag-academic" onclick="filterCards('working',document.querySelector('[data-tag=Academic]'))">Academic</span>
+            <div class="update-title">Dissertation progress — Black congregations as anchor institutions</div>
+            <div class="update-excerpt">Completing Chapter 3 of the SIAD framework research: Stewardship, Incarnation, Activism, Discipleship as organizing principles for holistic youth development in Philadelphia.</div>
+          </div>
+        </div>
+        <div class="update-card" data-tags="Community">
+          <div class="update-date">Mar 2026</div>
+          <div class="update-body">
+            <span class="update-tag-chip tag-life" onclick="filterCards('working',document.querySelector('[data-tag=Community]'))">Community</span>
+            <div class="update-title">iThirst Street Evangelism — Spring outreach series</div>
+            <div class="update-excerpt">Coordinating the spring outreach calendar for the iThirst team, expanding into two new neighborhoods in North Philadelphia.</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Reflections — filterable + modal -->
+    <div class="blog-section">
+      <p class="section-eyebrow">Activities &amp; Reflections</p>
+      <div class="tag-bar">
+        <span class="tag-bar-label">Filter:</span>
+        <span class="filter-tag active accent-tag" data-tag="all" onclick="filterCards('reflections',this)">All</span>
+        <span class="filter-tag" data-tag="Faith" onclick="filterCards('reflections',this)">Faith</span>
+        <span class="filter-tag" data-tag="Leadership" onclick="filterCards('reflections',this)">Leadership</span>
+        <span class="filter-tag" data-tag="Community" onclick="filterCards('reflections',this)">Community</span>
+      </div>
+      <div id="reflections-cards">
+        <div class="reflection-card" data-tags="Community Leadership">
+          <div class="reflection-top">
+            <div class="update-date" style="min-width:48px;font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex-shrink:0">May 2026</div>
+            <div class="reflection-body">
+              <span class="update-tag-chip tag-life">Community</span>
+              <div class="update-title">Chess Not Checkers — marriage, leadership &amp; purpose panel</div>
+              <div class="update-excerpt">A room full of honest conversations about building something that lasts. Mixed panel of married and unmarried men navigating purpose, partnership, and presence.</div>
+              <div class="reflection-actions">
+                <button class="read-more-btn" onclick="openModal('r1')">Read More →</button>
+                <button class="popup-icon-btn" title="Open in window" onclick="openModal('r1')">
+                  <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reflection-card" data-tags="Faith Leadership">
+          <div class="reflection-top">
+            <div class="update-date" style="min-width:48px;font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex-shrink:0">Apr 2026</div>
+            <div class="reflection-body">
+              <span class="update-tag-chip tag-faith">Faith</span>
+              <div class="update-title">On Sabbath, rest, and the discipline of stopping</div>
+              <div class="update-excerpt">What practicing Sabbath from Friday evening through Saturday has taught me about presence, productivity, and what actually matters.</div>
+              <div class="reflection-actions">
+                <button class="read-more-btn" onclick="openModal('r2')">Read More →</button>
+                <button class="popup-icon-btn" title="Open in window" onclick="openModal('r2')">
+                  <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Articles -->
+    <div class="blog-section">
+      <p class="section-eyebrow">Most Recent Articles</p>
+      <a href="#" class="article-card"><div><div class="article-meta">Substack · May 2026</div><div class="article-title">Revenue Enablement Is a Systems Problem, Not a Training Problem</div></div><div class="article-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
+      <a href="#" class="article-card"><div><div class="article-meta">Medium · Apr 2026</div><div class="article-title">The Black Church as Anchor Institution: Beyond Sunday Morning</div></div><div class="article-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
+      <a href="#" class="article-card"><div><div class="article-meta">LinkedIn · Mar 2026</div><div class="article-title">What 50+ Promotions Taught Me About Coaching for Growth</div></div><div class="article-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
+    </div>
   </div>
 
+  <!-- ── CV — ACADEMIC FORMAT ───────────────────────────── -->
+  <div id="view-cv" class="page-view">
+    <div class="page-header">
+      <p class="page-eyebrow">Curriculum Vitae</p>
+      <h2 class="page-title">CV</h2>
+      <p class="page-sub">Academic and professional record — scholarship, teaching, original concepts, and service.</p>
+    </div>
+
+    <!-- NOTION NOTE: All sections below pull from Resume Content DB.
+         Section Type values: "CV-Education", "CV-Research", "CV-Publication",
+         "CV-Teaching", "CV-Concept", "CV-Volunteer", "CV-Service"
+         Fields: Year, Title, Detail, Type (chip), Link, Status, Tags (multi-select)
+         Concept extras: Domain, Status-Concept (Active/Developing/Concept/Published)
+         Volunteer extras: Organization, Role -->
+
+    <!-- Domain filter — Theology / Philanthropy / Social Responsibility -->
+    <div style="margin-bottom:1.875rem">
+      <p class="cv-sec-label">Filter by Domain</p>
+      <div class="tool-filter-bar" id="cv-tool-bar">
+        <span class="tool-chip all-chip active" data-tool="all" onclick="filterCVTool(this)">
+          <span class="tool-chip-label">All</span>
+        </span>
+        <!-- Theology — open book / cross -->
+        <span class="tool-chip" data-tool="Theology" onclick="filterCVTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/>
+          </svg>
+          <span class="tool-chip-label">Theology</span>
+        </span>
+        <!-- Philanthropy — open hands / giving -->
+        <span class="tool-chip" data-tool="Philanthropy" onclick="filterCVTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="tool-chip-label">Philanthropy</span>
+        </span>
+        <!-- Social Responsibility — people / community -->
+        <span class="tool-chip" data-tool="Social" onclick="filterCVTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="tool-chip-label">Social Resp.</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="cv-two-col">
+      <!-- LEFT col -->
+      <div>
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Research Interests</p>
+          <div class="skill-row">
+            <span class="skill-pill">Black Ecclesiology</span><span class="skill-pill">Public Theology</span>
+            <span class="skill-pill">Anchor Institutions</span><span class="skill-pill">Youth Development</span>
+            <span class="skill-pill">SIAD Framework</span><span class="skill-pill">Missional Church</span>
+            <span class="skill-pill">Prophetic Lament</span><span class="skill-pill">Liberation Theology</span>
+          </div>
+        </div>
+
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Education</p>
+          <div class="edu-item"><div class="edu-degree">PhD, Public Theology &amp; Community Engagement</div><div class="edu-school">Hampton University School of Religion</div><div class="edu-year">In Progress — Expected 2026 · Dissertation: <em>Black Congregations as Anchor Institutions</em></div></div>
+          <div class="edu-item"><div class="edu-degree">M.A., Communications</div><div class="edu-school">Indiana University of Pennsylvania</div><div class="edu-year">Completed</div></div>
+          <div class="edu-item"><div class="edu-degree">B.S., Business Administration</div><div class="edu-school">Pierce College</div><div class="edu-year">Completed</div></div>
+        </div>
+
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Teaching &amp; Instruction</p>
+          <div class="pub-entry">
+            <div class="pub-year">2024–</div>
+            <div class="pub-body"><div class="pub-title">Curriculum Director, Truth Bible Institute (TBI)</div><div class="pub-detail">Designing and overseeing community Bible institute curriculum for fall 2026 launch in Philadelphia.</div></div>
+          </div>
+          <div class="pub-entry">
+            <div class="pub-year">2018–</div>
+            <div class="pub-body"><div class="pub-title">Lead Teacher &amp; Preacher, VOW Center</div><div class="pub-detail">Weekly instruction in Hebraic studies, feast theology, and applied discipleship. Courses include Financial Literacy &amp; Stewardship and iThirst Evangelism Training.</div></div>
+          </div>
+        </div>
+
+        <!-- VOLUNTEER ── Notion: Section Type = "CV-Volunteer", fields: Year, Title, Organization, Role, Description -->
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Volunteer &amp; Community Service</p>
+          <div class="vol-entry">
+            <div class="vol-year">2019–</div>
+            <div class="vol-body">
+              <div class="vol-title">Lead Mentor &amp; Facilitator — Chess Not Checkers</div>
+              <div class="vol-org">VOW Center · Philadelphia, PA</div>
+              <div class="vol-desc">Facilitate monthly men's cohort sessions focused on leadership, strategic thinking, and life purpose. Annual panel draws 50+ community members.</div>
+            </div>
+          </div>
+          <div class="vol-entry">
+            <div class="vol-year">2020–</div>
+            <div class="vol-body">
+              <div class="vol-title">Street Evangelist &amp; Team Leader — iThirst</div>
+              <div class="vol-org">VOW Center · North Philadelphia</div>
+              <div class="vol-desc">Lead bi-weekly outreach efforts in North Philadelphia neighborhoods, coordinating teams of 6–12 volunteers for community engagement and resource distribution.</div>
+            </div>
+          </div>
+          <div class="vol-entry">
+            <div class="vol-year">2022–</div>
+            <div class="vol-body">
+              <div class="vol-title">Financial Literacy Instructor</div>
+              <div class="vol-org">VOW Center Financial Literacy &amp; Stewardship Program</div>
+              <div class="vol-desc">Teach a 6-week financial stewardship curriculum covering budgeting, debt elimination, and kingdom economics to community members.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT col -->
+      <div>
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Publications &amp; Scholarship</p>
+          <!-- Notion: Section Type = "CV-Publication", fields: Year, Title, Detail, Type (chip label), Link -->
+          <div class="pub-entry">
+            <div class="pub-year">2025</div>
+            <div class="pub-body">
+              <span class="pub-type-chip pub-chapter">Dissertation Chapter</span>
+              <div class="pub-title">"The Shepherd as Activist" — RELO 730 Final Paper</div>
+              <div class="pub-detail">Hampton University School of Religion. 5,000-word examination of incarnational ministry and prophetic activism in the Black church tradition.</div>
+            </div>
+          </div>
+          <div class="pub-entry">
+            <div class="pub-year">2024</div>
+            <div class="pub-body">
+              <span class="pub-type-chip pub-article">Article</span>
+              <div class="pub-title">Revenue Enablement Is a Systems Problem, Not a Training Problem</div>
+              <div class="pub-detail">Substack. Examines the gap between training delivery and capability development in enterprise sales organizations.</div>
+              <a href="#" class="pub-link">Read ↗</a>
+            </div>
+          </div>
+          <div class="pub-entry">
+            <div class="pub-year">2024</div>
+            <div class="pub-body">
+              <span class="pub-type-chip pub-article">Article</span>
+              <div class="pub-title">The Black Church as Anchor Institution: Beyond Sunday Morning</div>
+              <div class="pub-detail">Medium. Connects Black ecclesiology to anchor institution theory and community development literature.</div>
+              <a href="#" class="pub-link">Read ↗</a>
+            </div>
+          </div>
+          <div class="pub-entry">
+            <div class="pub-year">2023</div>
+            <div class="pub-body">
+              <span class="pub-type-chip pub-chapter">Coursework</span>
+              <div class="pub-title">HBCUs and the Black Church: Theological Partners in Formation</div>
+              <div class="pub-detail">Hampton University RELO 713. APA 7 scholarly paper on institutional alignment between Black higher education and ecclesial formation.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORIGINAL CONCEPTS ── Notion: Section Type = "CV-Concept"
+             Fields: Title, Domain, Description, Status (Active/Developing/Concept/Published), Tags -->
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Original Concepts &amp; Frameworks</p>
+
+          <div class="concept-card">
+            <div class="concept-header">
+              <div class="concept-title">SIAD Framework</div>
+              <span class="concept-status cs-active">Active</span>
+            </div>
+            <div class="concept-domain">Theology · Community Development</div>
+            <div class="concept-desc">Stewardship, Incarnation, Activism, Discipleship — a four-pillar organizing framework for holistic youth and community development within Black congregations. Central to my doctoral dissertation and field programming at VOW Center.</div>
+            <div class="concept-tags"><span class="concept-tag">Ecclesiology</span><span class="concept-tag">Youth Dev</span><span class="concept-tag">Philadelphia</span><span class="concept-tag">Dissertation</span></div>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-header">
+              <div class="concept-title">re:NEW Framework</div>
+              <span class="concept-status cs-developing">Developing</span>
+            </div>
+            <div class="concept-domain">Branding · Community Formation</div>
+            <div class="concept-desc">Religion/Reverence, Education, Nourish, Enlightenment, Wellness — a five-element framework for personal and communal renewal. Developed as a potential organizing acronym for a clothing line or podcast brand concept.</div>
+            <div class="concept-tags"><span class="concept-tag">Branding</span><span class="concept-tag">Formation</span><span class="concept-tag">Identity</span></div>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-header">
+              <div class="concept-title">Revenue Enablement as Systems Design</div>
+              <span class="concept-status cs-published">Published</span>
+            </div>
+            <div class="concept-domain">GTM · Sales Leadership</div>
+            <div class="concept-desc">A conceptual reframe of revenue enablement — from a training/content delivery function to a systems design discipline. Argues that sustainable capability development requires structural intervention, not just programs.</div>
+            <div class="concept-tags"><span class="concept-tag">GTM</span><span class="concept-tag">Enablement</span><span class="concept-tag">Leadership</span></div>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-header">
+              <div class="concept-title">Anchor Institution Model for the Black Church</div>
+              <span class="concept-status cs-concept">Concept</span>
+            </div>
+            <div class="concept-domain">Public Theology · Urban Development</div>
+            <div class="concept-desc">Proposes a theoretical model for understanding Black congregations as anchor institutions — not merely social service providers but structural partners in neighborhood stability, youth formation, and civic life.</div>
+            <div class="concept-tags"><span class="concept-tag">Black Church</span><span class="concept-tag">Public Theology</span><span class="concept-tag">Urban</span></div>
+          </div>
+        </div>
+
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Service &amp; Leadership</p>
+          <div class="pub-entry">
+            <div class="pub-year">2018–</div>
+            <div class="pub-body"><div class="pub-title">Executive Director, VOW Center</div><div class="pub-detail">Philadelphia-based faith nonprofit. Programs: Chess Not Checkers, Builder's Conference, iThirst, Financial Literacy &amp; Stewardship.</div></div>
+          </div>
+          <div class="pub-entry">
+            <div class="pub-year">2024–</div>
+            <div class="pub-body"><div class="pub-title">Executive Director, Truth Bible Institute (TBI)</div><div class="pub-detail">Community Bible institute initiative; fall 2026 rollout. Curriculum design, faculty coordination, student outreach.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- ── PRO RESUME ─────────────────────────────────────── -->
+  <div id="view-resume" class="page-view">
+    <div class="page-header">
+      <p class="page-eyebrow">Full Experience</p>
+      <h2 class="page-title">Pro Resume</h2>
+      <p class="page-sub">Complete role history with responsibilities, scope, and measurable outcomes.</p>
+    </div>
+
+    <!-- Org filter — logo chips. LIVE: swap chip-img-text for <img src="badges/[org].png"> -->
+    <div class="tool-filter-bar" id="resume-org-bar" style="margin-bottom:1.75rem">
+      <span class="tool-chip all-chip active" data-org="all" onclick="filterResume(this)">
+        <span class="tool-chip-label">All</span>
+      </span>
+      <!-- AWS -->
+      <span class="tool-chip" data-org="AWS" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;border-radius:2px;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/aws.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="currentColor"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.064.056.128.056.184 0 .08-.048.16-.152.24l-.504.336a.384.384 0 0 1-.208.072c-.08 0-.16-.04-.24-.112a2.47 2.47 0 0 1-.288-.376 6.18 6.18 0 0 1-.248-.472c-.624.736-1.408 1.104-2.352 1.104-.672 0-1.208-.192-1.6-.576-.392-.384-.592-.896-.592-1.536 0-.68.24-1.232.728-1.648.488-.416 1.136-.624 1.96-.624.272 0 .552.024.848.064.296.04.6.104.920.176v-.584c0-.608-.128-1.032-.376-1.28-.256-.248-.688-.368-1.304-.368-.28 0-.568.032-.864.104-.296.072-.584.16-.864.272-.128.056-.224.088-.28.104-.056.016-.096.024-.128.024-.112 0-.168-.08-.168-.248v-.392c0-.128.016-.224.056-.28a.59.59 0 0 1 .224-.168c.28-.144.616-.264 1.008-.36.392-.104.808-.152 1.248-.152.952 0 1.648.216 2.096.648.44.432.664 1.088.664 1.968v2.592zm-3.24 1.212c.264 0 .536-.048.824-.144.288-.096.544-.272.76-.512.128-.152.224-.32.272-.512.048-.192.08-.424.08-.696v-.336a6.8 6.8 0 0 0-.736-.136 6.04 6.04 0 0 0-.752-.048c-.536 0-.928.104-1.192.32-.264.216-.392.52-.392.92 0 .376.096.656.296.848.192.2.472.296.84.296zm6.44.88c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.312L7.48 6.492a1.415 1.415 0 0 1-.072-.32c0-.128.064-.2.192-.2h.784c.152 0 .256.024.312.08.064.048.112.16.16.312l1.416 5.576 1.312-5.576c.04-.16.088-.264.152-.312a.556.556 0 0 1 .32-.08h.64c.152 0 .256.024.32.08.064.048.12.16.152.312l1.328 5.648 1.456-5.648c.048-.16.104-.264.16-.312a.52.52 0 0 1 .312-.08h.744c.128 0 .2.064.2.2 0 .04-.008.08-.016.128-.008.048-.032.112-.072.2L14.8 11.736c-.048.16-.104.264-.168.312-.064.048-.168.08-.304.08h-.688c-.152 0-.256-.024-.32-.08-.064-.056-.12-.16-.152-.32l-1.304-5.4-1.296 5.392c-.04.16-.088.272-.152.32-.064.056-.176.08-.32.08zm7.908.168c-.416 0-.832-.048-1.24-.144-.408-.096-.728-.2-.944-.32-.128-.072-.216-.152-.248-.224a.56.56 0 0 1-.048-.224v-.408c0-.168.064-.248.184-.248.048 0 .096.008.144.024.048.016.12.048.2.08.272.12.568.216.888.28.32.064.632.096.952.096.504 0 .896-.088 1.168-.264a.86.86 0 0 0 .408-.752.778.778 0 0 0-.216-.552c-.144-.152-.416-.288-.808-.416l-1.16-.36c-.584-.184-1.016-.456-1.288-.816a1.953 1.953 0 0 1-.408-1.2c0-.344.072-.648.216-.912.144-.264.336-.496.576-.688.24-.192.512-.336.832-.432.32-.096.656-.144 1.008-.144.176 0 .36.008.536.032.184.024.352.056.512.096.152.032.296.072.432.12.136.048.24.096.312.144.104.064.176.128.216.2a.49.49 0 0 1 .056.24v.376c0 .168-.064.256-.184.256a.83.83 0 0 1-.304-.096 3.652 3.652 0 0 0-1.528-.312c-.456 0-.816.072-1.072.224-.256.152-.384.384-.384.704 0 .216.08.4.232.552.152.152.44.304.856.44l1.136.36c.576.184.992.44 1.24.776.248.336.368.72.368 1.144 0 .352-.072.672-.208.952-.144.28-.336.528-.584.736-.248.208-.544.36-.888.464-.36.112-.736.168-1.144.168z"/><path d="M19.66 14.396c-2.392 1.768-5.864 2.704-8.852 2.704-4.184 0-7.952-1.544-10.8-4.112-.224-.2-.024-.472.248-.32 3.08 1.792 6.888 2.872 10.824 2.872 2.656 0 5.576-.552 8.264-1.696.408-.176.744.264.316.552z"/><path d="M20.668 13.236c-.304-.392-2.008-.184-2.776-.096-.232.032-.272-.176-.056-.328 1.36-.952 3.592-.68 3.848-.36.256.328-.072 2.552-1.344 3.616-.2.168-.384.08-.296-.136.288-.704.928-2.304.624-2.696z"/></svg>
+        </span>
+        <span class="tool-chip-label">AWS</span>
+      </span>
+      <!-- Comcast -->
+      <span class="tool-chip" data-org="Comcast" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center;font-size:.45rem;font-weight:800;color:inherit">
+          <!-- LIVE: <img src="badges/comcast.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 12a4 4 0 0 1 8 0" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M5.5 12a6.5 6.5 0 0 1 13 0" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        </span>
+        <span class="tool-chip-label">Comcast</span>
+      </span>
+      <!-- SuitUp -->
+      <span class="tool-chip" data-org="SuitUp" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/suitup.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <span class="tool-chip-label">SuitUp</span>
+      </span>
+      <!-- AWS MLU -->
+      <span class="tool-chip" data-org="MLU" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/aws-mlu.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </span>
+        <span class="tool-chip-label">AWS MLU</span>
+      </span>
+      <!-- Boys & Girls Club -->
+      <span class="tool-chip" data-org="BGC" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/bgc.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </span>
+        <span class="tool-chip-label">Boys &amp; Girls Club</span>
+      </span>
+      <!-- VOW Center -->
+      <span class="tool-chip" data-org="VOW" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/vow.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </span>
+        <span class="tool-chip-label">VOW Center</span>
+      </span>
+    </div>
+
+    <div class="cv-two-col" style="margin-bottom:1.5rem">
+      <div>
+        <p class="cv-sec-label">Core Competencies</p>
+        <div class="skill-row">
+          <span class="skill-pill">GTM Strategy</span><span class="skill-pill">Revenue Enablement</span>
+          <span class="skill-pill">Partner Co-Sell</span><span class="skill-pill">Sales Leadership</span>
+          <span class="skill-pill">Startup Ecosystems</span><span class="skill-pill">Operational Excellence</span>
+          <span class="skill-pill">Coaching &amp; Development</span><span class="skill-pill">Executive Engagement</span>
+        </div>
+      </div>
+      <div>
+        <p class="cv-sec-label">Key Impact</p>
+        <div class="metric-card"><div class="metric-card-num">50+</div><div class="metric-card-desc">People promoted through direct coaching</div></div>
+        <div class="metric-card"><div class="metric-card-num">118%</div><div class="metric-card-desc">Quota attainment, SMB Partner FY2020</div></div>
+        <div class="metric-card"><div class="metric-card-num">8</div><div class="metric-card-desc">Executive sponsorships secured</div></div>
+      </div>
+    </div>
+    <div class="exp-block" data-org="AWS">
+      <div class="exp-co">Amazon Web Services</div><div class="exp-scope">Partner Development &amp; Startup Ecosystem, NAMER</div><div class="exp-dates">2018 – Present</div>
+      <div class="role-block"><div class="role-title">Sr. Partner Development Manager, Startup Segment</div><div class="role-date">2021 – Present</div><ul class="bullets"><li>Designed and executed co-sell motion with 40+ ISV partners, contributing to $XM ARR pipeline across NAMER startup segment.</li><li>Built partner enablement programming adopted across 3 regions, reducing time-to-revenue by 30%.</li><li>Promoted 8 direct reports into senior IC or management roles through structured coaching frameworks.</li></ul></div>
+      <div class="role-block"><div class="role-title">Partner Development Manager, SMB</div><div class="role-date">2018 – 2021</div><ul class="bullets"><li>Grew SMB partner portfolio from 12 to 40+ active partners, exceeding quota by 118% in FY2020.</li><li>Developed operational-excellence playbook now used as standard PDM onboarding resource.</li></ul></div>
+    </div>
+    <div class="exp-block" data-org="Comcast">
+      <div class="exp-co">Comcast Business</div><div class="exp-scope">Enterprise Sales &amp; Channel Development</div><div class="exp-dates">2012 – 2018</div>
+      <div class="role-block"><div class="role-title">Senior Sales Manager, Enterprise Accounts</div><div class="role-date">2015 – 2018</div><ul class="bullets"><li>Led team of 12 enterprise AEs covering Greater Philadelphia; ranked #2 nationally FY2017.</li><li>Channel partner initiative added $2.4M incremental annual revenue within first 18 months.</li></ul></div>
+      <div class="role-block"><div class="role-title">Account Executive, SMB</div><div class="role-date">2012 – 2015</div><ul class="bullets"><li>Top 10% of AEs nationally; promoted to manager track after 2 years of 130%+ attainment.</li></ul></div>
+    </div>
+    <div class="exp-block" data-org="VOW SuitUp BGC MLU">
+      <div class="exp-co">VOW Center</div><div class="exp-scope">Verity Outreach Worship Center — Philadelphia, PA</div><div class="exp-dates">2018 – Present</div>
+      <div class="role-block"><div class="role-title">Executive Director &amp; Founder</div><div class="role-date">2018 – Present</div><ul class="bullets"><li>Founded and lead a Philadelphia-based faith nonprofit delivering programs in mentorship, financial literacy, street evangelism, and community leadership development.</li><li>Programs: Chess Not Checkers, Builder's Conference, iThirst Street Evangelism, Financial Literacy &amp; Stewardship.</li></ul></div>
+    </div>
+  </div>
+
+  <!-- ── CASES ──────────────────────────────────────────── -->
+  <div id="view-cases" class="page-view">
+    <div class="page-header"><p class="page-eyebrow">GTM &amp; Strategy</p><h2 class="page-title">Cases</h2><p class="page-sub">Frameworks, programs, and strategies — with the outcomes they produced.</p></div>
+
+    <!-- Cases filter bar -->
+    <div class="tag-bar" style="margin-bottom:1.5rem">
+      <span class="tag-bar-label">Filter:</span>
+      <span class="filter-tag active accent-tag" data-tag="all" onclick="filterCases(this)">All</span>
+      <span class="filter-tag" data-tag="Cross-Functional" onclick="filterCases(this)">Cross-Functional</span>
+      <span class="filter-tag" data-tag="Strategy" onclick="filterCases(this)">Strategy</span>
+      <span class="filter-tag" data-tag="Community-Dev" onclick="filterCases(this)">Community Dev</span>
+      <span class="filter-tag" data-tag="Community-Leadership" onclick="filterCases(this)">Community Leadership</span>
+      <span class="filter-tag" data-tag="Enablement" onclick="filterCases(this)">Enablement</span>
+      <span class="filter-tag" data-tag="Partner-Collaboration" onclick="filterCases(this)">Partner Collaboration</span>
+      <span class="filter-tag" data-tag="Executive-Sponsorship" onclick="filterCases(this)">Executive Sponsorship</span>
+    </div>
+
+    <div id="cases-list">
+      <div class="case-card" data-case-tags="Strategy Partner-Collaboration Enablement Cross-Functional Executive-Sponsorship">
+        <div class="case-num">(001)</div>
+        <div class="case-title">Partner Co-Sell Motion — AWS Startup Segment</div>
+        <div class="case-sub">Amazon Web Services · 2021–2023</div>
+        <div class="case-desc">Designed and operationalized a structured co-sell framework for 40+ ISV partners in NAMER. Built joint pipeline tracking, partner QBR cadence, and field alignment playbook — adopted across 3 regions.</div>
+        <div class="case-tags"><span class="case-tag">Strategy</span><span class="case-tag">Partner Collaboration</span><span class="case-tag">Enablement</span><span class="case-tag">Executive Sponsorship</span></div>
+      </div>
+      <div class="case-card" data-case-tags="Enablement Strategy Cross-Functional">
+        <div class="case-num">(002)</div>
+        <div class="case-title">Operational Excellence Playbook — PDM Onboarding</div>
+        <div class="case-sub">Amazon Web Services · 2019–2020</div>
+        <div class="case-desc">Developed a comprehensive operational playbook for partner development managers that became the standard onboarding resource for the SMB PDM team. Reduced ramp time by an estimated 25%.</div>
+        <div class="case-tags"><span class="case-tag">Enablement</span><span class="case-tag">Strategy</span><span class="case-tag">Cross-Functional</span></div>
+      </div>
+      <div class="case-card" data-case-tags="Community-Dev Community-Leadership Cross-Functional">
+        <div class="case-num">(003)</div>
+        <div class="case-title">Chess Not Checkers — Men's Community Development</div>
+        <div class="case-sub">VOW Center · 2018 – Present</div>
+        <div class="case-desc">Founded and lead a structured mentorship program combining strategic life-skills frameworks with accountability, coaching, and community events. Annual panel draws 50+ attendees.</div>
+        <div class="case-tags"><span class="case-tag">Community Dev</span><span class="case-tag">Community Leadership</span><span class="case-tag">Cross-Functional</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PORTFOLIO ──────────────────────────────────────── -->
+  <div id="view-portfolio" class="page-view">
+    <div class="page-header"><p class="page-eyebrow">Creative Work</p><h2 class="page-title">Portfolio</h2><p class="page-sub">Design, builds, and published work across platforms.</p></div>
+
+    <!-- Social Links section -->
+    <div style="margin-bottom:1.875rem">
+      <div class="port-section-title">Social Links</div>
+      <div class="platform-bar">
+        <a href="https://medium.com/@antoneholmes" target="_blank" class="platform-link">
+          <div class="platform-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></div>
+          Medium
+        </a>
+        <a href="https://behance.net/antoneholmes" target="_blank" class="platform-link">
+          <div class="platform-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/></svg></div>
+          Behance
+        </a>
+        <a href="https://linkedin.com/in/antone-h" target="_blank" class="platform-link">
+          <div class="platform-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+          LinkedIn
+        </a>
+        <a href="https://github.com/hjs-ah" target="_blank" class="platform-link">
+          <div class="platform-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <!-- Software / Tool filter (moved from CV) -->
+    <div style="margin-bottom:1.875rem">
+      <div class="port-section-title">Tools &amp; Stack</div>
+      <div class="tool-filter-bar" id="portfolio-tool-bar">
+        <span class="tool-chip all-chip active" data-ptool="all" onclick="filterPortfolioTool(this)">
+          <span class="tool-chip-label">All</span>
+        </span>
+        <span class="tool-chip" data-ptool="Notion" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933z"/></svg>
+          <span class="tool-chip-label">Notion</span>
+        </span>
+        <span class="tool-chip" data-ptool="React" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38a2.167 2.167 0 0 0-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44a23.476 23.476 0 0 0-3.107-.534A23.892 23.892 0 0 0 12.769 4.7c1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442a22.73 22.73 0 0 0-3.113.538 15.02 15.02 0 0 1-.254-1.42c-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132z"/></svg>
+          <span class="tool-chip-label">React</span>
+        </span>
+        <span class="tool-chip" data-ptool="Figma" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49c2.476 0 4.49 2.014 4.49 4.49-.001 2.476-2.015 4.49-4.392 4.49z"/></svg>
+          <span class="tool-chip-label">Figma</span>
+        </span>
+        <span class="tool-chip" data-ptool="Supabase" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C.111 12.876.636 14.09 1.71 14.09h9.5l.19 8.867c.015.986 1.26 1.409 1.873.636l9.262-11.653c.653-.826.128-2.039-.946-2.039h-9.5L11.9 1.036z"/></svg>
+          <span class="tool-chip-label">Supabase</span>
+        </span>
+        <span class="tool-chip" data-ptool="Vercel" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M24 22.525H0l12-21.05 12 21.05z"/></svg>
+          <span class="tool-chip-label">Vercel</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Tags filter section -->
+    <div class="portfolio-tag-bar">
+      <div class="port-section-title">
+        Tags
+        <span class="tooltip-trigger" id="tag-help-btn" onclick="showTagTooltip()" title="How tags work">?</span>
+      </div>
+      <div class="port-filter-tags" id="portfolio-tag-bar">
+        <span class="filter-tag active accent-tag" data-tag="all" onclick="filterPortfolio(this)">All</span>
+        <span class="filter-tag" data-tag="Full-Stack" onclick="filterPortfolio(this)">Full-Stack</span>
+        <span class="filter-tag" data-tag="Design" onclick="filterPortfolio(this)">Design</span>
+        <span class="filter-tag" data-tag="Branding" onclick="filterPortfolio(this)">Branding</span>
+        <span class="filter-tag" data-tag="Education" onclick="filterPortfolio(this)">Education</span>
+        <span class="filter-tag" data-tag="Community" onclick="filterPortfolio(this)">Community</span>
+      </div>
+    </div>
+
+    <!-- Portfolio grid -->
+    <div class="portfolio-grid" id="portfolio-grid">
+      <a href="#" class="portfolio-card" data-tags="Full-Stack Education">
+        <div class="portfolio-thumb">Screenshot placeholder</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Full-Stack Build</div>
+          <div class="portfolio-title">Learning with Verity — Teaching Platform</div>
+          <div class="portfolio-desc">Real-time interactive teaching deck with Ably sync, Notion CMS, Vercel API, and PIN-gated presenter mode.</div>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Notion API</span><span class="portfolio-tag">Ably</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Full-Stack Design">
+        <div class="portfolio-thumb">Screenshot placeholder</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Full-Stack Build</div>
+          <div class="portfolio-title">Dissertation Dashboard — SIAD Framework</div>
+          <div class="portfolio-desc">Vercel/React/Notion app with 6 databases, role-gated views, AI research bar, and light/dark theme.</div>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Notion</span><span class="portfolio-tag">Supabase</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Branding Design Community">
+        <div class="portfolio-thumb">Screenshot placeholder</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Brand Identity</div>
+          <div class="portfolio-title">Chess Not Checkers — Visual Identity</div>
+          <div class="portfolio-desc">Brand identity and visual system for the VOW Center men's mentorship program, including print and digital.</div>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">Figma</span><span class="portfolio-tag">Behance</span><span class="portfolio-tag">Branding</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Full-Stack Education">
+        <div class="portfolio-thumb">Screenshot placeholder</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Product Build</div>
+          <div class="portfolio-title">LearnOP — Multi-Org LMS</div>
+          <div class="portfolio-desc">Canvas-inspired LMS with role-based access (Student, Instructor, Director), gradebook, and discussions.</div>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Supabase</span><span class="portfolio-tag">Resend</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── CHANGELOG / VERSION UPDATES ───────────────────── -->
+  <div id="view-changelog" class="page-view">
+    <div class="page-header">
+      <p class="page-eyebrow">Site History</p>
+      <h2 class="page-title">Updates</h2>
+      <p class="page-sub">Version history, content updates, and feature releases — managed from Notion.</p>
+    </div>
+
+    <!-- Type filter -->
+    <div class="cl-type-filter" id="cl-filter-bar">
+      <span class="filter-tag active accent-tag" data-cl="all" onclick="filterChangelog(this)">All</span>
+      <span class="filter-tag" data-cl="Feature" onclick="filterChangelog(this)">Feature</span>
+      <span class="filter-tag" data-cl="Fix" onclick="filterChangelog(this)">Fix</span>
+      <span class="filter-tag" data-cl="Design" onclick="filterChangelog(this)">Design</span>
+      <span class="filter-tag" data-cl="Content" onclick="filterChangelog(this)">Content</span>
+      <span class="filter-tag" data-cl="Infrastructure" onclick="filterChangelog(this)">Infrastructure</span>
+    </div>
+
+    <div id="changelog-list">
+      <!-- Seeded entries — replaced by Notion data at build time -->
+      <div class="changelog-entry" data-cl-type="Feature">
+        <div class="cl-left">
+          <div class="cl-version">v2.0.0</div>
+          <div class="cl-date">May 2026</div>
+          <span class="cl-type cl-feature">Feature</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">All Pages</div>
+          <div class="cl-summary">Full SPA rebuild — single-page app with panel navigation</div>
+          <div class="cl-detail">Rebuilt from a multi-page site to a single-page application with a fixed left identity panel and swappable right-panel content views. Navigation, filtering, and modal system all new.</div>
+        </div>
+      </div>
+      <div class="changelog-entry" data-cl-type="Feature">
+        <div class="cl-left">
+          <div class="cl-version">v2.0.0</div>
+          <div class="cl-date">May 2026</div>
+          <span class="cl-type cl-feature">Feature</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">CV</div>
+          <div class="cl-summary">CV page — academic format with Original Concepts and Volunteer sections</div>
+          <div class="cl-detail">Added Publications & Scholarship, Original Concepts & Frameworks, Volunteer & Community Service, and domain filtering (Theology / Philanthropy / Social Responsibility).</div>
+        </div>
+      </div>
+      <div class="changelog-entry" data-cl-type="Feature">
+        <div class="cl-left">
+          <div class="cl-version">v2.0.0</div>
+          <div class="cl-date">May 2026</div>
+          <span class="cl-type cl-feature">Feature</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">Home</div>
+          <div class="cl-summary">Reflections — tag filtering and full-text modals</div>
+          <div class="cl-detail">Home page reflections now support tag-based filtering and include a Read More button plus popup window icon to open full content in a modal overlay.</div>
+        </div>
+      </div>
+      <div class="changelog-entry" data-cl-type="Design">
+        <div class="cl-left">
+          <div class="cl-version">v1.2.0</div>
+          <div class="cl-date">Apr 2026</div>
+          <span class="cl-type cl-design">Design</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">Left Panel</div>
+          <div class="cl-summary">Credential chips — fitted image containers, auto-width layout</div>
+          <div class="cl-detail">Credential badges in the left panel now size to their content rather than stretching full width. Image containers are fixed 28×28px for consistent logo display.</div>
+        </div>
+      </div>
+      <div class="changelog-entry" data-cl-type="Infrastructure">
+        <div class="cl-left">
+          <div class="cl-version">v1.1.0</div>
+          <div class="cl-date">Mar 2026</div>
+          <span class="cl-type cl-infrastructure">Infrastructure</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">Build Pipeline</div>
+          <div class="cl-summary">Notion CMS integration — full data pipeline with build-time fetch</div>
+          <div class="cl-detail">All content now managed from Notion. build-data.js fetches 12 content types at Vercel build time and writes data.json. Published checkbox on each row controls visibility.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ══ REFLECTION MODALS ══════════════════════════════════ -->
+<div class="modal-overlay" id="modal-r1" onclick="closeModalOutside(event,'modal-r1')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-r1')"><svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="modal-date">May 2026</div>
+    <span class="modal-tag tag-life">Community</span>
+    <div class="modal-title">Chess Not Checkers — marriage, leadership &amp; purpose panel</div>
+    <div class="modal-body">
+      <p>There's something that happens when you put a group of men in a room and ask them to be honest — not performatively honest, but genuinely, uncomfortably, productively honest. That's what we built space for at this year's Chess Not Checkers panel on marriage, leadership, and purpose.</p>
+      <p>We had married men and unmarried men in the same room. I've done panels before where you separate them, keep the conversations clean and compartmentalized. This time we didn't. And what came out of that was something I didn't fully anticipate — not conflict, but resonance. The married men weren't speaking down to the unmarried ones. The unmarried men weren't envying or dismissing. They were listening to each other.</p>
+      <p>The question that stayed with me most came from one of our younger guys: <em>"How do you build something lasting when everything around you is telling you to keep your options open?"</em> We spent 20 minutes on that one question. We didn't fully answer it. But we sat in it together, and that mattered.</p>
+      <p>This is what Chess Not Checkers is for. Not just to deliver programming, but to create rooms where men can think out loud about the things that actually shape their lives.</p>
+    </div>
+  </div>
 </div>
+
+<div class="modal-overlay" id="modal-r2" onclick="closeModalOutside(event,'modal-r2')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-r2')"><svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="modal-date">April 2026</div>
+    <span class="modal-tag tag-faith">Faith</span>
+    <div class="modal-title">On Sabbath, rest, and the discipline of stopping</div>
+    <div class="modal-body">
+      <p>I've kept Sabbath — Friday evening through Saturday — as a non-negotiable protected period for several years now. Most people in my professional world don't know this. It doesn't come up in pipeline reviews.</p>
+      <p>What I've found is that Sabbath doesn't subtract from productivity. It restructures my relationship to it. When you know that Friday at sundown everything stops — the emails, the builds, the planning docs — you become sharper about what actually needs to happen before then. You make decisions faster. You let go of things that were never really yours to carry.</p>
+      <p>The deeper thing, though, is what Sabbath does to your sense of time. The week has a shape. It has a rhythm. There's a beginning and an end, and the end isn't Sunday night dread — it's rest. Real rest. Not scrolling rest. Not half-watching a show rest. The kind of rest that you have to choose and then protect.</p>
+      <p>I don't write about faith much in professional contexts. But I think about what I practice and what I produce, and they are not unrelated. The discipline of stopping is the same discipline that makes it possible to start well.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FIRST-VISIT TAG TOOLTIP ════════════════════════════ -->
+<div class="fv-overlay" id="fv-overlay">
+  <div class="fv-card">
+    <!-- Illustrative demo of tag selection -->
+    <div class="fv-illo" id="fv-illo">
+      <span class="fv-tag-demo" id="demo-t1">Design</span>
+      <span class="fv-arrow">→</span>
+      <span class="fv-tag-demo lit" id="demo-t2">Full-Stack</span>
+      <span class="fv-arrow">→</span>
+      <span class="fv-tag-demo" id="demo-t3">Education</span>
+    </div>
+    <div class="fv-title">Filter by tag</div>
+    <div class="fv-desc">Tap any tag to show only matching projects. Tap <strong>All</strong> to reset. You can combine filters by tapping multiple tags — cards need to match at least one selected tag to appear.</div>
+    <button class="fv-got-it" onclick="dismissTagTooltip()">Got it</button>
+  </div>
+</div>
+
+<script>
+/* ── Page navigation ─────────────────────────────────── */
+function showPage(id, btn) {
+  document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const view = document.getElementById('view-' + id);
+  if (view) view.classList.add('active');
+  if (btn) btn.classList.add('active');
+  document.querySelector('.right-panel').scrollTo({ top:0, behavior:'smooth' });
+  if (id === 'portfolio') maybeShowTagTooltip();
+}
+
+/* ── Impact grid layout ──────────────────────────────── */
+function setImpactCount(n) {
+  const grid = document.getElementById('impact-grid');
+  if (!grid) return;
+  Array.from(grid.querySelectorAll('.impact-cell')).forEach((c,i) => c.style.display = i < n ? '' : 'none');
+  grid.setAttribute('data-count', String(n));
+}
+
+/* ── Notion data loader ──────────────────────────────── */
+async function loadData() {
+  let data;
+  try {
+    const res = await fetch('/data.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    data = await res.json();
+    console.log('✅ data.json loaded:', data._buildTime);
+  } catch (e) {
+    console.warn('⚠️ data.json not found — using static fallback content');
+    return; // static HTML fallback already in place
+  }
+
+  const s = data.settings || {};
+
+  // ── Settings ────────────────────────────────────────
+  if (s.name) {
+    document.querySelector('.name')?.childNodes[0] && (document.querySelector('.name').childNodes[0].textContent = s.name.split(' ')[0]);
+    const outlineEl = document.querySelector('.name .outline');
+    if (outlineEl) outlineEl.textContent = s.name.split(' ').slice(1).join(' ') || s.name;
+    const titleEl = document.querySelector('title');
+    if (titleEl) titleEl.textContent = s.name + ' — Portfolio';
+  }
+  if (s.tagline) {
+    const tl = document.querySelector('.title-line');
+    if (tl) tl.textContent = s.tagline;
+  }
+  if (s.profilePhotoUrl) {
+    const ph = document.querySelector('.photo-ph');
+    if (ph) {
+      const img = document.createElement('img');
+      img.src = s.profilePhotoUrl;
+      img.alt = s.name || 'Profile';
+      img.onerror = () => img.remove();
+      ph.parentElement.insertBefore(img, ph);
+      ph.style.display = 'none';
+    }
+  }
+  if (s.accentColor) document.documentElement.style.setProperty('--accent', s.accentColor);
+  if (s.borderColor) document.documentElement.style.setProperty('--border', s.borderColor);
+
+  // Nav labels
+  const navMap = { home:'navHome', cv:'navCV', resume:'navResume', cases:'navCases', portfolio:'navPortfolio', changelog:'navChangelog' };
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    const page = btn.getAttribute('onclick')?.match(/showPage\('(\w+)'/)?.[1];
+    if (page && navMap[page] && s[navMap[page]]) btn.querySelector('span').textContent = s[navMap[page]];
+  });
+
+  // ── Impact stats ────────────────────────────────────
+  const stats = data.impactStats || [];
+  if (stats.length) {
+    const grid = document.getElementById('impact-grid');
+    if (grid) {
+      grid.innerHTML = stats.map(st =>
+        '<div class="impact-cell"><div class="impact-num">' + st.value + '</div><div class="impact-lbl">' + st.label + '</div></div>'
+      ).join('');
+      setImpactCount(stats.length);
+    }
+  }
+
+  // ── Credentials ─────────────────────────────────────
+  const creds = data.credentials || [];
+  if (creds.length) {
+    const cr = document.querySelector('.cred-row');
+    if (cr) {
+      cr.innerHTML = creds.map(c => {
+        const img = c.imageUrl
+          ? '<img src="' + c.imageUrl + '" alt="' + c.name + '" style="width:100%;height:100%;object-fit:contain">'
+          : '<span class="chip-img-text">' + (c.name.substring(0,3).toUpperCase()) + '</span>';
+        return '<div class="cred-chip"><div class="chip-img">' + img + '</div>'
+          + '<div><div class="chip-text">' + c.name + '</div><div class="chip-sub">' + c.subtitle + '</div></div></div>';
+      }).join('');
+    }
+  }
+
+  // ── Home: Updates ───────────────────────────────────
+  const updates = data.home?.updates || [];
+  if (updates.length) {
+    const tagColors = { Work:'tag-work', Faith:'tag-faith', Academic:'tag-academic', Community:'tag-life' };
+    const wc = document.getElementById('working-cards');
+    if (wc) {
+      wc.innerHTML = updates.map(u => {
+        const tc = tagColors[u.tag] || 'tag-work';
+        const dateStr = u.date ? new Date(u.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : u.date;
+        return '<div class="update-card" data-tags="' + (u.tag||'') + '">'
+          + '<div class="update-date">' + dateStr + '</div>'
+          + '<div class="update-body"><span class="update-tag-chip ' + tc + '" onclick="filterCards('working',document.querySelector('[data-tag=' + (u.tag||'all') + ']'))">' + (u.tag||'') + '</span>'
+          + '<div class="update-title">' + u.title + '</div>'
+          + '<div class="update-excerpt">' + u.excerpt + '</div></div></div>';
+      }).join('');
+    }
+  }
+
+  // ── Home: Reflections ────────────────────────────────
+  const reflections = data.home?.reflections || [];
+  if (reflections.length) {
+    const tagColors = { Faith:'tag-faith', Leadership:'tag-faith', Community:'tag-life' };
+    const rc = document.getElementById('reflections-cards');
+    if (rc) {
+      rc.innerHTML = reflections.map((r, i) => {
+        const tc = tagColors[r.tag] || 'tag-life';
+        const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : r.date;
+        const modalId = 'notion-r' + i;
+        // Store full text for modal
+        window['_modal_' + modalId] = { title: r.title, tag: r.tag, date: dateStr, body: r.fullText || r.excerpt, tagClass: tc };
+        return '<div class="reflection-card" data-tags="' + (r.tag||'') + '">'
+          + '<div class="reflection-top">'
+          + '<div class="update-date" style="min-width:48px;font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex-shrink:0">' + dateStr + '</div>'
+          + '<div class="reflection-body"><span class="update-tag-chip ' + tc + '">' + (r.tag||'') + '</span>'
+          + '<div class="update-title">' + r.title + '</div>'
+          + '<div class="update-excerpt">' + r.excerpt + '</div>'
+          + '<div class="reflection-actions">'
+          + '<button class="read-more-btn" onclick="openDynamicModal('' + modalId + '')">Read More →</button>'
+          + '<button class="popup-icon-btn" onclick="openDynamicModal('' + modalId + '')">'
+          + '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"/></svg>'
+          + '</button></div></div></div></div>';
+      }).join('');
+    }
+  }
+
+  // ── Home: Articles ──────────────────────────────────
+  const articles = data.home?.articles || [];
+  if (articles.length) {
+    const ac = document.querySelector('.blog-section:last-child');
+    if (ac) {
+      const existingCards = ac.querySelectorAll('.article-card');
+      existingCards.forEach(e => e.remove());
+      articles.forEach(a => {
+        const dateStr = a.date ? new Date(a.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : a.date;
+        const card = document.createElement('a');
+        card.className = 'article-card';
+        card.href = a.url || '#';
+        if (a.url) { card.target = '_blank'; card.rel = 'noopener'; }
+        card.innerHTML = '<div><div class="article-meta">' + (a.platform||'') + ' · ' + dateStr + '</div>'
+          + '<div class="article-title">' + a.title + '</div></div>'
+          + '<div class="article-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+        ac.appendChild(card);
+      });
+    }
+  }
+
+  // ── Resume ──────────────────────────────────────────
+  const resume = data.resume || [];
+  if (resume.length) {
+    // Group by company
+    const companies = {};
+    resume.forEach(r => { if (!companies[r.company]) companies[r.company] = []; companies[r.company].push(r); });
+    const expContainer = document.querySelector('#view-resume .exp-block')?.parentElement;
+    if (expContainer) {
+      const blocks = expContainer.querySelectorAll('.exp-block');
+      blocks.forEach(b => b.remove());
+      Object.entries(companies).forEach(([co, roles]) => {
+        const org = roles[0].org || co.replace(/\s+/g,'');
+        const block = document.createElement('div');
+        block.className = 'exp-block';
+        block.dataset.org = org;
+        block.innerHTML = '<div class="exp-co">' + co + '</div>'
+          + (roles[0].scope ? '<div class="exp-scope">' + roles[0].scope + '</div>' : '')
+          + '<div class="exp-dates">' + (roles[0].dateRange || '') + '</div>'
+          + roles.map(r => '<div class="role-block"><div class="role-title">' + r.role + '</div>'
+            + '<div class="role-date">' + r.dateRange + '</div>'
+            + (r.bullets.length ? '<ul class="bullets">' + r.bullets.map(b => '<li>' + b + '</li>').join('') + '</ul>' : '')
+            + '</div>').join('');
+        expContainer.appendChild(block);
+      });
+    }
+  }
+
+  // ── Cases ───────────────────────────────────────────
+  const cases = data.cases || [];
+  if (cases.length) {
+    const cl = document.getElementById('cases-list');
+    if (cl) {
+      cl.innerHTML = cases.map((c, i) => {
+        const caseTagsStr = (c.tags || []).join(' ');
+        return '<div class="case-card" data-case-tags="' + caseTagsStr + '">'
+          + '<div class="case-num">(' + String(i+1).padStart(3,'0') + ')</div>'
+          + '<div class="case-title">' + c.name + '</div>'
+          + (c.sub ? '<div class="case-sub">' + c.sub + '</div>' : '')
+          + '<div class="case-desc">' + c.desc + '</div>'
+          + '<div class="case-tags">' + (c.tags||[]).map(t => '<span class="case-tag">' + t + '</span>').join('') + '</div>'
+          + '</div>';
+      }).join('');
+    }
+  }
+
+  // ── Portfolio ───────────────────────────────────────
+  const portfolio = data.portfolio || [];
+  if (portfolio.length) {
+    const pg = document.getElementById('portfolio-grid');
+    if (pg) {
+      pg.innerHTML = portfolio.map(p => {
+        const filterTagsStr = (p.filterTags || []).join(' ');
+        const thumb = p.imageUrl
+          ? '<img src="' + p.imageUrl + '" alt="' + p.name + '">'
+          : '<span>Screenshot placeholder</span>';
+        return '<a href="' + (p.link||'#') + '" class="portfolio-card" data-tags="' + filterTagsStr + '" '
+          + (p.link ? 'target="_blank" rel="noopener"' : '') + '>'
+          + '<div class="portfolio-thumb">' + thumb + '</div>'
+          + '<div class="portfolio-body">'
+          + '<div class="portfolio-type">' + (p.type||'') + '</div>'
+          + '<div class="portfolio-title">' + p.name + '</div>'
+          + '<div class="portfolio-desc">' + p.desc + '</div>'
+          + '<div class="portfolio-tags-row">' + (p.stackTags||[]).map(t => '<span class="portfolio-tag">' + t + '</span>').join('') + '</div>'
+          + '</div></a>';
+      }).join('');
+    }
+  }
+
+  // ── Changelog ───────────────────────────────────────
+  const changelog = data.changelog || [];
+  if (changelog.length) {
+    const typeClassMap = { Feature:'cl-feature', Fix:'cl-fix', Design:'cl-design', Content:'cl-content', Infrastructure:'cl-infrastructure' };
+    const cl2 = document.getElementById('changelog-list');
+    if (cl2) {
+      cl2.innerHTML = changelog.map(entry => {
+        const tc = typeClassMap[entry.type] || 'cl-feature';
+        const dateStr = entry.date ? new Date(entry.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : entry.date;
+        return '<div class="changelog-entry" data-cl-type="' + (entry.type||'') + '">'
+          + '<div class="cl-left">'
+          + '<div class="cl-version">' + (entry.version||'') + '</div>'
+          + '<div class="cl-date">' + dateStr + '</div>'
+          + '<span class="cl-type ' + tc + '">' + (entry.type||'') + '</span>'
+          + '</div>'
+          + '<div class="cl-right">'
+          + (entry.scope ? '<div class="cl-scope">' + entry.scope + '</div>' : '')
+          + '<div class="cl-summary">' + entry.summary + '</div>'
+          + (entry.detail ? '<div class="cl-detail">' + entry.detail + '</div>' : '')
+          + '</div></div>';
+      }).join('');
+    }
+  }
+}
+
+/* ── Dynamic modal for Notion reflections ────────────── */
+function openDynamicModal(id) {
+  const stored = window['_modal_' + id];
+  if (!stored) return;
+  let overlay = document.getElementById('dynamic-modal');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'dynamic-modal';
+    overlay.className = 'modal-overlay';
+    overlay.onclick = e => { if (e.target === overlay) overlay.classList.remove('open'); };
+    overlay.innerHTML = '<div class="modal-box"><button class="modal-close" onclick="document.getElementById('dynamic-modal').classList.remove('open')">'
+      + '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>'
+      + '<div id="dyn-date" class="modal-date"></div><span id="dyn-tag" class="modal-tag"></span>'
+      + '<div id="dyn-title" class="modal-title"></div><div id="dyn-body" class="modal-body"></div></div>';
+    document.body.appendChild(overlay);
+  }
+  document.getElementById('dyn-date').textContent = stored.date;
+  const tagEl = document.getElementById('dyn-tag');
+  tagEl.textContent = stored.tag;
+  tagEl.className = 'modal-tag ' + stored.tagClass;
+  document.getElementById('dyn-title').textContent = stored.title;
+  document.getElementById('dyn-body').innerHTML = stored.body.split('\n\n').map(p => '<p>' + p + '</p>').join('');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+setImpactCount(5); // fallback — overridden by loadData()
+loadData();
+
+/* ── Card filtering (home: working + reflections) ────── */
+function filterCards(section, clickedBtn) {
+  const tag = clickedBtn.dataset.tag;
+  const barId = section === 'working' ? 'working-tag-bar' : null;
+
+  // Update active state on the correct tag bar
+  const allBtns = clickedBtn.closest('.tag-bar').querySelectorAll('.filter-tag');
+  allBtns.forEach(b => b.classList.remove('active'));
+  clickedBtn.classList.add('active');
+
+  // Filter cards
+  const containerId = section === 'working' ? 'working-cards' : 'reflections-cards';
+  const cards = document.querySelectorAll('#' + containerId + ' [data-tags]');
+  cards.forEach(card => {
+    if (tag === 'all' || card.dataset.tags.includes(tag)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+/* ── Portfolio tag filter ────────────────────────────── */
+let activePortfolioTags = new Set(['all']);
+
+function filterPortfolio(clickedBtn) {
+  const tag = clickedBtn.dataset.tag;
+
+  if (tag === 'all') {
+    activePortfolioTags.clear();
+    activePortfolioTags.add('all');
+    document.querySelectorAll('#portfolio-tag-bar .filter-tag').forEach(b => b.classList.remove('active'));
+    clickedBtn.classList.add('active');
+  } else {
+    // Remove "all" if a specific tag is chosen
+    activePortfolioTags.delete('all');
+    document.querySelector('#portfolio-tag-bar [data-tag="all"]').classList.remove('active');
+    clickedBtn.classList.toggle('active');
+    if (clickedBtn.classList.contains('active')) {
+      activePortfolioTags.add(tag);
+    } else {
+      activePortfolioTags.delete(tag);
+    }
+    // If nothing selected, revert to All
+    if (activePortfolioTags.size === 0) {
+      activePortfolioTags.add('all');
+      document.querySelector('#portfolio-tag-bar [data-tag="all"]').classList.add('active');
+    }
+  }
+
+  // Show/hide portfolio cards
+  document.querySelectorAll('#portfolio-grid .portfolio-card').forEach(card => {
+    if (activePortfolioTags.has('all')) {
+      card.classList.remove('hidden');
+    } else {
+      const cardTags = card.dataset.tags.split(' ');
+      const match = [...activePortfolioTags].some(t => cardTags.includes(t));
+      card.classList.toggle('hidden', !match);
+    }
+  });
+}
+
+/* ── Reflection modals ───────────────────────────────── */
+function openModal(id) {
+  const overlay = document.getElementById('modal-' + id);
+  if (overlay) overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  const overlay = document.getElementById(id);
+  if (overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e, id) {
+  if (e.target === e.currentTarget) closeModal(id);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+
+/* ── First-visit portfolio tag tooltip ───────────────── */
+function maybeShowTagTooltip() {
+  if (localStorage.getItem('ah-tag-tooltip-seen')) return;
+  setTimeout(() => document.getElementById('fv-overlay').classList.add('show'), 400);
+  // Animate demo tags
+  animateDemoTags();
+}
+function showTagTooltip() {
+  document.getElementById('fv-overlay').classList.add('show');
+  animateDemoTags();
+}
+function dismissTagTooltip() {
+  document.getElementById('fv-overlay').classList.remove('show');
+  localStorage.setItem('ah-tag-tooltip-seen', '1');
+}
+function animateDemoTags() {
+  const tags = ['demo-t1','demo-t2','demo-t3'];
+  let i = 0;
+  tags.forEach(t => document.getElementById(t).classList.remove('lit'));
+  const cycle = setInterval(() => {
+    tags.forEach(t => document.getElementById(t).classList.remove('lit'));
+    document.getElementById(tags[i % tags.length]).classList.add('lit');
+    i++;
+    if (!document.getElementById('fv-overlay').classList.contains('show')) clearInterval(cycle);
+  }, 700);
+}
+
+
+/* ── Cases filter ────────────────────────────────────── */
+function filterCases(clickedBtn) {
+  const tag = clickedBtn.dataset.tag;
+  clickedBtn.closest('.tag-bar').querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+  clickedBtn.classList.add('active');
+  document.querySelectorAll('#cases-list [data-case-tags]').forEach(card => {
+    card.style.display = (tag === 'all' || card.dataset.caseTags.includes(tag)) ? '' : 'none';
+  });
+}
+
+/* ── Resume org filter ───────────────────────────────── */
+function filterResume(clickedChip) {
+  const org = clickedChip.dataset.org;
+  document.querySelectorAll('#resume-org-bar .tool-chip').forEach(c => c.classList.remove('active'));
+  clickedChip.classList.add('active');
+  document.querySelectorAll('#view-resume .exp-block[data-org]').forEach(block => {
+    block.style.display = (org === 'all' || block.dataset.org.includes(org)) ? '' : 'none';
+  });
+}
+
+/* ── Portfolio tool filter ───────────────────────────── */
+let activePortfolioTools = new Set(['all']);
+function filterPortfolioTool(clickedChip) {
+  const tool = clickedChip.dataset.ptool;
+  const allChip = document.querySelector('#portfolio-tool-bar .all-chip');
+  if (tool === 'all') {
+    activePortfolioTools = new Set(['all']);
+    document.querySelectorAll('#portfolio-tool-bar .tool-chip').forEach(c => c.classList.remove('active'));
+    clickedChip.classList.add('active');
+  } else {
+    allChip.classList.remove('active');
+    activePortfolioTools.delete('all');
+    clickedChip.classList.toggle('active');
+    if (clickedChip.classList.contains('active')) { activePortfolioTools.add(tool); }
+    else { activePortfolioTools.delete(tool); }
+    if (activePortfolioTools.size === 0) { activePortfolioTools.add('all'); allChip.classList.add('active'); }
+  }
+  document.querySelectorAll('#portfolio-grid .portfolio-card').forEach(card => {
+    if (activePortfolioTools.has('all')) { card.classList.remove('hidden'); return; }
+    // Match against portfolio-tag text content
+    const cardTagText = [...card.querySelectorAll('.portfolio-tag')].map(t => t.textContent).join(' ');
+    const match = [...activePortfolioTools].some(t => cardTagText.includes(t));
+    card.classList.toggle('hidden', !match);
+  });
+}
+
+/* ── CV tool filter ──────────────────────────────────── */
+function filterCVTool(clickedChip) {
+  const tool = clickedChip.dataset.tool;
+  const allChips = document.querySelectorAll('#cv-tool-bar .tool-chip');
+  
+  if (tool === 'all') {
+    allChips.forEach(c => c.classList.remove('active'));
+    clickedChip.classList.add('active');
+    document.querySelectorAll('#view-cv [data-cv-tools]').forEach(s => s.style.display = '');
+    return;
+  }
+  
+  // Deactivate all-chip
+  document.querySelector('#cv-tool-bar .all-chip').classList.remove('active');
+  clickedChip.classList.toggle('active');
+  
+  // Collect active tools
+  const active = [...document.querySelectorAll('#cv-tool-bar .tool-chip.active')].map(c => c.dataset.tool);
+  
+  if (active.length === 0) {
+    document.querySelector('#cv-tool-bar .all-chip').classList.add('active');
+    document.querySelectorAll('#view-cv [data-cv-tools]').forEach(s => s.style.display = '');
+    return;
+  }
+  
+  document.querySelectorAll('#view-cv [data-cv-tools]').forEach(section => {
+    const sTools = section.dataset.cvTools.split(' ');
+    const match = active.some(t => sTools.includes(t) || sTools.includes('all'));
+    section.style.display = match ? '' : 'none';
+  });
+}
+
+
+/* ── Changelog filter ────────────────────────────────── */
+function filterChangelog(clickedBtn) {
+  const type = clickedBtn.dataset.cl;
+  document.querySelectorAll('#cl-filter-bar .filter-tag').forEach(b => b.classList.remove('active'));
+  clickedBtn.classList.add('active');
+  document.querySelectorAll('#changelog-list .changelog-entry').forEach(entry => {
+    entry.style.display = (type === 'all' || entry.dataset.clType === type) ? '' : 'none';
+  });
+}
+
+</script>
 
 </body>
 </html>
