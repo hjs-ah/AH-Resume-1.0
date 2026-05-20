@@ -334,7 +334,7 @@ body {
     gap: 2rem;
 }
 
-/* ── Impact stat: animated double-circle ────────────────────────── */
+/* ── Impact stat: single thin animated circle ────────────────────── */
 .hero-stat {
     text-align: center;
     padding: 1.5rem 1rem;
@@ -362,47 +362,31 @@ body {
     transform: rotate(-90deg); /* start draw from top */
 }
 
-/* Outer track ring (static, faint) */
+/* Track ring — single, faint */
 .ring-track {
     fill: none;
     stroke: var(--border-color);
-    stroke-width: 2;
+    stroke-width: 1;
 }
 
-/* Outer animated ring */
+/* Animated ring — single, thin */
 .ring-outer {
     fill: none;
     stroke: var(--accent);
-    stroke-width: 2;
+    stroke-width: 1;
     stroke-linecap: round;
     stroke-dasharray: 339.3; /* 2π × 54 */
     stroke-dashoffset: 339.3;
     animation: ring-draw 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Inner track ring */
-.ring-inner-track {
-    fill: none;
-    stroke: var(--border-color);
-    stroke-width: 1.5;
-}
-
-/* Inner animated ring — slightly delayed, opposite feel */
+/* Inner rings hidden — single circle only */
+.ring-inner-track,
 .ring-inner {
-    fill: none;
-    stroke: var(--section-header-color);
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-dasharray: 263.9; /* 2π × 42 */
-    stroke-dashoffset: 263.9;
-    animation: ring-draw-inner 1.4s 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    display: none;
 }
 
 @keyframes ring-draw {
-    to { stroke-dashoffset: 0; }
-}
-
-@keyframes ring-draw-inner {
     to { stroke-dashoffset: 0; }
 }
 

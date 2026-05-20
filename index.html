@@ -5,253 +5,280 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Antone Holmes</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;width:100%}
-  body{
-    font-family:'Barlow',sans-serif;
-    background:#f2f0ec;
-    color:#1a1a1a;
-    min-height:100vh;
-    overflow-x:hidden;
-  }
-  .page{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    min-height:100vh;
-    position:relative;
-  }
-  .left{
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    padding:3rem 3rem 2.5rem 3.5rem;
-    position:relative;
-    z-index:2;
-  }
-  .wordmark{
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:900;
-    font-size:clamp(3.5rem,7vw,6.5rem);
-    line-height:0.88;
-    letter-spacing:-0.02em;
-    text-transform:uppercase;
-    color:#111;
-  }
-  .wordmark .first{display:block}
-  .wordmark .last{
-    display:block;
-    color:transparent;
-    -webkit-text-stroke:2px #111;
-  }
-  .tagline{
-    font-size:0.8125rem;
-    font-weight:500;
-    letter-spacing:0.18em;
-    text-transform:uppercase;
-    color:#888;
-    margin-top:1.25rem;
-  }
-  .bio{
-    font-size:1rem;
-    font-weight:300;
-    line-height:1.7;
-    color:#444;
-    max-width:380px;
-    margin-top:auto;
-    padding-top:3rem;
-  }
-  .cta-group{
-    display:flex;
-    flex-direction:column;
-    gap:0.75rem;
-    margin-top:2.5rem;
-  }
-  .cta-btn{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:1rem 1.375rem;
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:700;
-    font-size:0.875rem;
-    letter-spacing:0.15em;
-    text-transform:uppercase;
-    text-decoration:none;
-    border:1.5px solid #1a1a1a;
-    background:transparent;
-    color:#1a1a1a;
-    cursor:pointer;
-    transition:color 0.22s ease;
-    position:relative;
-    overflow:hidden;
-  }
-  .cta-btn::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:#1a1a1a;
-    transform:scaleX(0);
-    transform-origin:left;
-    transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);
-    z-index:0;
-  }
-  .cta-btn:hover::before{transform:scaleX(1)}
-  .cta-btn:hover{color:#f2f0ec}
-  .cta-btn span,.cta-btn svg{position:relative;z-index:1}
-  .cta-btn.primary{background:#1a1a1a;color:#f2f0ec}
-  .cta-btn.primary::before{background:#3a3a3a}
-  .arrow{
-    width:16px;height:16px;
-    stroke-width:2;
-    fill:none;
-    transition:stroke 0.22s ease,transform 0.22s ease;
-  }
-  .cta-btn:not(.primary) .arrow{stroke:#1a1a1a}
-  .cta-btn:not(.primary):hover .arrow{stroke:#f2f0ec;transform:translate(3px,-3px)}
-  .cta-btn.primary .arrow{stroke:#f2f0ec}
-  .cta-btn.primary:hover .arrow{transform:translate(3px,-3px)}
-  .right{
-    position:relative;
-    overflow:hidden;
-  }
-  .photo-frame{
-    width:100%;
-    height:100%;
-    min-height:100vh;
-    position:relative;
-  }
-  .photo-frame img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center top;
-    display:block;
-    filter:grayscale(15%) contrast(1.04);
-  }
-  .photo-overlay{
-    position:absolute;
-    inset:0;
-    background:linear-gradient(to right,#f2f0ec 0%,transparent 18%),
-               linear-gradient(to top,#f2f0ec 0%,transparent 15%);
-  }
-  .corner-label{
-    position:absolute;
-    bottom:2.25rem;
-    right:2rem;
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:700;
-    font-size:0.7rem;
-    letter-spacing:0.2em;
-    text-transform:uppercase;
-    color:#999;
-    writing-mode:vertical-rl;
-    text-orientation:mixed;
-  }
-  .rule{
-    width:40px;
-    height:2px;
-    background:#1a1a1a;
-    margin-bottom:1.5rem;
-  }
-  .footer-strip{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-top:2rem;
-    padding-top:1.25rem;
-    border-top:1px solid #ccc9c2;
-  }
-  .footer-strip a{
-    font-size:0.75rem;
-    font-weight:500;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    color:#888;
-    text-decoration:none;
-    transition:color 0.2s;
-  }
-  .footer-strip a:hover{color:#1a1a1a}
-  .footer-dot{width:4px;height:4px;border-radius:50%;background:#ccc9c2}
-  .hello-accent{
-    position:absolute;
-    top:2rem;
-    left:-1.5rem;
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:900;
-    font-size:clamp(2rem,4vw,3.5rem);
-    text-transform:uppercase;
-    color:transparent;
-    -webkit-text-stroke:1.5px #bbb;
-    letter-spacing:-0.02em;
-    pointer-events:none;
-    z-index:3;
-    white-space:nowrap;
-  }
-  @media(max-width:768px){
-    .page{grid-template-columns:1fr;grid-template-rows:auto 55vh}
-    .left{padding:2rem 1.75rem}
-    .right{min-height:0}
-    .hello-accent{display:none}
-    .wordmark{font-size:clamp(3rem,14vw,5rem)}
-  }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: #0e0d0b;
+  color: #f0ede8;
+}
+
+/* ── FULL-BLEED PHOTO BACKDROP ───────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  /* Desaturate slightly, keep it dignified */
+  filter: grayscale(20%) brightness(0.72) contrast(1.06);
+}
+
+/* Gradient veil — heavier at bottom for text legibility */
+.backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(14,13,11,0.30) 0%,
+      rgba(14,13,11,0.18) 30%,
+      rgba(14,13,11,0.55) 65%,
+      rgba(14,13,11,0.90) 100%
+    );
+}
+
+/* ── CENTERED CONTENT LAYER ──────────────────────────────────────── */
+.stage {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: clamp(2.5rem, 6vh, 4.5rem);
+  text-align: center;
+}
+
+/* ── NAME BLOCK ──────────────────────────────────────────────────── */
+.identity {
+  margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+}
+
+.name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(3.25rem, 9vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: #f5f2ed;
+  /* Subtle text shadow to lift from dark and light backgrounds */
+  text-shadow: 0 2px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.name .outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(245,242,237,0.75);
+  text-shadow: none;
+}
+
+.rule {
+  width: 36px;
+  height: 1.5px;
+  background: rgba(245,242,237,0.5);
+  margin: 1rem auto;
+}
+
+.tagline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(240,237,232,0.65);
+}
+
+/* ── CTA BUTTONS ─────────────────────────────────────────────────── */
+.cta-group {
+  display: flex;
+  gap: 1px; /* thin seam between buttons */
+  width: min(680px, 90vw);
+}
+
+.cta-btn {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.125rem 1rem 1rem;
+  background: rgba(14,13,11,0.55);
+  border: 1px solid rgba(245,242,237,0.14);
+  color: #f0ede8;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 0.28s ease, border-color 0.28s ease;
+  /* Frosted glass feel */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Wipe fill on hover */
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(245,242,237,0.10);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-btn:hover::before { transform: scaleY(1); }
+.cta-btn:hover { border-color: rgba(245,242,237,0.32); }
+
+/* Primary (first button) gets a slightly brighter base */
+.cta-btn.primary {
+  background: rgba(245,242,237,0.12);
+  border-color: rgba(245,242,237,0.28);
+}
+.cta-btn.primary:hover { background: rgba(245,242,237,0.20); }
+
+.btn-label {
+  position: relative;
+  z-index: 1;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.8rem, 1.6vw, 0.9375rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f0ede8;
+  line-height: 1;
+  margin-bottom: 0.45rem;
+  transition: color 0.2s;
+}
+
+/* Description — hidden by default, slides up on hover */
+.btn-desc {
+  position: relative;
+  z-index: 1;
+  font-family: 'Barlow', sans-serif;
+  font-size: clamp(0.65rem, 1.1vw, 0.725rem);
+  font-weight: 400;
+  color: rgba(240,237,232,0.55);
+  line-height: 1.45;
+  max-width: 16ch;
+  text-align: center;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+
+.cta-btn:hover .btn-desc {
+  max-height: 3rem;
+  opacity: 1;
+  margin-top: 0;
+}
+
+/* Arrow */
+.btn-arrow {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 1;
+  opacity: 0;
+  transform: translate(0, 4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.cta-btn:hover .btn-arrow { opacity: 0.6; transform: translate(2px, -2px); }
+
+/* ── CORNER ACCENTS ──────────────────────────────────────────────── */
+.corner {
+  position: fixed;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240,237,232,0.35);
+}
+.corner-tl { top: 1.75rem; left: 2rem; }
+.corner-tr { top: 1.75rem; right: 2rem; text-align: right; }
+.corner-br { bottom: 1.75rem; right: 2rem; writing-mode: vertical-rl; }
+
+/* ── MOBILE ──────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  html, body { overflow: auto; }
+  .stage { justify-content: flex-end; padding-bottom: 2rem; }
+  .cta-group { flex-direction: column; gap: 1px; width: 90vw; }
+  .cta-btn { padding: 1rem 1.25rem; }
+  .btn-desc { max-width: 100%; }
+  .corner-tr, .corner-br { display: none; }
+  .backdrop img { object-position: center 10%; }
+}
 </style>
 </head>
 <body>
-<div class="page">
 
-  <div class="left">
-    <div>
-      <div class="rule"></div>
-      <div class="wordmark">
-        <span class="first">Antone</span>
-        <span class="last">Holmes</span>
-      </div>
-      <p class="tagline">Sales &amp; GTM Leader &nbsp;·&nbsp; Educator &nbsp;·&nbsp; Builder</p>
+<!-- Full-bleed photo backdrop -->
+<div class="backdrop">
+  <img src="Headshot_WhiteButtonUp_SD_.jpeg" alt="Antone Holmes">
+</div>
+
+<!-- Corner labels -->
+<span class="corner corner-tl">Philadelphia, PA</span>
+<span class="corner corner-tr">Sales &middot; GTM &middot; Education</span>
+<span class="corner corner-br">2026</span>
+
+<!-- Centered stage content -->
+<div class="stage">
+
+  <div class="identity">
+    <div class="name">
+      <span>Antone</span><br>
+      <span class="outline">Holmes</span>
     </div>
-
-    <div>
-      <p class="bio">
-        Strategic leader scaling Partner ecosystems and revenue across Startup, SMB, and Enterprise at AWS and Comcast. Founder, educator, and community builder rooted in Philadelphia.
-      </p>
-
-      <div class="cta-group">
-        <a href="resume.html" class="cta-btn primary">
-          <span>View My Resume</span>
-          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H6M13 3V10"/></svg>
-        </a>
-        <a href="#" class="cta-btn">
-          <span>VOW Center &amp; Outreach</span>
-          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H6M13 3V10"/></svg>
-        </a>
-        <a href="#" class="cta-btn">
-          <span>Academic Work</span>
-          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H6M13 3V10"/></svg>
-        </a>
-      </div>
-
-      <div class="footer-strip">
-        <a href="mailto:antoneholmes@icloud.com">Email</a>
-        <div class="footer-dot"></div>
-        <a href="https://linkedin.com/in/antone-h" target="_blank">LinkedIn</a>
-        <div class="footer-dot"></div>
-        <a href="https://github.com/hjs-ah" target="_blank">GitHub</a>
-        <div class="footer-dot"></div>
-        <a href="#" target="_blank">Hampton University</a>
-      </div>
-    </div>
+    <div class="rule"></div>
+    <p class="tagline">Sales &amp; GTM Leader &nbsp;&middot;&nbsp; Educator &nbsp;&middot;&nbsp; Builder</p>
   </div>
 
-  <div class="right">
-    <div class="photo-frame">
-      <img src="Headshot_WhiteButtonUp_SD_.jpeg" alt="Antone Holmes">
-      <div class="photo-overlay"></div>
-    </div>
-    <span class="hello-accent">Say Hello.</span>
-    <span class="corner-label">Philadelphia, PA &nbsp;·&nbsp; 2025</span>
+  <div class="cta-group">
+
+    <a href="resume.html" class="cta-btn primary">
+      <svg class="btn-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none">
+        <path d="M2 12L12 2M12 2H5M12 2V9" stroke="#f0ede8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="btn-label">CV</span>
+      <span class="btn-desc">Full career history, skills &amp; credentials in one place</span>
+    </a>
+
+    <a href="resume.html#projects" class="cta-btn">
+      <svg class="btn-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none">
+        <path d="M2 12L12 2M12 2H5M12 2V9" stroke="#f0ede8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="btn-label">Pro Resume</span>
+      <span class="btn-desc">Focused view built for recruiters &amp; hiring teams</span>
+    </a>
+
+    <a href="resume.html#projects" class="cta-btn">
+      <svg class="btn-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none">
+        <path d="M2 12L12 2M12 2H5M12 2V9" stroke="#f0ede8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="btn-label">Cases</span>
+      <span class="btn-desc">GTM strategies, programs, &amp; outcomes I&rsquo;ve led</span>
+    </a>
+
   </div>
 
 </div>
+
 </body>
 </html>
