@@ -86,7 +86,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 .left-footer a:hover{color:var(--accent)}
 
 /* ══ RIGHT PANEL ═════════════════════════════════════════ */
-.right-panel{flex:1;height:100vh;overflow-y:auto;background:#fdfbf7}
+.right-panel{flex:1;height:100vh;overflow-y:auto;background:#ffffff;-webkit-overflow-scrolling:touch;}
 .page-view{display:none;padding:2.5rem 3rem;min-height:100%;animation:slideIn .24s ease both}
 .page-view.active{display:block}
 @keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
@@ -105,7 +105,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 .filter-tag.accent-tag.active{background:var(--accent);border-color:var(--accent)}
 
 /* ══ HOME ════════════════════════════════════════════════ */
-.home-hero{padding-bottom:1.75rem; solid var(--border);margin-bottom:1.875rem}
+.home-hero{padding-bottom:1.75rem;border-bottom:1px solid var(--border);margin-bottom:1.875rem}
 .home-headline{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(1.75rem,3.2vw,2.75rem);letter-spacing:-.025em;line-height:1;color:var(--ink);margin-bottom:.875rem}
 .home-headline .outline{color:transparent;-webkit-text-stroke:2px var(--ink)}
 .home-bio{font-size:.9rem;line-height:1.8;color:var(--ink-2);max-width:54ch;margin-bottom:1.375rem}
@@ -115,7 +115,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 .btn-ghost{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.375rem;background:transparent;color:var(--ink);border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:border-color .18s;text-decoration:none}
 .btn-ghost:hover{border-color:var(--ink)}
 
-.section-eyebrow{font-size:.85rem;font-weight:1000;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.75rem;padding-bottom:.45rem;border-bottom:1px solid var(--border)}
+.section-eyebrow{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.75rem;padding-bottom:.45rem;border-bottom:1px solid var(--border)}
 .blog-section{margin-bottom:2rem}
 
 /* Update / Working-on cards */
@@ -371,18 +371,22 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 
 /* ══ RESPONSIVE BREAKPOINTS ══════════════════════════════ */
 @media(max-width:768px){
-  /* Body: stack vertically */
-  body{flex-direction:column;overflow:hidden}
-  html,body{height:100%;overflow:hidden}
+  /* Body: column layout, NO overflow:hidden — that kills touch scroll */
+  html{height:100%;overflow:hidden}
+  body{flex-direction:column;height:100%;overflow:hidden}
 
   /* Mobile top bar */
   .mobile-bar{display:flex}
 
-  /* Right panel: full width, fills remaining height */
+  /* Right panel: the ONLY scroll container on mobile */
   .right-panel{
-    height:calc(100vh - 52px);
-    overflow-y:auto;
+    flex:1;
+    height:0; /* flex child — grows to fill remaining space */
+    min-height:0;
+    overflow-y:scroll; /* scroll not auto — forces scroll container on iOS */
+    -webkit-overflow-scrolling:touch; /* momentum scrolling on iOS */
     width:100%;
+    overscroll-behavior:contain;
   }
 
   /* Page padding — tighter on mobile */
@@ -399,10 +403,12 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
     transform:translateX(-100%);
     transition:transform .28s cubic-bezier(.4,0,.2,1);
     box-shadow:none;
+    pointer-events:none; /* don't intercept taps when off-screen */
   }
   .left-panel.drawer-open{
     transform:translateX(0);
     box-shadow:8px 0 32px rgba(17,17,16,.12);
+    pointer-events:all; /* restore taps when open */
   }
   .drawer-overlay{display:block}
 
@@ -466,6 +472,11 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
   .impact-num{font-size:1rem}
   .impact-lbl{font-size:.425rem}
 }
+
+/* Body scroll lock — class-based so it doesn't fight mobile scroll container */
+body.scroll-locked{overflow:hidden}
+body.scroll-locked .right-panel{overflow:hidden}
+
 </style>
 </head>
 <body>
@@ -1276,7 +1287,7 @@ function showPage(id, btn) {
   const view = document.getElementById('view-' + id);
   if (view) view.classList.add('active');
   if (btn) btn.classList.add('active');
-  document.querySelector('.right-panel').scrollTo({ top:0, behavior:'smooth' });
+  var rp=document.querySelector('.right-panel');if(rp){rp.scrollTop=0;}
   if (id === 'portfolio') maybeShowTagTooltip();
 }
 
@@ -1685,7 +1696,7 @@ function openDynamicModal(id) {
     overlay = document.createElement('div');
     overlay.id = 'dynamic-modal';
     overlay.className = 'modal-overlay';
-    overlay.onclick = function(e) { if (e.target === overlay) { overlay.classList.remove('open'); document.body.style.overflow = ''; } };
+    overlay.onclick = function(e) { if (e.target === overlay) { overlay.classList.remove('open'); document.body.classList.remove('scroll-locked'); } };
 
     const box = document.createElement('div');
     box.className = 'modal-box';
@@ -1693,7 +1704,7 @@ function openDynamicModal(id) {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
     closeBtn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
-    closeBtn.onclick = function() { overlay.classList.remove('open'); document.body.style.overflow = ''; };
+    closeBtn.onclick = function() { overlay.classList.remove('open'); document.body.classList.remove('scroll-locked'); };
 
     const dateEl = document.createElement('div'); dateEl.id = 'dyn-date'; dateEl.className = 'modal-date';
     const tagEl  = document.createElement('span'); tagEl.id  = 'dyn-tag';  tagEl.className  = 'modal-tag';
@@ -1719,7 +1730,7 @@ function openDynamicModal(id) {
     bodyEl.appendChild(p);
   });
   overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.body.classList.add('scroll-locked');
 }
 
 /* ── Card filtering (home: working + reflections) ────── */
@@ -1791,12 +1802,12 @@ function filterPortfolio(clickedBtn) {
 function openModal(id) {
   const overlay = document.getElementById('modal-' + id);
   if (overlay) overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.body.classList.add('scroll-locked');
 }
 function closeModal(id) {
   const overlay = document.getElementById(id);
   if (overlay) overlay.classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.classList.remove('scroll-locked');
 }
 function closeModalOutside(e, id) {
   if (e.target === e.currentTarget) closeModal(id);
@@ -1934,19 +1945,19 @@ function toggleDrawer() {
     panel.classList.remove('drawer-open');
     overlay.classList.remove('open');
     burger.classList.remove('open');
-    document.body.style.overflow = '';
+    document.body.classList.remove('scroll-locked');
   } else {
     panel.classList.add('drawer-open');
     overlay.classList.add('open');
     burger.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('scroll-locked');
   }
 }
 function closeDrawer() {
   document.querySelector('.left-panel').classList.remove('drawer-open');
   document.getElementById('drawer-overlay').classList.remove('open');
   document.getElementById('burger-btn').classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.classList.remove('scroll-locked');
 }
 
 // Close drawer when a nav button is tapped on mobile
