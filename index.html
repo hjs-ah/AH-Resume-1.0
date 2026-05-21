@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Antone Holmes</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111110'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='Arial Black,sans-serif' font-weight='900' font-size='13'%3EAH%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="shortcut icon" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ══ TOKENS ══════════════════════════════════════════════ */
@@ -59,17 +60,114 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 .impact-num{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-.03em;color:var(--ink);line-height:1;margin-bottom:.15rem}
 .impact-lbl{font-size:.475rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);line-height:1.2}
 
-/* ── Credential chips — image-fitted ── */
-.cred-row{display:flex;flex-direction:column;align-items:flex-start;gap:.3rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);margin-bottom:.75rem}
-.cred-chip{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem .35rem .45rem;border:1px solid var(--border);border-radius:4px;transition:border-color .16s;width:auto;align-self:flex-start}
-.cred-chip:hover{border-color:var(--ink-3)}
-/* Image container — fixed 28×28, image fills it exactly */
-.chip-img{width:28px;height:28px;flex-shrink:0;border-radius:3px;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center}
-.chip-img img{width:100%;height:100%;object-fit:contain;display:block}
-/* Fallback text when no image */
-.chip-img-text{font-size:.5rem;font-weight:800;color:var(--ink-3);letter-spacing:.03em;line-height:1;text-align:center}
-.chip-text{font-size:.675rem;font-weight:600;color:var(--ink-2);line-height:1.15}
-.chip-sub{font-size:.575rem;font-weight:400;color:var(--ink-3)}
+/* ── Credential bubbles — 3×3 grid, expand horizontally on hover ── */
+.cred-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:auto auto auto;
+  gap:.35rem;
+  padding-bottom:.875rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:.875rem;
+}
+
+.cred-chip{
+  /* flex=1 at rest, flex=2.2 on hover — neighbors shrink proportionally */
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:.55rem .25rem .5rem;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--panel);
+  cursor:default;
+  /* width transitions via flex — grid handles rows, flex handles col expand */
+  transition:
+    border-color .22s ease,
+    box-shadow .22s ease,
+    flex .22s ease;
+  overflow:hidden;
+  min-height:52px;
+  min-width:0;
+}
+
+/* Each row is its own flex context so expand stays within that row */
+.cred-row{display:grid;grid-template-columns:1fr;gap:.35rem}
+.cred-row-inner{display:flex;gap:.35rem;width:100%}
+
+.cred-chip:hover{
+  flex:2.2;
+  border-color:var(--accent);
+  box-shadow:0 3px 12px rgba(181,134,58,.13);
+  z-index:2;
+}
+
+/* Icon circle — shrinks slightly on hover to make room for text */
+.chip-img{
+  width:28px;height:28px;
+  flex-shrink:0;
+  border-radius:50%;
+  overflow:hidden;
+  background:var(--bg);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  transition:width .22s ease, height .22s ease, margin-bottom .22s ease;
+  margin-bottom:.2rem;
+}
+.cred-chip:hover .chip-img{
+  width:22px;height:22px;
+  margin-bottom:.15rem;
+}
+.chip-img img{width:100%;height:100%;object-fit:contain;display:block;padding:3px}
+.chip-img-text{
+  font-size:.45rem;font-weight:800;
+  color:var(--ink-3);letter-spacing:.02em;
+  line-height:1;text-align:center;
+}
+
+/* Detail — hidden at rest, fades in horizontally on hover */
+.chip-detail{
+  display:flex;flex-direction:column;align-items:center;
+  width:0;overflow:hidden;opacity:0;
+  white-space:nowrap;
+  transition:width .22s ease, opacity .2s ease;
+  text-align:center;
+}
+/* When chip expands, detail gets width */
+.cred-chip:hover .chip-detail{
+  width:auto;
+  max-width:72px;
+  opacity:1;
+  margin-top:.05rem;
+}
+.chip-text{
+  font-size:.5rem;font-weight:700;
+  color:var(--ink);line-height:1.25;
+  white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:72px;
+  display:block;
+}
+.chip-sub{
+  font-size:.45rem;font-weight:400;
+  color:var(--ink-3);line-height:1.3;
+  white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:72px;
+  display:block;
+}
+
+/* Mobile — 2 col, always show detail vertically */
+@media(max-width:768px){
+  .cred-row{grid-template-columns:1fr}
+  .cred-row-inner{flex-wrap:wrap}
+  .cred-chip{flex:1;min-width:calc(50% - .35rem)}
+  .chip-detail{width:auto;max-width:none;opacity:1}
+  .cred-chip:hover .chip-detail{max-width:none}
+  .chip-text,.chip-sub{white-space:normal;max-width:100%}
+}
 
 /* ── Navigate ── */
 .nav-section{padding:0;flex-shrink:0;width:100%}
@@ -477,6 +575,84 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 body.scroll-locked{overflow:hidden}
 body.scroll-locked .right-panel{overflow:hidden}
 
+
+/* ── Section labels (Career Impact, Credentials) ── */
+.panel-section-label{
+  font-size:.55rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:.45rem;display:block;
+}
+
+/* ── Dark / Light toggle ── */
+.theme-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:.75rem;
+}
+.theme-toggle{
+  display:flex;align-items:center;gap:.5rem;
+  cursor:pointer;user-select:none;
+}
+.theme-toggle-track{
+  width:32px;height:17px;
+  border-radius:20px;
+  background:var(--border);
+  border:1px solid var(--border);
+  position:relative;
+  transition:background .22s ease, border-color .22s ease;
+  flex-shrink:0;
+}
+.theme-toggle-track::after{
+  content:'';
+  position:absolute;
+  top:2px;left:2px;
+  width:11px;height:11px;
+  border-radius:50%;
+  background:var(--ink-3);
+  transition:transform .22s cubic-bezier(.4,0,.2,1), background .22s;
+}
+.theme-toggle-label{
+  font-size:.5rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);
+  transition:color .2s;
+}
+
+/* Dark mode active state */
+[data-theme="dark"] .theme-toggle-track{
+  background:var(--ink);
+  border-color:var(--ink);
+}
+[data-theme="dark"] .theme-toggle-track::after{
+  transform:translateX(15px);
+  background:#fff;
+}
+[data-theme="dark"] .theme-toggle-label{color:var(--ink-3)}
+
+/* ── Dark mode token overrides ── */
+[data-theme="dark"]{
+  --bg:#1a1a18;
+  --panel:#111110;
+  --ink:#f0ede8;
+  --ink-2:#c8c4bc;
+  --ink-3:#6a6862;
+  --border:#2a2a28;
+  --accent:#c49a4a;
+}
+[data-theme="dark"] .right-panel{background:#141413}
+[data-theme="dark"] .page-view{background:#141413}
+[data-theme="dark"] .mobile-bar{background:#111110;border-color:#2a2a28}
+[data-theme="dark"] .nav-btn::before{background:var(--ink-2)}
+[data-theme="dark"] .nav-btn:hover,.nav-btn.active{color:var(--bg)}
+[data-theme="dark"] .concept-card,[data-theme="dark"] .case-card,
+[data-theme="dark"] .portfolio-card,[data-theme="dark"] .article-card,
+[data-theme="dark"] .edu-item,[data-theme="dark"] .metric-card{
+  background:#1a1a18;
+}
+[data-theme="dark"] .cred-chip{background:#111110}
+[data-theme="dark"] .chip-img{background:#1a1a18}
+[data-theme="dark"] .impact-cell{background:#111110}
+[data-theme="dark"] .section-cards .s-card{background:#1a1a18}
+[data-theme="dark"] .metrics-band{background:#0a0a09}
+
 </style>
 </head>
 <body>
@@ -504,6 +680,15 @@ body.scroll-locked .right-panel{overflow:hidden}
     <div class="name">Antone<br><span class="outline">Holmes</span></div>
     <p class="title-line">Sales &amp; GTM Leader · Educator · Builder</p>
 
+    <!-- Dark / Light toggle -->
+    <div class="theme-row">
+      <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+        <div class="theme-toggle-track"></div>
+        <span class="theme-toggle-label" id="theme-label">Light</span>
+      </div>
+    </div>
+
+    <span class="panel-section-label">Career Impact</span>
     <div class="impact-grid" data-count="5" id="impact-grid">
       <div class="impact-cell"><div class="impact-num">12+</div><div class="impact-lbl">Case Studies</div></div>
       <div class="impact-cell"><div class="impact-num">50+</div><div class="impact-lbl">Promoted</div></div>
@@ -512,35 +697,56 @@ body.scroll-locked .right-panel{overflow:hidden}
       <div class="impact-cell"><div class="impact-num">3</div><div class="impact-lbl">Orgs Founded</div></div>
     </div>
 
-    <!-- Credential chips — images fitted to icon box -->
-    <div class="cred-row">
-      <div class="cred-chip">
-        <div class="chip-img">
-          <!-- LIVE: <img src="badges/aws-saa.png" alt="AWS"> -->
-          <span class="chip-img-text">AWS</span>
+    <span class="panel-section-label">Credentials</span>
+    <!-- Credential bubbles — 3-per-row flex, expand on hover within row -->
+    <div class="cred-row" id="cred-row">
+      <!-- Row 1: Certifications -->
+      <div class="cred-row-inner">
+        <div class="cred-chip">
+          <div class="chip-img"><span class="chip-img-text">AWS</span></div>
+          <div class="chip-detail">
+            <span class="chip-text">AWS Certified</span>
+            <span class="chip-sub">Cloud Practitioner</span>
+          </div>
         </div>
-        <div><div class="chip-text">AWS Certified</div><div class="chip-sub">Solutions Architect</div></div>
+        <div class="cred-chip">
+          <div class="chip-img"><span class="chip-img-text">AWS</span></div>
+          <div class="chip-detail">
+            <span class="chip-text">AWS Certified</span>
+            <span class="chip-sub">Solutions Architect</span>
+          </div>
+        </div>
+        <div class="cred-chip">
+          <div class="chip-img"><span class="chip-img-text">AWS</span></div>
+          <div class="chip-detail">
+            <span class="chip-text">AWS Certified</span>
+            <span class="chip-sub">AI Practitioner</span>
+          </div>
+        </div>
       </div>
-      <div class="cred-chip">
-        <div class="chip-img">
-          <!-- LIVE: <img src="schools/hampton.png" alt="Hampton University"> -->
-          <span class="chip-img-text">HU</span>
+      <!-- Row 2: Universities -->
+      <div class="cred-row-inner">
+        <div class="cred-chip">
+          <div class="chip-img"><span class="chip-img-text">HU</span></div>
+          <div class="chip-detail">
+            <span class="chip-text">Hampton Univ.</span>
+            <span class="chip-sub">PhD Candidate</span>
+          </div>
         </div>
-        <div><div class="chip-text">Hampton University</div><div class="chip-sub">PhD Candidate</div></div>
-      </div>
-      <div class="cred-chip">
-        <div class="chip-img">
-          <!-- LIVE: <img src="schools/iup.png" alt="IUP"> -->
-          <span class="chip-img-text">IUP</span>
+        <div class="cred-chip">
+          <div class="chip-img"><span class="chip-img-text">IUP</span></div>
+          <div class="chip-detail">
+            <span class="chip-text">Indiana Univ.</span>
+            <span class="chip-sub">M.A. Comms</span>
+          </div>
         </div>
-        <div><div class="chip-text">Indiana Univ. of PA</div><div class="chip-sub">M.A. Communications</div></div>
-      </div>
-      <div class="cred-chip">
-        <div class="chip-img">
-          <!-- LIVE: <img src="schools/pierce.png" alt="Pierce College"> -->
-          <span class="chip-img-text">PC</span>
+        <div class="cred-chip">
+          <div class="chip-img"><span class="chip-img-text">PC</span></div>
+          <div class="chip-detail">
+            <span class="chip-text">Pierce College</span>
+            <span class="chip-sub">B.S. Business</span>
+          </div>
         </div>
-        <div><div class="chip-text">Pierce College</div><div class="chip-sub">B.S. Business Administration</div></div>
       </div>
     </div>
 
@@ -951,7 +1157,7 @@ body.scroll-locked .right-panel{overflow:hidden}
       <span class="tool-chip" data-org="VOW" onclick="filterResume(this)">
         <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
           <!-- LIVE: <img src="badges/vow.png" style="width:18px;height:18px;object-fit:contain"> -->
-          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </span>
         <span class="tool-chip-label">VOW Center</span>
       </span>
@@ -1379,49 +1585,57 @@ async function loadData() {
     }
   }
 
-  // ── Credentials ───────────────────────────────────────
+  // ── Credentials — render in rows of 3 ───────────────
   const creds = data.credentials || [];
   if (creds.length) {
     const cr = document.querySelector('.cred-row');
     if (cr) {
       cr.innerHTML = '';
-      creds.forEach(function(c) {
-        const chip = document.createElement('div');
-        chip.className = 'cred-chip';
-        const imgWrap = document.createElement('div');
-        imgWrap.className = 'chip-img';
-        if (c.imageUrl) {
-          const img = document.createElement('img');
-          img.alt = c.name;
-          img.onerror = function() {
-            // Image failed (404, wrong filename, etc) — swap to acronym fallback
-            this.remove();
-            const span = document.createElement('span');
-            span.className = 'chip-img-text';
-            span.textContent = (c.acronym || c.name.substring(0,3)).toUpperCase();
-            imgWrap.appendChild(span);
-          };
-          img.src = c.imageUrl; // set src AFTER onerror so handler fires reliably
-          imgWrap.appendChild(img);
-        } else {
-          const span = document.createElement('span');
-          span.className = 'chip-img-text';
-          span.textContent = (c.acronym || c.name.substring(0,3)).toUpperCase();
-          imgWrap.appendChild(span);
-        }
-        const text = document.createElement('div');
-        const primary = document.createElement('div');
-        primary.className = 'chip-text';
-        primary.textContent = c.name;
-        const sub = document.createElement('div');
-        sub.className = 'chip-sub';
-        sub.textContent = c.subtitle || '';
-        text.appendChild(primary);
-        text.appendChild(sub);
-        chip.appendChild(imgWrap);
-        chip.appendChild(text);
-        cr.appendChild(chip);
-      });
+      for (var ri = 0; ri < creds.length; ri += 3) {
+        var row = document.createElement('div');
+        row.className = 'cred-row-inner';
+        var rowCreds = creds.slice(ri, ri + 3);
+        rowCreds.forEach(function(cred) {
+          var chip = document.createElement('div');
+          chip.className = 'cred-chip';
+          var imgWrap = document.createElement('div');
+          imgWrap.className = 'chip-img';
+          // Acronym: use explicit field, then capital letters of name, then first 3 chars
+          var acronym = cred.acronym || cred.name.replace(/[^A-Z]/g,'').substring(0,4) || cred.name.substring(0,3).toUpperCase();
+          if (cred.imageUrl) {
+            var img = document.createElement('img');
+            img.alt = cred.name;
+            img.onerror = (function(wrap, acr) { return function() {
+              this.remove();
+              var sp = document.createElement('span');
+              sp.className = 'chip-img-text';
+              sp.textContent = acr;
+              wrap.appendChild(sp);
+            };})(imgWrap, acronym);
+            img.src = cred.imageUrl;
+            imgWrap.appendChild(img);
+          } else {
+            var sp = document.createElement('span');
+            sp.className = 'chip-img-text';
+            sp.textContent = acronym;
+            imgWrap.appendChild(sp);
+          }
+          var detail = document.createElement('div');
+          detail.className = 'chip-detail';
+          var primary = document.createElement('span');
+          primary.className = 'chip-text';
+          primary.textContent = cred.name.split(' ').slice(0,2).join(' ');
+          var sub = document.createElement('span');
+          sub.className = 'chip-sub';
+          sub.textContent = cred.subtitle || '';
+          detail.appendChild(primary);
+          detail.appendChild(sub);
+          chip.appendChild(imgWrap);
+          chip.appendChild(detail);
+          row.appendChild(chip);
+        });
+        cr.appendChild(row);
+      }
     }
   }
 
@@ -1976,8 +2190,33 @@ document.addEventListener('keydown', e => {
 });
 
 
+
+/* ── Theme toggle ─────────────────────────────────── */
+function toggleTheme() {
+  const current = document.documentElement.dataset.theme || 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('ah-theme', next);
+  const label = document.getElementById('theme-label');
+  if (label) label.textContent = next === 'dark' ? 'Dark' : 'Light';
+}
+
+// Restore saved theme on load
+(function() {
+  const saved = localStorage.getItem('ah-theme');
+  if (saved) {
+    document.documentElement.dataset.theme = saved;
+    // label updated after DOM loads via DOMContentLoaded
+  }
+})();
+
 /* ── Init — run after ALL functions defined ─────────── */
 document.addEventListener('DOMContentLoaded', function() {
+  // Restore theme label after DOM ready
+  const savedTheme = localStorage.getItem('ah-theme') || 'light';
+  document.documentElement.dataset.theme = savedTheme;
+  const lbl = document.getElementById('theme-label');
+  if (lbl) lbl.textContent = savedTheme === 'dark' ? 'Dark' : 'Light';
   setImpactCount(5);
   loadData();
 });
