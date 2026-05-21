@@ -1381,13 +1381,21 @@ async function loadData() {
         imgWrap.className = 'chip-img';
         if (c.imageUrl) {
           const img = document.createElement('img');
-          img.src = c.imageUrl;
           img.alt = c.name;
+          img.onerror = function() {
+            // Image failed (404, wrong filename, etc) — swap to acronym fallback
+            this.remove();
+            const span = document.createElement('span');
+            span.className = 'chip-img-text';
+            span.textContent = (c.acronym || c.name.substring(0,3)).toUpperCase();
+            imgWrap.appendChild(span);
+          };
+          img.src = c.imageUrl; // set src AFTER onerror so handler fires reliably
           imgWrap.appendChild(img);
         } else {
           const span = document.createElement('span');
           span.className = 'chip-img-text';
-          span.textContent = c.name.substring(0,3).toUpperCase();
+          span.textContent = (c.acronym || c.name.substring(0,3)).toUpperCase();
           imgWrap.appendChild(span);
         }
         const text = document.createElement('div');

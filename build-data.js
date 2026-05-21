@@ -194,8 +194,9 @@ async function main() {
 
     const credentials = credentialRows.length ? credentialRows.map(r => ({
       name:     _title(r.properties, 'Name'),
-      subtitle: _rt(r.properties, 'Title'),
+      subtitle: _rt(r.properties, 'Subtitle') || _rt(r.properties, 'Title'),
       imageUrl: _url(r.properties, 'Image URL') || _files(r.properties, 'Image'),
+      acronym:  _rt(r.properties, 'Acronym'),
       order:    _num(r.properties, 'Order') || 0,
     })) : certifications; // fall back to Certification rows if Credential not set up yet
 
