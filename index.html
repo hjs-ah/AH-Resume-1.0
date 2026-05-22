@@ -31,7 +31,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 
 .identity{padding:0 1.5rem 1rem;flex-shrink:0}
 .name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.75rem;letter-spacing:-.02em;line-height:1;color:var(--ink);margin-bottom:.2rem; padding-top: 2rem;}
-.name .outline{color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.name .outline{color:var(--ink);-webkit-text-stroke:none}
 .title-line{font-size:.7rem;font-weight:500;color:var(--ink-3);line-height:1.5;margin-bottom:.75rem}
 
 /* ── Impact grid ── */
@@ -142,6 +142,21 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
   opacity:1;
   margin-top:.05rem;
 }
+/* Resting hint — "Details ↗" shown when not hovered */
+.chip-hint{
+  display:flex;align-items:center;gap:.2rem;
+  font-size:.42rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);
+  margin-top:.2rem;
+  opacity:1;
+  transition:opacity .18s ease;
+  white-space:nowrap;
+  position:absolute;bottom:.45rem;left:50%;transform:translateX(-50%);
+}
+.chip-hint svg{flex-shrink:0}
+.cred-chip:hover .chip-hint{opacity:0;pointer-events:none}
+/* Chip needs relative positioning for the hint */
+.cred-chip{position:relative}
 .chip-text{
   font-size:.5rem;font-weight:700;
   color:var(--ink);line-height:1.25;
@@ -205,7 +220,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 /* ══ HOME ════════════════════════════════════════════════ */
 .home-hero{padding-bottom:1.75rem;margin-bottom:1.875rem}
 .home-headline{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(1.75rem,3.2vw,2.75rem);letter-spacing:-.025em;line-height:1;color:var(--ink);margin-bottom:.875rem}
-.home-headline .outline{color:transparent;-webkit-text-stroke:2px var(--ink)}
+.home-headline .outline{color:var(--ink);-webkit-text-stroke:none}
 .home-bio{font-size:.9rem;line-height:1.8;color:var(--ink-2);max-width:54ch;margin-bottom:1.375rem}
 .home-ctas{display:flex;gap:.625rem}
 .btn-solid{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.375rem;background:var(--ink);color:#fff;border:1.5px solid var(--ink);border-radius:var(--r);text-decoration:none;cursor:pointer;transition:background .18s}
@@ -446,7 +461,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
   font-weight:900;font-size:1.1rem;
   letter-spacing:-.02em;color:var(--ink);
 }
-.mobile-bar-name .outline{color:transparent;-webkit-text-stroke:1px var(--ink)}
+.mobile-bar-name .outline{color:var(--ink);-webkit-text-stroke:none}
 .burger{
   width:36px;height:36px;
   border:1px solid var(--border);border-radius:var(--r);
@@ -836,14 +851,15 @@ body.scroll-locked .right-panel{overflow:hidden}
   font-weight:800;
   font-size:1.625rem;
   letter-spacing:-.03em;
-  -webkit-text-stroke:1.5px var(--ink);
+  color:var(--ink);
+  -webkit-text-stroke:none;
 }
 [data-font="dm-sans"] .photo-ph .mono{font-family:'DM Sans',sans-serif}
 [data-font="dm-sans"] .impact-num{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.03em}
 [data-font="dm-sans"] .nav-btn{font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.04em}
 [data-font="dm-sans"] .page-title{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.04em}
 [data-font="dm-sans"] .home-headline{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.04em}
-[data-font="dm-sans"] .home-headline .outline{-webkit-text-stroke:2px var(--ink);font-family:'DM Sans',sans-serif}
+[data-font="dm-sans"] .home-headline .outline{color:var(--ink);-webkit-text-stroke:none;font-family:'DM Sans',sans-serif}
 [data-font="dm-sans"] .btn-solid,[data-font="dm-sans"] .btn-ghost{font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.06em}
 [data-font="dm-sans"] .metric-card-num{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.03em}
 [data-font="dm-sans"] .exp-co{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.03em}
@@ -916,6 +932,7 @@ body.scroll-locked .right-panel{overflow:hidden}
             <span class="chip-text">AWS Certified</span>
             <span class="chip-sub">Cloud Practitioner</span>
           </div>
+          <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">AWS</span></div>
@@ -923,6 +940,7 @@ body.scroll-locked .right-panel{overflow:hidden}
             <span class="chip-text">AWS Certified</span>
             <span class="chip-sub">Solutions Architect</span>
           </div>
+          <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">AWS</span></div>
@@ -930,6 +948,7 @@ body.scroll-locked .right-panel{overflow:hidden}
             <span class="chip-text">AWS Certified</span>
             <span class="chip-sub">AI Practitioner</span>
           </div>
+          <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
       </div>
       <!-- Row 2: Universities -->
@@ -940,6 +959,7 @@ body.scroll-locked .right-panel{overflow:hidden}
             <span class="chip-text">Hampton Univ.</span>
             <span class="chip-sub">PhD Candidate</span>
           </div>
+          <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">IUP</span></div>
@@ -947,6 +967,7 @@ body.scroll-locked .right-panel{overflow:hidden}
             <span class="chip-text">Indiana Univ.</span>
             <span class="chip-sub">M.A. Comms</span>
           </div>
+          <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">PC</span></div>
@@ -954,7 +975,6 @@ body.scroll-locked .right-panel{overflow:hidden}
             <span class="chip-text">Pierce College</span>
             <span class="chip-sub">B.S. Business</span>
           </div>
-        </div>
       </div>
     </div>
 
@@ -1927,8 +1947,12 @@ async function loadData() {
           sub.textContent = cred.subtitle || '';
           detail.appendChild(primary);
           detail.appendChild(sub);
+          var hint = document.createElement('span');
+          hint.className = 'chip-hint';
+          hint.innerHTML = 'Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg>';
           chip.appendChild(imgWrap);
           chip.appendChild(detail);
+          chip.appendChild(hint);
           row.appendChild(chip);
         });
         cr.appendChild(row);
