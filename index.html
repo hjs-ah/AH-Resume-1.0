@@ -727,9 +727,98 @@ body.scroll-locked .right-panel{overflow:hidden}
 
 /* Portfolio thumb placeholder */
 [data-theme="dark"] .portfolio-thumb{background:#222220;color:var(--ink-3)}
+[data-theme="dark"] .books-section{border-color:#2e2c28}
+[data-theme="dark"] .books-grid{border-color:#2e2c28}
+[data-theme="dark"] .book-card{border-color:#2e2c28}
+[data-theme="dark"] .book-card:hover{background:#1c1c1a}
+[data-theme="dark"] .book-cover-ph{background:#222220;border-color:#2e2c28;color:var(--ink-3)}
+[data-theme="dark"] .book-subtitle{color:var(--ink-2)}
 
 /* Modal */
 [data-theme="dark"] .modal-box{background:#1c1c1a;border-color:#2e2c28}
+
+
+/* ══ PUBLICATIONS — BOOKS ZONE ══════════════════════════ */
+.books-section{margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.books-grid{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border)}
+
+.book-card{
+  display:flex;flex-direction:column;align-items:center;
+  padding:1.25rem 1.5rem 1.25rem;
+  border-right:1px solid var(--border);
+  flex:0 0 auto;
+  width:220px;
+  position:relative;
+  text-decoration:none;color:inherit;
+  transition:background .18s;
+}
+.book-card:hover{background:var(--bg)}
+.book-card:last-child{border-right:none}
+
+/* Year label above card */
+.book-year{
+  font-size:.575rem;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);
+  align-self:flex-start;margin-bottom:.75rem;
+}
+
+/* Cover image */
+.book-cover{
+  width:100%;max-width:185px;
+  aspect-ratio:2/3;
+  object-fit:cover;
+  border-radius:3px;
+  box-shadow:0 4px 18px rgba(0,0,0,.14), 2px 2px 0 rgba(0,0,0,.06);
+  margin-bottom:1rem;
+  display:block;
+}
+/* Placeholder when no image */
+.book-cover-ph{
+  width:100%;max-width:185px;
+  aspect-ratio:2/3;
+  background:var(--bg);border:1px solid var(--border);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:1rem;text-align:center;padding:.5rem;
+}
+
+/* Title and subtitle */
+.book-title{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;
+  font-size:1rem;letter-spacing:-.01em;
+  color:var(--accent);text-align:center;line-height:1.2;
+  margin-bottom:.2rem;
+}
+.book-subtitle{
+  font-size:.725rem;font-weight:500;color:var(--ink-2);
+  text-align:center;line-height:1.4;margin-bottom:.875rem;
+}
+
+/* CTA */
+.book-cta{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);
+  text-decoration:none;transition:opacity .16s;
+}
+.book-cta:hover{opacity:.7}
+.book-cta-soon{
+  font-size:.65rem;font-weight:600;letter-spacing:.06em;
+  color:var(--ink-3);font-style:italic;
+}
+
+/* ══ PUBLICATIONS — ACADEMIC LIST ZONE ══════════════════ */
+/* Already mostly styled — just ensure consistent indentation */
+.pub-list .pub-entry{padding:.875rem 0;border-bottom:1px solid var(--border);display:flex;gap:.875rem}
+.pub-list .pub-entry:last-child{border-bottom:none}
+.pub-list .pub-year{font-size:.6rem;font-weight:700;color:var(--ink-3);min-width:36px;padding-top:.1rem;flex-shrink:0}
+
+/* Mobile */
+@media(max-width:768px){
+  .book-card{width:160px;padding:1rem}
+  .book-cover,.book-cover-ph{max-width:140px}
+}
 
 </style>
 </head>
@@ -1080,39 +1169,80 @@ body.scroll-locked .right-panel{overflow:hidden}
       <div>
         <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
           <p class="cv-sec-label">Publications &amp; Scholarship</p>
-          <!-- Notion: Section Type = "CV-Publication", fields: Year, Title, Detail, Type (chip label), Link -->
-          <div class="pub-entry">
-            <div class="pub-year">2025</div>
-            <div class="pub-body">
-              <span class="pub-type-chip pub-chapter">Dissertation Chapter</span>
-              <div class="pub-title">"The Shepherd as Activist" — RELO 730 Final Paper</div>
-              <div class="pub-detail">Hampton University School of Religion. 5,000-word examination of incarnational ministry and prophetic activism in the Black church tradition.</div>
+
+          <!-- BOOKS ZONE — Section Type = "Book" in Notion -->
+          <!-- Notion fields: Name (title), Title (subtitle), Date Range (year),
+               Image URL (cover), Link (Amazon/store URL), Description (optional) -->
+          <div class="books-section" id="books-zone">
+            <div class="books-grid" id="books-grid">
+
+              <!-- Book 1 — The New Man's Devotional -->
+              <div class="book-card">
+                <span class="book-year">2025</span>
+                <img class="book-cover"
+                  src="https://raw.githubusercontent.com/hjs-ah/AH-Resume-1.0/main/headshots/new-mans-devotional-cover.jpg"
+                  alt="The New Man's Devotional"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="book-cover-ph" style="display:none">Cover image<br>coming soon</div>
+                <div class="book-title">The New Man's Devotional</div>
+                <div class="book-subtitle">FIRST EDITION</div>
+                <a href="https://www.amazon.com" target="_blank" rel="noopener" class="book-cta">
+                  View on Amazon
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg>
+                </a>
+              </div>
+
+              <!-- Book 2 — God's Word -->
+              <div class="book-card">
+                <span class="book-year">2026</span>
+                <img class="book-cover"
+                  src="https://raw.githubusercontent.com/hjs-ah/AH-Resume-1.0/main/headshots/gods-word-cover.jpg"
+                  alt="God's Word"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="book-cover-ph" style="display:none">Cover image<br>coming soon</div>
+                <div class="book-title">God's Word</div>
+                <div class="book-subtitle">The Anchor, Lighthouse, &amp; Captain</div>
+                <span class="book-cta-soon">Coming soon!</span>
+              </div>
+
             </div>
           </div>
-          <div class="pub-entry">
-            <div class="pub-year">2024</div>
-            <div class="pub-body">
-              <span class="pub-type-chip pub-article">Article</span>
-              <div class="pub-title">Revenue Enablement Is a Systems Problem, Not a Training Problem</div>
-              <div class="pub-detail">Substack. Examines the gap between training delivery and capability development in enterprise sales organizations.</div>
-              <a href="#" class="pub-link">Read ↗</a>
+
+          <!-- ACADEMIC LIST ZONE — Section Type = "CV-Publication" in Notion -->
+          <div class="pub-list" id="pub-list">
+            <div class="pub-entry">
+              <div class="pub-year">2025</div>
+              <div class="pub-body">
+                <span class="pub-type-chip pub-chapter">Dissertation Chapter</span>
+                <div class="pub-title">"The Shepherd as Activist" — RELO 730 Final Paper</div>
+                <div class="pub-detail">Hampton University School of Religion. 5,000-word examination of incarnational ministry and prophetic activism in the Black church tradition.</div>
+              </div>
             </div>
-          </div>
-          <div class="pub-entry">
-            <div class="pub-year">2024</div>
-            <div class="pub-body">
-              <span class="pub-type-chip pub-article">Article</span>
-              <div class="pub-title">The Black Church as Anchor Institution: Beyond Sunday Morning</div>
-              <div class="pub-detail">Medium. Connects Black ecclesiology to anchor institution theory and community development literature.</div>
-              <a href="#" class="pub-link">Read ↗</a>
+            <div class="pub-entry">
+              <div class="pub-year">2024</div>
+              <div class="pub-body">
+                <span class="pub-type-chip pub-article">Article</span>
+                <div class="pub-title">Revenue Enablement Is a Systems Problem, Not a Training Problem</div>
+                <div class="pub-detail">Substack. Examines the gap between training delivery and capability development in enterprise sales organizations.</div>
+                <a href="https://substack.com/@antoneholmes" target="_blank" rel="noopener" class="pub-link">Read ↗</a>
+              </div>
             </div>
-          </div>
-          <div class="pub-entry">
-            <div class="pub-year">2023</div>
-            <div class="pub-body">
-              <span class="pub-type-chip pub-chapter">Coursework</span>
-              <div class="pub-title">HBCUs and the Black Church: Theological Partners in Formation</div>
-              <div class="pub-detail">Hampton University RELO 713. APA 7 scholarly paper on institutional alignment between Black higher education and ecclesial formation.</div>
+            <div class="pub-entry">
+              <div class="pub-year">2024</div>
+              <div class="pub-body">
+                <span class="pub-type-chip pub-article">Article</span>
+                <div class="pub-title">The Black Church as Anchor Institution: Beyond Sunday Morning</div>
+                <div class="pub-detail">Medium. Connects Black ecclesiology to anchor institution theory and community development literature.</div>
+                <a href="https://medium.com/@antoneholmes" target="_blank" rel="noopener" class="pub-link">Read ↗</a>
+              </div>
+            </div>
+            <div class="pub-entry">
+              <div class="pub-year">2023</div>
+              <div class="pub-body">
+                <span class="pub-type-chip pub-chapter">Coursework</span>
+                <div class="pub-title">HBCUs and the Black Church: Theological Partners in Formation</div>
+                <div class="pub-detail">Hampton University RELO 713. APA 7 scholarly paper on institutional alignment between Black higher education and ecclesial formation.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1928,6 +2058,38 @@ async function loadData() {
           block.appendChild(rb);
         });
         parent.appendChild(block);
+      });
+    }
+  }
+
+  // ── Books (CV — Book type) ──────────────────────────────
+  const books = (data.cv && data.cv['Book']) || [];
+  if (books.length) {
+    const grid = document.getElementById('books-grid');
+    if (grid) {
+      grid.innerHTML = '';
+      books.sort(function(a,b){ return (b.year||'').localeCompare(a.year||''); }).forEach(function(book) {
+        var card = document.createElement('div');
+        card.className = 'book-card';
+        var yr = document.createElement('span'); yr.className = 'book-year'; yr.textContent = book.year || ''; card.appendChild(yr);
+        if (book.imageUrl) {
+          var img = document.createElement('img'); img.className = 'book-cover'; img.alt = book.name;
+          var ph = document.createElement('div'); ph.className = 'book-cover-ph'; ph.style.display = 'none'; ph.innerHTML = 'Cover<br>coming soon';
+          img.onerror = (function(p){ return function(){ this.style.display='none'; p.style.display='flex'; }; })(ph);
+          img.src = book.imageUrl; card.appendChild(img); card.appendChild(ph);
+        } else {
+          var ph2 = document.createElement('div'); ph2.className = 'book-cover-ph'; ph2.innerHTML = 'Cover<br>coming soon'; card.appendChild(ph2);
+        }
+        var t = document.createElement('div'); t.className = 'book-title'; t.textContent = book.name; card.appendChild(t);
+        if (book.subtitle) { var s = document.createElement('div'); s.className = 'book-subtitle'; s.textContent = book.subtitle; card.appendChild(s); }
+        if (book.link) {
+          var a = document.createElement('a'); a.className = 'book-cta'; a.href = book.link; a.target = '_blank'; a.rel = 'noopener';
+          a.innerHTML = 'View on Amazon <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg>';
+          card.appendChild(a);
+        } else {
+          var soon = document.createElement('span'); soon.className = 'book-cta-soon'; soon.textContent = (book.detail || 'Coming soon!'); card.appendChild(soon);
+        }
+        grid.appendChild(card);
       });
     }
   }

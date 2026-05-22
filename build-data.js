@@ -139,6 +139,7 @@ async function main() {
     const cvConceptRows    = bucket('CV-Concept');
     const cvVolRows        = bucket('CV-Volunteer');
     const cvSvcRows        = bucket('CV-Service');
+    const bookRows         = bucket('Book');
 
     // Log what we found
     const typeCounts = {};
@@ -276,6 +277,15 @@ async function main() {
       'CV-Concept':     cvConceptRows.map(r=> ({ name: _title(r.properties,'Name'), conceptStatus: _rt(r.properties,'Title'), domain: _rt(r.properties,'Bullets'), detail: _rtFull(r.properties,'Description'), tags: _multi(r.properties,'Tags'), order: _num(r.properties,'Order')||0 })),
       'CV-Volunteer':   cvVolRows.map(r    => ({ year: _rt(r.properties,'Date Range'), name: _title(r.properties,'Name'), detail: _rtFull(r.properties,'Description'), org: _rt(r.properties,'Title'), order: _num(r.properties,'Order')||0 })),
       'CV-Service':     cvSvcRows.length   ? cvSvcRows.map(r => ({ year: _rt(r.properties,'Date Range'), name: _title(r.properties,'Name'), detail: _rtFull(r.properties,'Description'), order: _num(r.properties,'Order')||0 })) : cvService,
+      'Book':           bookRows.map(r => ({
+        year:     _rt(r.properties, 'Date Range'),
+        name:     _title(r.properties, 'Name'),
+        subtitle: _rt(r.properties, 'Title'),
+        detail:   _rtFull(r.properties, 'Description'),
+        imageUrl: _url(r.properties, 'Image URL') || _files(r.properties, 'Image'),
+        link:     _url(r.properties, 'Link'),
+        order:    _num(r.properties, 'Order') || 0,
+      })),
     };
 
     // ── Write data.json ───────────────────────────────────────────────────
