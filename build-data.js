@@ -86,6 +86,15 @@ async function fetchSettings() {
     navCases:        _rt(p, 'Nav Label: Cases')     || 'Cases',
     navPortfolio:    _rt(p, 'Nav Label: Portfolio') || 'Portfolio',
     navChangelog:    _rt(p, 'Nav Label: Changelog') || 'Updates',
+    // Nav visibility — uncheck in Notion to hide a nav button (unchecked = false = hidden)
+    // Checkboxes default to false in Notion until checked — so new installs hide nothing
+    // by using null coalescing: if property doesn't exist, default to showing button
+    showHome:        _chk(p, 'Show Nav: Home')      !== false ? (_chk(p, 'Show Nav: Home') || true) : false,
+    showCV:          _chk(p, 'Show Nav: CV')        !== false ? (_chk(p, 'Show Nav: CV')   || true) : false,
+    showResume:      _chk(p, 'Show Nav: Resume')    !== false ? true : false,
+    showCases:       _chk(p, 'Show Nav: Cases')     !== false ? true : false,
+    showPortfolio:   _chk(p, 'Show Nav: Portfolio') !== false ? true : false,
+    showChangelog:   _chk(p, 'Show Nav: Changelog') !== false ? true : false,
   };
 }
 
@@ -226,10 +235,12 @@ async function main() {
       name:        _title(r.properties, 'Name'),
       type:        _rt(r.properties, 'Title'),
       desc:        _rtFull(r.properties, 'Description'),
+      problem:     _rt(r.properties, 'Problem'),
+      direction:   _rt(r.properties, 'Direction'),
       imageUrl:    _url(r.properties, 'Image URL') || _files(r.properties, 'Image'),
       link:        _url(r.properties, 'Link'),
-      stackTags:   _rtFull(r.properties, 'Bullets').split(/\s+/).filter(Boolean),
-      filterTags:  _rtFull(r.properties, 'Tags').split(/\s+/).filter(Boolean),
+      stackTags:   _multi(r.properties, 'Tags'),
+      filterTags:  _multi(r.properties, 'Filter Tags'),
       order:       _num(r.properties, 'Order') || 0,
     })) : projectRows.map(r => ({  // fall back to Project rows
       name:       _title(r.properties, 'Name'),

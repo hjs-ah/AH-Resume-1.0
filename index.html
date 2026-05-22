@@ -328,18 +328,25 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 .port-filter-tags{display:flex;flex-wrap:wrap;gap:.4rem}
 
 /* ── Portfolio grid ── */
-.portfolio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.875rem}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
 .portfolio-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:box-shadow .2s;text-decoration:none;color:inherit;display:flex;flex-direction:column}
 .portfolio-card:hover{box-shadow:0 3px 16px rgba(0,0,0,.07)}
 .portfolio-card.hidden{display:none}
-.portfolio-thumb{width:100%;aspect-ratio:16/9;background:var(--bg);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);font-size:.6rem;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;font-weight:600;overflow:hidden}
-.portfolio-thumb img{width:100%;height:100%;object-fit:cover}
-.portfolio-body{padding:1.125rem;flex:1;display:flex;flex-direction:column;gap:.3rem}
-.portfolio-type{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
-.portfolio-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.0625rem;letter-spacing:-.01em;color:var(--ink);line-height:1.15}
-.portfolio-desc{font-size:.775rem;color:var(--ink-3);line-height:1.55;flex:1}
-.portfolio-tags-row{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.4rem}
-.portfolio-tag{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.225rem .5rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
+/* Screenshot thumb — smaller, above content */
+.portfolio-thumb{width:100%;aspect-ratio:16/8;background:var(--bg);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);font-size:.575rem;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;font-weight:600;overflow:hidden;flex-shrink:0}
+.portfolio-thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.portfolio-body{padding:.875rem;flex:1;display:flex;flex-direction:column;gap:.275rem}
+.portfolio-type{font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.portfolio-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9375rem;letter-spacing:-.01em;color:var(--ink);line-height:1.15}
+/* Problem / Direction sections */
+.portfolio-section-label{font-size:.475rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-top:.5rem;margin-bottom:.15rem;display:block}
+.portfolio-problem{font-size:.7rem;color:var(--ink-2);line-height:1.55}
+.portfolio-direction{font-size:.7rem;color:var(--ink-2);line-height:1.55}
+.portfolio-desc{font-size:.725rem;color:var(--ink-3);line-height:1.5;flex:1}
+.portfolio-tags-row{display:flex;gap:.275rem;flex-wrap:wrap;margin-top:.5rem}
+.portfolio-tag{font-size:.5rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .45rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
+/* Mobile: 1 col */
+@media(max-width:768px){.portfolio-grid{grid-template-columns:1fr}}
 
 /* ══ MODAL — reflection popup ════════════════════════════ */
 .modal-overlay{position:fixed;inset:0;background:rgba(17,17,16,.45);backdrop-filter:blur(3px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -1384,40 +1391,76 @@ body.scroll-locked .right-panel{overflow:hidden}
 
     <!-- Portfolio grid -->
     <div class="portfolio-grid" id="portfolio-grid">
+      <a href="https://star-story-cards.vercel.app" target="_blank" rel="noopener" class="portfolio-card" data-tags="Full-Stack Education">
+        <div class="portfolio-thumb">Screenshot — star-story-cards.vercel.app</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Full-Stack Build</div>
+          <div class="portfolio-title">Impact Narratives — Star Story Cards</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Sales leaders and coaches lack a structured, visual way to document and share impact narratives tied to measurable outcomes.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a CAAR-framed interactive card system that surfaces achievement narratives in a scannable, shareable format for coaching and portfolio use.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Notion</span><span class="portfolio-tag">Vercel</span></div>
+        </div>
+      </a>
       <a href="#" class="portfolio-card" data-tags="Full-Stack Education">
-        <div class="portfolio-thumb">Screenshot placeholder</div>
+        <div class="portfolio-thumb">Screenshot — Learning with Verity</div>
         <div class="portfolio-body">
           <div class="portfolio-type">Full-Stack Build</div>
           <div class="portfolio-title">Learning with Verity — Teaching Platform</div>
-          <div class="portfolio-desc">Real-time interactive teaching deck with Ably sync, Notion CMS, Vercel API, and PIN-gated presenter mode.</div>
-          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Notion API</span><span class="portfolio-tag">Ably</span></div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Faith educators need real-time audience engagement tools that work in live teaching settings without complex AV setups.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a real-time interactive teaching deck with Ably sync, Notion CMS backend, and PIN-gated presenter controls across a 13-slide experience.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Ably</span><span class="portfolio-tag">Notion</span></div>
         </div>
       </a>
       <a href="#" class="portfolio-card" data-tags="Full-Stack Design">
-        <div class="portfolio-thumb">Screenshot placeholder</div>
+        <div class="portfolio-thumb">Screenshot — Dissertation Dashboard</div>
         <div class="portfolio-body">
           <div class="portfolio-type">Full-Stack Build</div>
           <div class="portfolio-title">Dissertation Dashboard — SIAD Framework</div>
-          <div class="portfolio-desc">Vercel/React/Notion app with 6 databases, role-gated views, AI research bar, and light/dark theme.</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Doctoral candidates need a centralized command center to track research progress, sources, and chapter milestones across a multi-year project.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a Vercel/React/Notion app with 6 databases, role-gated views, AI research bar, and light/dark theme organized around the SIAD framework.</p>
           <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Notion</span><span class="portfolio-tag">Supabase</span></div>
         </div>
       </a>
-      <a href="#" class="portfolio-card" data-tags="Branding Design Community">
-        <div class="portfolio-thumb">Screenshot placeholder</div>
-        <div class="portfolio-body">
-          <div class="portfolio-type">Brand Identity</div>
-          <div class="portfolio-title">Chess Not Checkers — Visual Identity</div>
-          <div class="portfolio-desc">Brand identity and visual system for the VOW Center men's mentorship program, including print and digital.</div>
-          <div class="portfolio-tags-row"><span class="portfolio-tag">Figma</span><span class="portfolio-tag">Behance</span><span class="portfolio-tag">Branding</span></div>
-        </div>
-      </a>
       <a href="#" class="portfolio-card" data-tags="Full-Stack Education">
-        <div class="portfolio-thumb">Screenshot placeholder</div>
+        <div class="portfolio-thumb">Screenshot — LearnOP</div>
         <div class="portfolio-body">
           <div class="portfolio-type">Product Build</div>
           <div class="portfolio-title">LearnOP — Multi-Org LMS</div>
-          <div class="portfolio-desc">Canvas-inspired LMS with role-based access (Student, Instructor, Director), gradebook, and discussions.</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Community organizations and small institutions need an affordable, role-based LMS without the complexity or cost of enterprise platforms.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a Canvas-inspired multi-org LMS with role-based access (Student, Instructor, Director), gradebook, discussions, and executive dashboard.</p>
           <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Supabase</span><span class="portfolio-tag">Resend</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Branding Design Community">
+        <div class="portfolio-thumb">Screenshot — Chess Not Checkers</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Brand Identity</div>
+          <div class="portfolio-title">Chess Not Checkers — Visual Identity</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">The program had a growing audience and clear mission but lacked a consistent visual identity to anchor its community presence.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Designed a complete brand system including logo, color palette, and print/digital materials that reflect the program's strategic and purposeful character.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">Figma</span><span class="portfolio-tag">Branding</span><span class="portfolio-tag">Community</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Full-Stack">
+        <div class="portfolio-thumb">Screenshot — VOW Center Giving Portal</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Full-Stack Build</div>
+          <div class="portfolio-title">VOW Center Giving Statement Portal</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Faith nonprofits need a dignified, self-service way to generate donor giving statements without manual spreadsheet work or expensive software.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a static Vercel-deployed portal with PDF generation via jsPDF — greyscale/green aesthetic, VOW branding, and donor-facing self-service download.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">Vercel</span><span class="portfolio-tag">jsPDF</span><span class="portfolio-tag">Community</span></div>
         </div>
       </a>
     </div>
@@ -1630,17 +1673,22 @@ async function loadData() {
     }
   }
 
-  // Nav labels
-  const navPages = ['home','cv','resume','cases','portfolio','changelog'];
-  const navKeys  = ['navHome','navCV','navResume','navCases','navPortfolio','navChangelog'];
+  // Nav labels + Notion-controlled visibility
+  const navPages   = ['home','cv','resume','cases','portfolio','changelog'];
+  const navLabels  = ['navHome','navCV','navResume','navCases','navPortfolio','navChangelog'];
+  const navVisible = ['showHome','showCV','showResume','showCases','showPortfolio','showChangelog'];
   document.querySelectorAll('.nav-btn').forEach(btn => {
     const onclick = btn.getAttribute('onclick') || '';
     const match = onclick.match(/showPage\('(\w+)'/);
     if (!match) return;
     const page = match[1];
-    const keyIdx = navPages.indexOf(page);
-    if (keyIdx >= 0 && s[navKeys[keyIdx]]) {
-      btn.querySelector('span').textContent = s[navKeys[keyIdx]];
+    const idx = navPages.indexOf(page);
+    if (idx < 0) return;
+    // Update label
+    if (s[navLabels[idx]]) btn.querySelector('span').textContent = s[navLabels[idx]];
+    // Hide if Notion says so (field must exist AND be explicitly false to hide)
+    if (s.hasOwnProperty(navVisible[idx]) && s[navVisible[idx]] === false) {
+      btn.style.display = 'none';
     }
   });
 
@@ -1929,12 +1977,25 @@ async function loadData() {
         body.className = 'portfolio-body';
         const type = document.createElement('div'); type.className = 'portfolio-type'; type.textContent = p.type || '';
         const title = document.createElement('div'); title.className = 'portfolio-title'; title.textContent = p.name;
-        const desc = document.createElement('div'); desc.className = 'portfolio-desc'; desc.textContent = p.desc;
+        // Problem / Direction sections
+        if (p.problem) {
+          const pl = document.createElement('span'); pl.className = 'portfolio-section-label'; pl.textContent = 'The Problem';
+          const pt = document.createElement('p'); pt.className = 'portfolio-problem'; pt.textContent = p.problem;
+          body.appendChild(type); body.appendChild(title); body.appendChild(pl); body.appendChild(pt);
+        } else { body.appendChild(type); body.appendChild(title); }
+        if (p.direction) {
+          const dl = document.createElement('span'); dl.className = 'portfolio-section-label'; dl.textContent = 'The Direction';
+          const dt = document.createElement('p'); dt.className = 'portfolio-direction'; dt.textContent = p.direction;
+          body.appendChild(dl); body.appendChild(dt);
+        } else if (p.desc) {
+          const desc = document.createElement('div'); desc.className = 'portfolio-desc'; desc.textContent = p.desc;
+          body.appendChild(desc);
+        }
         const tagRow = document.createElement('div'); tagRow.className = 'portfolio-tags-row';
         (p.stackTags || []).forEach(function(t) {
           const span = document.createElement('span'); span.className = 'portfolio-tag'; span.textContent = t; tagRow.appendChild(span);
         });
-        body.appendChild(type); body.appendChild(title); body.appendChild(desc); body.appendChild(tagRow);
+        body.appendChild(tagRow);
         card.appendChild(thumb); card.appendChild(body);
         pg.appendChild(card);
       });
