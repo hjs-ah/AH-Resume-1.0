@@ -90,12 +90,13 @@ async function fetchSettings() {
     // Nav visibility — uncheck in Notion to hide a nav button (unchecked = false = hidden)
     // Checkboxes default to false in Notion until checked — so new installs hide nothing
     // by using null coalescing: if property doesn't exist, default to showing button
-    showHome:        _chk(p, 'Show Nav: Home')      !== false ? (_chk(p, 'Show Nav: Home') || true) : false,
-    showCV:          _chk(p, 'Show Nav: CV')        !== false ? (_chk(p, 'Show Nav: CV')   || true) : false,
-    showResume:      _chk(p, 'Show Nav: Resume')    !== false ? true : false,
-    showCases:       _chk(p, 'Show Nav: Cases')     !== false ? true : false,
-    showPortfolio:   _chk(p, 'Show Nav: Portfolio') !== false ? true : false,
-    showChangelog:   _chk(p, 'Show Nav: Changelog') !== false ? true : false,
+    // Show Nav fields: null/missing = show by default, false = hide, true = show
+    showHome:      p['Show Nav: Home']      ? _chk(p, 'Show Nav: Home')      : true,
+    showCV:        p['Show Nav: CV']        ? _chk(p, 'Show Nav: CV')        : true,
+    showResume:    p['Show Nav: Resume']    ? _chk(p, 'Show Nav: Resume')    : true,
+    showCases:     p['Show Nav: Cases']     ? _chk(p, 'Show Nav: Cases')     : true,
+    showPortfolio: p['Show Nav: Portfolio'] ? _chk(p, 'Show Nav: Portfolio') : true,
+    showChangelog: p['Show Nav: Changelog'] ? _chk(p, 'Show Nav: Changelog') : true,
   };
 }
 
