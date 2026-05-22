@@ -174,15 +174,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
   display:block;
 }
 
-/* Mobile — 2 col, always show detail vertically */
-@media(max-width:768px){
-  .cred-row{grid-template-columns:1fr}
-  .cred-row-inner{flex-wrap:wrap}
-  .cred-chip{flex:1;min-width:calc(50% - .35rem)}
-  .chip-detail{width:auto;max-width:none;opacity:1}
-  .cred-chip:hover .chip-detail{max-width:none}
-  .chip-text,.chip-sub{white-space:normal;max-width:100%}
-}
+
 
 /* ── Navigate ── */
 .nav-section{padding:0;flex-shrink:0;width:100%}
@@ -361,7 +353,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 .portfolio-tags-row{display:flex;gap:.275rem;flex-wrap:wrap;margin-top:.5rem}
 .portfolio-tag{font-size:.5rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .45rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
 /* Mobile: 1 col */
-@media(max-width:768px){.portfolio-grid{grid-template-columns:1fr}}
+
 
 /* ══ MODAL — reflection popup ════════════════════════════ */
 .modal-overlay{position:fixed;inset:0;background:rgba(17,17,16,.45);backdrop-filter:blur(3px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -444,168 +436,16 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 .cl-section-label{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.875rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
 .cl-type-filter{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.75rem}
 
-/* ══ MOBILE HEADER BAR ═══════════════════════════════════ */
-.mobile-bar{
-  display:none;
-  position:sticky;top:0;z-index:200;
-  height:52px;min-height:52px;
-  background:var(--panel);
-  border-bottom:1px solid var(--border);
-  align-items:center;
-  justify-content:space-between;
-  padding:0 1.25rem;
-  flex-shrink:0;
-}
-.mobile-bar-name{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:900;font-size:1.1rem;
-  letter-spacing:-.02em;color:var(--ink);
-}
-.mobile-bar-name .outline{color:var(--ink);-webkit-text-stroke:none}
-.burger{
-  width:36px;height:36px;
-  border:1px solid var(--border);border-radius:var(--r);
-  background:none;cursor:pointer;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:5px;
-  padding:0;transition:border-color .16s;flex-shrink:0;
-}
-.burger:hover{border-color:var(--ink-3)}
-.burger span{
-  width:16px;height:1.5px;background:var(--ink-2);
-  border-radius:2px;transition:all .22s ease;display:block;
-}
-.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-.burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
-.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 
-/* Drawer overlay */
-.drawer-overlay{
-  display:none;
-  position:fixed;inset:0;
-  background:rgba(17,17,16,.4);
-  z-index:150;
-  opacity:0;transition:opacity .25s;
-}
-.drawer-overlay.open{opacity:1}
 
-/* ══ RESPONSIVE BREAKPOINTS ══════════════════════════════ */
-@media(max-width:768px){
-  /* Lock viewport using position:fixed — avoids overflow:hidden
-     which kills touch scroll on iOS Safari and Android Chrome.
-     The right-panel becomes the only scrollable element. */
-  html,body{
-    position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
-    overflow:hidden; /* safe here because body is position:fixed */
-  }
-  body{
-    display:flex;
-    flex-direction:column;
-  }
 
-  /* Mobile top bar — fixed height, never scrolls */
-  .mobile-bar{display:flex;flex-shrink:0}
-
-  /* Right panel — the ONLY scroll container */
-  .right-panel{
-    flex:1;
-    width:100%;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior-y:contain;
-    /* Explicit height avoids iOS Safari miscalculating flex child */
-    height:calc(100% - 52px);
-    max-height:calc(100% - 52px);
-  }
-
-  /* Page padding — tighter on mobile */
-  .page-view{padding:1.5rem 1.25rem}
-
-  /* Left panel: slide-in drawer from left */
-  .left-panel{
-    position:fixed;
-    top:0;left:0;bottom:0;
-    width:min(300px, 85vw);
-    min-width:0;
-    height:100%;
-    z-index:160;
-    transform:translateX(-100%);
-    transition:transform .28s cubic-bezier(.4,0,.2,1);
-    box-shadow:none;
-    pointer-events:none; /* don't intercept taps when off-screen */
-  }
-  .left-panel.drawer-open{
-    transform:translateX(0);
-    box-shadow:8px 0 32px rgba(17,17,16,.12);
-    pointer-events:all; /* restore taps when open */
-  }
-  .drawer-overlay{display:block}
-
-  /* Photo block — shorter on mobile */
-  .photo-block{height:180px}
-
-  /* Identity padding */
-  .identity{padding:0 1.25rem 1rem}
-
-  /* Nav section padding matches identity */
-  .nav-section{padding:0 1.25rem}
-
-  /* Left footer */
-  .left-footer{padding:.75rem 1.25rem}
-
-  /* Home headline */
-  .home-headline{font-size:clamp(1.875rem,7vw,2.5rem)}
-
-  /* CTAs: stack on very small screens */
-  .home-ctas{flex-wrap:wrap;gap:.5rem}
-  .btn-solid,.btn-ghost{flex:1;min-width:120px;text-align:center;justify-content:center}
-
-  /* CV two-col → single col */
-  .cv-two-col{grid-template-columns:1fr;gap:1.25rem}
-
-  /* Portfolio grid → single col */
-  .portfolio-grid{grid-template-columns:1fr}
-
-  /* Resume metric/skill grid → single col (already flex-wrap, just adjust) */
-  .cv-two-col > div + div{margin-top:0}
-
-  /* Tool filter bars: allow horizontal scroll instead of wrap overflow */
-  .tool-filter-bar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:.375rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .tool-filter-bar::-webkit-scrollbar{display:none}
-
-  /* Update cards: reduce date column width */
-  .update-date{min-width:38px;font-size:.5rem}
-
-  /* Changelog: reduce left column width */
-  .cl-left{min-width:60px}
-
-  /* Page title */
-  .page-title{font-size:1.875rem}
-
-  /* Modal: full-screen on mobile */
-  .modal-box{
-    width:100%;max-height:90vh;
-    border-radius:14px 14px 0 0;
-    position:fixed;bottom:0;left:0;right:0;
-    transform:translateY(100%);
-    margin:0;
-  }
-  .modal-overlay{align-items:flex-end}
-  .modal-overlay.open .modal-box{transform:translateY(0)}
-}
-
-@media(max-width:480px){
-  .page-view{padding:1.25rem 1rem}
   .home-headline{font-size:clamp(1.75rem,8vw,2.25rem)}
   .filter-tag{font-size:.6rem;padding:.25rem .575rem}
   .impact-num{font-size:1rem}
   .impact-lbl{font-size:.425rem}
 }
 
-/* Body scroll lock — used when modals/drawer open */
-body.scroll-locked .right-panel{overflow:hidden}
+
 
 
 /* ── Section labels (Career Impact, Credentials) ── */
@@ -839,11 +679,7 @@ body.scroll-locked .right-panel{overflow:hidden}
 .pub-list .pub-entry:last-child{border-bottom:none}
 .pub-list .pub-year{font-size:.6rem;font-weight:700;color:var(--ink-3);min-width:36px;padding-top:.1rem;flex-shrink:0}
 
-/* Mobile */
-@media(max-width:768px){
-  .book-card{width:160px;padding:1rem}
-  .book-cover,.book-cover-ph{max-width:140px}
-}
+
 
 
 /* ══ DM SANS FONT OVERRIDE — toggled via Notion ════════
@@ -887,21 +723,83 @@ body.scroll-locked .right-panel{overflow:hidden}
 [data-font="dm-sans"] .metric-num,[data-font="dm-sans"] .mn{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.03em}
 /* Dark mode: same overrides apply */
 
+
+/* ══ MOBILE REDIRECT POPUP ═══════════════════════════════
+   Shows on screens < 768px. Locks interaction.
+═══════════════════════════════════════════════════════════ */
+.mobile-gate{
+  display:none;
+  position:fixed;inset:0;
+  background:#111110;
+  z-index:9999;
+  align-items:center;justify-content:center;
+  padding:2rem;
+}
+@media(max-width:900px){
+  .mobile-gate{display:flex}
+}
+.mobile-gate-card{
+  background:#1c1c1a;
+  border:1px solid #2e2c28;
+  border-radius:12px;
+  padding:2.5rem 2rem;
+  max-width:340px;
+  width:100%;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:1.125rem;
+}
+.mobile-gate-monogram{
+  width:52px;height:52px;
+  border-radius:10px;
+  background:#111110;
+  border:1px solid #2e2c28;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:1.25rem;
+  color:#d8d4cc;letter-spacing:-.02em;
+}
+.mobile-gate-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;font-size:1.5rem;
+  letter-spacing:-.02em;color:#d8d4cc;
+  line-height:1.1;
+}
+.mobile-gate-sub{
+  font-size:.8125rem;font-weight:400;
+  color:#7a7670;line-height:1.7;
+}
+.mobile-gate-sub strong{color:#a8a49c;font-weight:600}
+.mobile-gate-rule{
+  width:32px;height:1.5px;
+  background:#2e2c28;
+}
+.mobile-gate-note{
+  font-size:.7rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:#5a5854;
+}
+
 </style>
 </head>
 <body>
 
 
-<!-- ── MOBILE TOP BAR ────────────────────────────────── -->
-<div class="mobile-bar">
-  <div class="mobile-bar-name">Antone <span class="outline">Holmes</span></div>
-  <button class="burger" id="burger-btn" onclick="toggleDrawer()" aria-label="Open navigation">
-    <span></span><span></span><span></span>
-  </button>
+<!-- ══ MOBILE GATE — desktop-only notice ════════════════ -->
+<div class="mobile-gate">
+  <div class="mobile-gate-card">
+    <div class="mobile-gate-monogram">AH</div>
+    <div class="mobile-gate-title">Thanks for visiting.</div>
+    <div class="mobile-gate-rule"></div>
+    <p class="mobile-gate-sub">
+      This experience has been <strong>intentionally designed and optimized for desktop viewing</strong> — every detail is built for a larger screen.
+    </p>
+    <p class="mobile-gate-sub">
+      Please revisit on a laptop or desktop for the full experience.
+    </p>
+    <div class="mobile-gate-rule"></div>
+    <p class="mobile-gate-note">antoneholmes.com</p>
+  </div>
 </div>
-
-<!-- Drawer overlay -->
-<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 
 <!-- ══ LEFT PANEL ═════════════════════════════════════════ -->
 <aside class="left-panel">
@@ -932,59 +830,41 @@ body.scroll-locked .right-panel{overflow:hidden}
     </div>
 
     <span class="panel-section-label">Credentials</span>
-    <!-- Credential bubbles — 3-per-row flex, expand on hover within row -->
+    <!-- Credential bubbles — populated by loadData() from Notion -->
     <div class="cred-row" id="cred-row">
-      <!-- Row 1: Certifications -->
       <div class="cred-row-inner">
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">AWS</span></div>
-          <div class="chip-detail">
-            <span class="chip-text">AWS Certified</span>
-            <span class="chip-sub">Cloud Practitioner</span>
-          </div>
+          <div class="chip-detail"><span class="chip-text">AWS Certified</span><span class="chip-sub">Cloud Practitioner</span></div>
           <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">AWS</span></div>
-          <div class="chip-detail">
-            <span class="chip-text">AWS Certified</span>
-            <span class="chip-sub">Solutions Architect</span>
-          </div>
+          <div class="chip-detail"><span class="chip-text">AWS Certified</span><span class="chip-sub">Solutions Architect</span></div>
           <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">AWS</span></div>
-          <div class="chip-detail">
-            <span class="chip-text">AWS Certified</span>
-            <span class="chip-sub">AI Practitioner</span>
-          </div>
+          <div class="chip-detail"><span class="chip-text">AWS Certified</span><span class="chip-sub">AI Practitioner</span></div>
           <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
       </div>
-      <!-- Row 2: Universities -->
       <div class="cred-row-inner">
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">HU</span></div>
-          <div class="chip-detail">
-            <span class="chip-text">Hampton Univ.</span>
-            <span class="chip-sub">PhD Candidate</span>
-          </div>
+          <div class="chip-detail"><span class="chip-text">Hampton Univ.</span><span class="chip-sub">PhD Candidate</span></div>
           <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">IUP</span></div>
-          <div class="chip-detail">
-            <span class="chip-text">Indiana Univ.</span>
-            <span class="chip-sub">M.A. Comms</span>
-          </div>
+          <div class="chip-detail"><span class="chip-text">Indiana Univ.</span><span class="chip-sub">M.A. Comms</span></div>
           <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
         </div>
         <div class="cred-chip">
           <div class="chip-img"><span class="chip-img-text">PC</span></div>
-          <div class="chip-detail">
-            <span class="chip-text">Pierce College</span>
-            <span class="chip-sub">B.S. Business</span>
-          </div>
+          <div class="chip-detail"><span class="chip-text">Pierce College</span><span class="chip-sub">B.S. Business</span></div>
+          <span class="chip-hint">Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg></span>
+        </div>
       </div>
     </div>
 
@@ -2286,7 +2166,7 @@ function openDynamicModal(id) {
     overlay = document.createElement('div');
     overlay.id = 'dynamic-modal';
     overlay.className = 'modal-overlay';
-    overlay.onclick = function(e) { if (e.target === overlay) { overlay.classList.remove('open'); document.body.classList.remove('scroll-locked'); } };
+    overlay.onclick = function(e) { if (e.target === overlay) { overlay.classList.remove('open');  } };
 
     const box = document.createElement('div');
     box.className = 'modal-box';
@@ -2294,7 +2174,7 @@ function openDynamicModal(id) {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
     closeBtn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
-    closeBtn.onclick = function() { overlay.classList.remove('open'); document.body.classList.remove('scroll-locked'); };
+    closeBtn.onclick = function() { overlay.classList.remove('open');  };
 
     const dateEl = document.createElement('div'); dateEl.id = 'dyn-date'; dateEl.className = 'modal-date';
     const tagEl  = document.createElement('span'); tagEl.id  = 'dyn-tag';  tagEl.className  = 'modal-tag';
@@ -2320,7 +2200,7 @@ function openDynamicModal(id) {
     bodyEl.appendChild(p);
   });
   overlay.classList.add('open');
-  document.body.classList.add('scroll-locked');
+  
 }
 
 /* ── Card filtering (home: working + reflections) ────── */
@@ -2392,12 +2272,12 @@ function filterPortfolio(clickedBtn) {
 function openModal(id) {
   const overlay = document.getElementById('modal-' + id);
   if (overlay) overlay.classList.add('open');
-  document.body.classList.add('scroll-locked');
+  
 }
 function closeModal(id) {
   const overlay = document.getElementById(id);
   if (overlay) overlay.classList.remove('open');
-  document.body.classList.remove('scroll-locked');
+  
 }
 function closeModalOutside(e, id) {
   if (e.target === e.currentTarget) closeModal(id);
@@ -2525,37 +2405,7 @@ function filterChangelog(clickedBtn) {
 }
 
 
-/* ── Mobile drawer ───────────────────────────────────── */
-function toggleDrawer() {
-  const panel = document.querySelector('.left-panel');
-  const overlay = document.getElementById('drawer-overlay');
-  const burger = document.getElementById('burger-btn');
-  const isOpen = panel.classList.contains('drawer-open');
-  if (isOpen) {
-    panel.classList.remove('drawer-open');
-    overlay.classList.remove('open');
-    burger.classList.remove('open');
-    document.body.classList.remove('scroll-locked');
-  } else {
-    panel.classList.add('drawer-open');
-    overlay.classList.add('open');
-    burger.classList.add('open');
-    document.body.classList.add('scroll-locked');
-  }
-}
-function closeDrawer() {
-  document.querySelector('.left-panel').classList.remove('drawer-open');
-  document.getElementById('drawer-overlay').classList.remove('open');
-  document.getElementById('burger-btn').classList.remove('open');
-  document.body.classList.remove('scroll-locked');
-}
 
-// Close drawer when a nav button is tapped on mobile
-document.querySelectorAll('.nav-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    if (window.innerWidth <= 768) closeDrawer();
-  });
-});
 
 // Close drawer on Escape key
 document.addEventListener('keydown', e => {
