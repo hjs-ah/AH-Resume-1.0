@@ -491,22 +491,33 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
 
 /* ══ RESPONSIVE BREAKPOINTS ══════════════════════════════ */
 @media(max-width:768px){
-  /* Body: column layout, NO overflow:hidden — that kills touch scroll */
-  html{height:100%;overflow:hidden}
-  body{flex-direction:column;height:100%;overflow:hidden}
+  /* Lock viewport using position:fixed — avoids overflow:hidden
+     which kills touch scroll on iOS Safari and Android Chrome.
+     The right-panel becomes the only scrollable element. */
+  html,body{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    overflow:hidden; /* safe here because body is position:fixed */
+  }
+  body{
+    display:flex;
+    flex-direction:column;
+  }
 
-  /* Mobile top bar */
-  .mobile-bar{display:flex}
+  /* Mobile top bar — fixed height, never scrolls */
+  .mobile-bar{display:flex;flex-shrink:0}
 
-  /* Right panel: the ONLY scroll container on mobile */
+  /* Right panel — the ONLY scroll container */
   .right-panel{
     flex:1;
-    height:0; /* flex child — grows to fill remaining space */
-    min-height:0;
-    overflow-y:scroll; /* scroll not auto — forces scroll container on iOS */
-    -webkit-overflow-scrolling:touch; /* momentum scrolling on iOS */
     width:100%;
-    overscroll-behavior:contain;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    /* Explicit height avoids iOS Safari miscalculating flex child */
+    height:calc(100% - 52px);
+    max-height:calc(100% - 52px);
   }
 
   /* Page padding — tighter on mobile */
@@ -593,8 +604,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);-webk
   .impact-lbl{font-size:.425rem}
 }
 
-/* Body scroll lock — class-based so it doesn't fight mobile scroll container */
-body.scroll-locked{overflow:hidden}
+/* Body scroll lock — used when modals/drawer open */
 body.scroll-locked .right-panel{overflow:hidden}
 
 
