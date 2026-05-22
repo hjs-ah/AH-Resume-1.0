@@ -6,7 +6,7 @@
 <title>Antone Holmes</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="shortcut icon" href="/favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ══ TOKENS ══════════════════════════════════════════════ */
 :root {
@@ -819,6 +819,47 @@ body.scroll-locked .right-panel{overflow:hidden}
   .book-card{width:160px;padding:1rem}
   .book-cover,.book-cover-ph{max-width:140px}
 }
+
+
+/* ══ DM SANS FONT OVERRIDE — toggled via Notion ════════
+   Applied when data.json fontStyle = "DM Sans"
+   Set [data-font="dm-sans"] on <html> element at runtime
+═══════════════════════════════════════════════════════ */
+[data-font="dm-sans"] .name{
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  font-size:1.5rem;
+  letter-spacing:-.01em;
+}
+[data-font="dm-sans"] .name .outline{
+  font-family:'DM Sans',sans-serif;
+  font-weight:800;
+  font-size:1.625rem;
+  letter-spacing:-.03em;
+  -webkit-text-stroke:1.5px var(--ink);
+}
+[data-font="dm-sans"] .photo-ph .mono{font-family:'DM Sans',sans-serif}
+[data-font="dm-sans"] .impact-num{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.03em}
+[data-font="dm-sans"] .nav-btn{font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.04em}
+[data-font="dm-sans"] .page-title{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.04em}
+[data-font="dm-sans"] .home-headline{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.04em}
+[data-font="dm-sans"] .home-headline .outline{-webkit-text-stroke:2px var(--ink);font-family:'DM Sans',sans-serif}
+[data-font="dm-sans"] .btn-solid,[data-font="dm-sans"] .btn-ghost{font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.06em}
+[data-font="dm-sans"] .metric-card-num{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.03em}
+[data-font="dm-sans"] .exp-co{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.03em}
+[data-font="dm-sans"] .case-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.025em}
+[data-font="dm-sans"] .portfolio-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.025em}
+[data-font="dm-sans"] .modal-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.025em}
+[data-font="dm-sans"] .fv-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em}
+[data-font="dm-sans"] .fv-got-it{font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.06em}
+[data-font="dm-sans"] .concept-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em}
+[data-font="dm-sans"] .cl-version{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em}
+[data-font="dm-sans"] .mobile-bar-name{font-family:'DM Sans',sans-serif}
+[data-font="dm-sans"] .book-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em}
+[data-font="dm-sans"] .sc-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.025em}
+/* Metrics dark band numbers */
+[data-font="dm-sans"] .metric-num,[data-font="dm-sans"] .mn{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.03em}
+/* Dark mode: same overrides apply */
 
 </style>
 </head>
@@ -1767,6 +1808,13 @@ async function loadData() {
   // ── Settings ──────────────────────────────────────────
   if (s.accentColor) document.documentElement.style.setProperty('--accent', s.accentColor);
   if (s.borderColor) document.documentElement.style.setProperty('--border', s.borderColor);
+
+  // Font style toggle — controlled from Notion Settings "Font Style" checkbox
+  if (s.fontStyle === 'DM Sans') {
+    document.documentElement.dataset.font = 'dm-sans';
+  } else {
+    delete document.documentElement.dataset.font; // revert to Barlow Condensed
+  }
 
   if (s.name) {
     const nameEl = document.querySelector('.name');

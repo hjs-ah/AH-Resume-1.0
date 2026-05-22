@@ -79,6 +79,7 @@ async function fetchSettings() {
     borderColor:     _rt(p, 'Border Color'),
     sectionHeaderColor: _rt(p, 'Section Header Color'),
     tagline:         _rt(p, 'Tagline'),
+    fontStyle:       _chk(p, 'Font Style: DM Sans') ? 'DM Sans' : 'Barlow Condensed',
     bioShort:        _rtFull(p, 'Bio Short'),
     navHome:         _rt(p, 'Nav Label: Home')      || 'Home',
     navCV:           _rt(p, 'Nav Label: CV')        || 'CV',
