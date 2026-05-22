@@ -629,29 +629,100 @@ body.scroll-locked .right-panel{overflow:hidden}
 
 /* ── Dark mode token overrides ── */
 [data-theme="dark"]{
-  --bg:#1a1a18;
-  --panel:#111110;
-  --ink:#f0ede8;
-  --ink-2:#c8c4bc;
-  --ink-3:#6a6862;
-  --border:#2a2a28;
-  --accent:#c49a4a;
+  /* ── Dark mode colour palette — matched to screenshot ── */
+  --bg:#141412;          /* page background — very dark warm black  */
+  --panel:#1c1c1a;       /* left panel, card surfaces               */
+  --ink:#d8d4cc;         /* primary text — warm off-white, not bright */
+  --ink-2:#a8a49c;       /* secondary text — warm mid                */
+  --ink-3:#5a5854;       /* tertiary / labels — quiet warm grey      */
+  --border:#2e2c28;      /* borders/strokes — barely-there warm grey */
+  --accent:#c49a4a;      /* gold accent — warmed up for dark bg      */
+  --dark:#0a0a08;        /* metrics band background                  */
 }
-[data-theme="dark"] .right-panel{background:#141413}
-[data-theme="dark"] .page-view{background:#141413}
-[data-theme="dark"] .mobile-bar{background:#111110;border-color:#2a2a28}
-[data-theme="dark"] .nav-btn::before{background:var(--ink-2)}
-[data-theme="dark"] .nav-btn:hover,.nav-btn.active{color:var(--bg)}
-[data-theme="dark"] .concept-card,[data-theme="dark"] .case-card,
-[data-theme="dark"] .portfolio-card,[data-theme="dark"] .article-card,
-[data-theme="dark"] .edu-item,[data-theme="dark"] .metric-card{
-  background:#1a1a18;
-}
-[data-theme="dark"] .cred-chip{background:#111110}
-[data-theme="dark"] .chip-img{background:#1a1a18}
-[data-theme="dark"] .impact-cell{background:#111110}
-[data-theme="dark"] .section-cards .s-card{background:#1a1a18}
-[data-theme="dark"] .metrics-band{background:#0a0a09}
+
+/* Surfaces */
+[data-theme="dark"] .right-panel{background:#141412}
+[data-theme="dark"] .page-view{background:#141412}
+[data-theme="dark"] .left-panel{background:#1c1c1a;border-right-color:#2e2c28}
+[data-theme="dark"] .mobile-bar{background:#1c1c1a;border-color:#2e2c28}
+
+/* Nav buttons — active state uses warm light fill, not stark white */
+[data-theme="dark"] .nav-btn{border-color:#2e2c28;color:var(--ink-2)}
+[data-theme="dark"] .nav-btn::before{background:#ccc8be}
+[data-theme="dark"] .nav-btn:hover,[data-theme="dark"] .nav-btn.active{color:#141412;border-color:#ccc8be}
+
+/* Cards and raised surfaces */
+[data-theme="dark"] .concept-card,
+[data-theme="dark"] .case-card,
+[data-theme="dark"] .portfolio-card,
+[data-theme="dark"] .article-card,
+[data-theme="dark"] .edu-item,
+[data-theme="dark"] .metric-card{background:#222220;border-color:#2e2c28}
+[data-theme="dark"] .section-cards .s-card{background:#1c1c1a;border-color:#2e2c28}
+[data-theme="dark"] .home-bio,
+[data-theme="dark"] .page-sub{color:var(--ink-2)}
+
+/* Metrics dark band */
+[data-theme="dark"] .metrics-band,[data-theme="dark"] .mband{background:#0a0a08}
+
+/* Left panel elements */
+[data-theme="dark"] .cred-chip{background:#222220;border-color:#2e2c28}
+[data-theme="dark"] .cred-chip:hover{border-color:var(--accent)}
+[data-theme="dark"] .chip-img{background:#1c1c1a;border-color:#2e2c28}
+[data-theme="dark"] .impact-grid{border-color:#2e2c28}
+[data-theme="dark"] .impact-cell{background:#1c1c1a;border-color:#2e2c28}
+[data-theme="dark"] .cred-row{border-color:#2e2c28}
+[data-theme="dark"] .left-footer{border-color:#2e2c28}
+[data-theme="dark"] .photo-block{background:#2a2826}
+
+/* Filter tags — warm dark pill outlines */
+[data-theme="dark"] .filter-tag{background:#1c1c1a;border-color:#2e2c28;color:var(--ink-3)}
+[data-theme="dark"] .filter-tag:hover{border-color:#5a5854;color:var(--ink-2)}
+[data-theme="dark"] .filter-tag.active{background:#ccc8be;color:#141412;border-color:#ccc8be}
+[data-theme="dark"] .filter-tag.accent-tag.active{background:var(--accent);border-color:var(--accent);color:#141412}
+
+/* Tool chips */
+[data-theme="dark"] .tool-chip{background:#1c1c1a;border-color:#2e2c28;color:var(--ink-3)}
+[data-theme="dark"] .tool-chip:hover{border-color:#5a5854;color:var(--ink-2)}
+[data-theme="dark"] .tool-chip.active{background:#ccc8be;border-color:#ccc8be;color:#141412}
+[data-theme="dark"] .tool-chip.all-chip.active{background:var(--accent);border-color:var(--accent)}
+
+/* Page section dividers */
+[data-theme="dark"] .page-header{border-color:#2e2c28}
+[data-theme="dark"] .section-eyebrow{border-color:#2e2c28}
+[data-theme="dark"] .update-card{border-color:#2e2c28}
+[data-theme="dark"] .reflection-card{border-color:#2e2c28}
+[data-theme="dark"] .blog-section .section-eyebrow{border-color:#2e2c28}
+[data-theme="dark"] .pub-entry{border-color:#2e2c28}
+[data-theme="dark"] .exp-block{border-color:#2e2c28}
+[data-theme="dark"] .role-block{border-color:#2e2c28}
+[data-theme="dark"] .vol-entry{border-color:#2e2c28}
+[data-theme="dark"] .changelog-entry{border-color:#2e2c28}
+
+/* Tag chips on update/reflection cards */
+[data-theme="dark"] .tag-work{background:#1a2535;color:#6b9fd4}
+[data-theme="dark"] .tag-faith{background:#2a2210;color:#c4984a}
+[data-theme="dark"] .tag-academic{background:#2a1515;color:#c47070}
+[data-theme="dark"] .tag-life{background:#1e1a28;color:#9a80c4}
+
+/* Theme toggle track */
+[data-theme="dark"] .theme-toggle-track{background:#2e2c28;border-color:#2e2c28}
+[data-theme="dark"] .theme-toggle-track::after{background:#ccc8be}
+
+/* Skill pills */
+[data-theme="dark"] .skill-pill{background:#222220;border-color:#2e2c28;color:var(--ink-2)}
+
+/* CV concept/pub type chips — keep colour but darken bg */
+[data-theme="dark"] .concept-status.cs-active{background:#0f2010;color:#6fad7f}
+[data-theme="dark"] .concept-status.cs-developing{background:#0f1a2a;color:#6f9fca}
+[data-theme="dark"] .concept-status.cs-concept{background:#2a2210;color:#c4984a}
+[data-theme="dark"] .concept-status.cs-published{background:#1e1428;color:#9a78c4}
+
+/* Portfolio thumb placeholder */
+[data-theme="dark"] .portfolio-thumb{background:#222220;color:var(--ink-3)}
+
+/* Modal */
+[data-theme="dark"] .modal-box{background:#1c1c1a;border-color:#2e2c28}
 
 </style>
 </head>
