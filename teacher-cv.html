@@ -1,0 +1,2390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antone Holmes — CV</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="shortcut icon" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ══ TOKENS ══════════════════════════════════════════════ */
+:root {
+  --bg:#f7f7f5; --panel:#fff; --ink:#111110; --ink-2:#3d3c3a;
+  --ink-3:#8a8882; --border:#e4e3df; --accent:#b5863a; --dark:#111110;
+  --r:8px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{height:100%}
+body{
+  font-family:'Barlow',sans-serif;background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;min-height:100%;
+}
+
+/* ══ TOP HEADER ══════════════════════════════════════════ */
+.site-header{
+  width:100%;background:var(--panel);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+}
+.header-card{
+  max-width:960px;margin:0 auto;
+  border-left:1px solid var(--border);border-right:1px solid var(--border);
+  background:var(--panel);
+  padding:1.625rem 2.5rem 0;
+  display:flex;flex-direction:column;align-items:center;
+}
+
+/* Photo */
+.header-photo{
+  width:76px;height:76px;border-radius:var(--r);
+  overflow:hidden;border:1px solid var(--border);
+  background:#e2dfd8;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:.875rem;flex-shrink:0;position:relative;
+}
+.header-photo img{
+  width:100%;height:100%;object-fit:cover;object-position:center 10%;
+  position:absolute;inset:0;
+}
+.header-photo-ph{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:1.5rem;color:#c4c0b8;
+}
+
+/* Name */
+.header-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:2.375rem;
+  letter-spacing:-.02em;line-height:1;
+  color:var(--ink);text-align:center;margin-bottom:.3rem;
+}
+
+/* Subtitle */
+.header-subtitle{
+  font-size:.7rem;font-weight:500;color:var(--ink-3);
+  letter-spacing:.04em;text-align:center;
+  line-height:1.6;margin-bottom:1.125rem;
+}
+
+/* Credential pills */
+.cred-pills{
+  display:flex;flex-wrap:wrap;gap:.35rem;
+  justify-content:center;margin-bottom:1.125rem;
+}
+.cred-pill{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.225rem .625rem;
+  border:1px solid var(--border);border-radius:20px;
+  font-size:.55rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);white-space:nowrap;
+}
+.cred-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* Full-bleed rule */
+.header-rule{
+  width:calc(100% + 5rem);margin-left:-2.5rem;
+  height:1px;background:var(--border);
+}
+
+/* Labeled rows — label left, content inline, row centered */
+.header-row{
+  display:flex;align-items:center;
+  gap:.875rem;
+  padding:.6rem 0;
+  width:100%;
+  justify-content:center;
+}
+.row-label{
+  font-size:.475rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-3);
+  white-space:nowrap;flex-shrink:0;min-width:56px;
+  text-align:right;
+}
+.row-divider{width:1px;height:16px;background:var(--border);flex-shrink:0}
+.row-content{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+
+/* Social links */
+.social-link{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.6rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);
+  text-decoration:none;transition:color .15s;
+}
+.social-link:hover{color:var(--ink)}
+.social-link svg{opacity:.5}
+
+/* Nav buttons */
+.header-nav-btn{
+  padding:.35rem .7rem;
+  border:1px solid transparent;border-radius:5px;
+  background:transparent;
+  font-family:'Barlow',sans-serif;
+  font-size:.6rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-3);cursor:pointer;transition:all .16s;
+  white-space:nowrap;
+}
+.header-nav-btn:hover{border-color:var(--border);color:var(--ink-2)}
+.header-nav-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.header-row:last-child{padding-bottom:1.25rem}
+
+/* ══ CONTENT PANEL ═══════════════════════════════════════ */
+.content-panel{
+  flex:1;
+  max-width:960px;width:100%;
+  margin:0 auto;
+  padding:2.5rem 2.5rem;
+  border-left:1px solid var(--border);border-right:1px solid var(--border);
+  background:var(--panel);
+  min-height:calc(100vh - 300px);
+}
+
+/* Page view transitions */
+.page-view{
+  display:none;
+  animation:fadeUp .22s ease forwards;
+}
+.page-view.active{display:block}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ══ MOBILE GATE ═════════════════════════════════════════ */
+.mobile-gate{
+  display:none;position:fixed;inset:0;background:#111110;
+  z-index:9999;align-items:center;justify-content:center;padding:2rem;
+}
+@media(max-width:900px){.mobile-gate{display:flex}}
+.mobile-gate-card{
+  background:#1c1c1a;border:1px solid #2e2c28;border-radius:12px;
+  padding:2.5rem 2rem;max-width:340px;width:100%;
+  text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.125rem;
+}
+.mobile-gate-monogram{
+  width:52px;height:52px;border-radius:10px;background:#111110;
+  border:1px solid #2e2c28;display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.25rem;color:#d8d4cc;
+}
+.mobile-gate-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;color:#d8d4cc;line-height:1.1}
+.mobile-gate-sub{font-size:.8125rem;font-weight:400;color:#7a7670;line-height:1.7}
+.mobile-gate-sub strong{color:#a8a49c;font-weight:600}
+.mobile-gate-rule{width:32px;height:1.5px;background:#2e2c28}
+.mobile-gate-note{font-size:.7rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#5a5854}
+
+</style>
+</head>
+<body>
+
+<!-- ══ MOBILE GATE ════════════════════════════════════════ -->
+<div class="mobile-gate">
+  <div class="mobile-gate-card">
+    <div class="mobile-gate-monogram">AH</div>
+    <div class="mobile-gate-title">Thanks for visiting.</div>
+    <div class="mobile-gate-rule"></div>
+    <p class="mobile-gate-sub">This experience has been <strong>intentionally designed and optimized for desktop viewing</strong>.</p>
+    <p class="mobile-gate-sub">Please revisit on a laptop or desktop for the full experience.</p>
+    <div class="mobile-gate-rule"></div>
+    <p class="mobile-gate-note">antoneholmes.com</p>
+  </div>
+</div>
+
+<!-- ══ TOP HEADER ════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-card">
+
+    <!-- Photo -->
+    <div class="header-photo" id="header-photo">
+      <div class="header-photo-ph">AH</div>
+    </div>
+
+    <!-- Name -->
+    <div class="header-name" id="header-name">Antone Holmes</div>
+
+    <!-- Subtitle -->
+    <p class="header-subtitle" id="header-subtitle">Sales &amp; GTM Leader &nbsp;·&nbsp; Educator &nbsp;·&nbsp; Builder</p>
+
+    <!-- Credential pills -->
+    <div class="cred-pills" id="header-creds">
+      <span class="cred-pill"><span class="cred-dot"></span>AWS — Cloud Practitioner</span>
+      <span class="cred-pill"><span class="cred-dot"></span>AWS — Solutions Architect</span>
+      <span class="cred-pill"><span class="cred-dot"></span>AWS — AI Practitioner</span>
+      <span class="cred-pill"><span class="cred-dot"></span>Hampton University &middot; PhD Candidate</span>
+      <span class="cred-pill"><span class="cred-dot"></span>Indiana Univ. of PA &middot; M.A.</span>
+      <span class="cred-pill"><span class="cred-dot"></span>Pierce College &middot; B.S.</span>
+    </div>
+
+    <div class="header-rule"></div>
+
+    <!-- Social row -->
+    <div class="header-row">
+      <span class="row-label">Social</span>
+      <div class="row-divider"></div>
+      <div class="row-content" id="social-row">
+        <a class="social-link" href="mailto:antoneholmes@icloud.com">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </a>
+        <a class="social-link" href="https://linkedin.com/in/antone-h/" target="_blank" rel="noopener">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a class="social-link" href="https://github.com/hjs-ah" target="_blank" rel="noopener">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub
+        </a>
+        <a class="social-link" href="https://medium.com/@antoneholmes" target="_blank" rel="noopener">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Medium
+        </a>
+        <a class="social-link" href="https://behance.net/antoneholmes" target="_blank" rel="noopener">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Behance
+        </a>
+      </div>
+    </div>
+
+    <div class="header-rule"></div>
+
+    <!-- Navigation row -->
+    <div class="header-row">
+      <span class="row-label">Navigation</span>
+      <div class="row-divider"></div>
+      <div class="row-content">
+        <button class="header-nav-btn active" onclick="showPage('home',this)"><span>Home</span></button>
+        <button class="header-nav-btn" id="tnav-cv" onclick="showPage('cv',this)"><span>CV</span></button>
+        <button class="header-nav-btn" id="tnav-resume" onclick="showPage('resume',this)"><span>Pro Resume</span></button>
+        <button class="header-nav-btn" id="tnav-cases" onclick="showPage('cases',this)"><span>Cases</span></button>
+        <button class="header-nav-btn" id="tnav-portfolio" onclick="showPage('portfolio',this)"><span>Portfolio</span></button>
+        <button class="header-nav-btn" id="tnav-changelog" onclick="showPage('changelog',this)"><span>Updates</span></button>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<style>
+/* ══ RIGHT PANEL ═════════════════════════════════════════ */
+.right-panel{flex:1;height:100vh;overflow-y:auto;background:#ffffff;-webkit-overflow-scrolling:touch;}
+.page-view{display:none;padding:2.5rem 3rem;min-height:100%;animation:slideIn .24s ease both}
+.page-view.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+
+.page-header{margin-bottom:1.875rem;padding-bottom:1.375rem}
+.page-eyebrow{font-size:.575rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2.25rem;letter-spacing:-.025em;color:var(--ink);line-height:1}
+.page-sub{font-size:.85rem;color:var(--ink-3);margin-top:.4rem;line-height:1.6}
+
+/* ══ TAG FILTER BAR (shared: home + portfolio) ════════ */
+.tag-bar{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem;align-items:center}
+.tag-bar-label{font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-right:.25rem}
+.filter-tag{font-size:.65rem;font-weight:700;letter-spacing:.07em;padding:.3rem .7rem;border:1px solid var(--border);border-radius:20px;cursor:pointer;background:var(--panel);color:var(--ink-3);transition:all .16s;user-select:none}
+.filter-tag:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.filter-tag.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filter-tag.accent-tag.active{background:var(--accent);border-color:var(--accent)}
+
+/* ══ HOME ════════════════════════════════════════════════ */
+.home-hero{padding-bottom:1.75rem;margin-bottom:1.875rem}
+.home-headline{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(1.75rem,3.2vw,2.75rem);letter-spacing:-.025em;line-height:1;color:var(--ink);margin-bottom:.875rem}
+.home-headline .outline{color:var(--ink);-webkit-text-stroke:none}
+.home-bio{font-size:.9rem;line-height:1.8;color:var(--ink-2);max-width:54ch;margin-bottom:1.375rem}
+.home-ctas{display:flex;gap:.625rem}
+.btn-solid{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.375rem;background:var(--ink);color:#fff;border:1.5px solid var(--ink);border-radius:var(--r);text-decoration:none;cursor:pointer;transition:background .18s}
+.btn-solid:hover{background:var(--accent);border-color:var(--accent)}
+.btn-ghost{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.375rem;background:transparent;color:var(--ink);border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:border-color .18s;text-decoration:none}
+.btn-ghost:hover{border-color:var(--ink)}
+
+.section-eyebrow{font-size:.85rem;font-weight:1000;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.75rem;padding-bottom:.45rem;border-bottom:1px solid var(--border)}
+.blog-section{margin-bottom:2rem}
+
+/* Update / Working-on cards */
+.update-card{display:flex;gap:1.125rem;padding:1rem 0;border-bottom:1px solid var(--border);transition:opacity .2s}
+.update-card:last-child{border-bottom:none}
+.update-card.hidden{display:none}
+.update-date{font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);min-width:48px;padding-top:.15rem;flex-shrink:0}
+.update-body{flex:1}
+.update-tag-chip{font-size:.575rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .5rem;border-radius:3px;margin-bottom:.35rem;display:inline-block;cursor:pointer;transition:opacity .15s}
+.update-tag-chip:hover{opacity:.75}
+.tag-work{background:#eff6ff;color:#1d4ed8}
+.tag-writing{background:#f0fdf4;color:#15803d}
+.tag-faith{background:#fefce8;color:#854d0e}
+.tag-life{background:#fdf4ff;color:#7e22ce}
+.tag-academic{background:#fef2f2;color:#b91c1c}
+.update-title{font-weight:600;font-size:.875rem;color:var(--ink);margin-bottom:.2rem;line-height:1.35}
+.update-excerpt{font-size:.8rem;color:var(--ink-2);line-height:1.6}
+
+/* Reflection cards — with read more */
+.reflection-card{padding:1rem 0;border-bottom:1px solid var(--border)}
+.reflection-card:last-child{border-bottom:none}
+.reflection-card.hidden{display:none}
+.reflection-top{display:flex;gap:1.125rem;align-items:flex-start}
+.reflection-body{flex:1}
+.reflection-actions{display:flex;align-items:center;gap:.875rem;margin-top:.625rem}
+.read-more-btn{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;transition:opacity .15s}
+.read-more-btn:hover{opacity:.7}
+.popup-icon-btn{width:24px;height:24px;border:1px solid var(--border);border-radius:4px;background:var(--panel);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s;flex-shrink:0}
+.popup-icon-btn:hover{border-color:var(--ink-3)}
+.popup-icon-btn svg{width:12px;height:12px;stroke:var(--ink-3)}
+
+/* Article cards */
+.article-card{padding:1.125rem 1.375rem;background:var(--panel);border:1px solid var(--border);border-radius:var(--r);margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;text-decoration:none;color:inherit;transition:box-shadow .18s}
+.article-card:hover{box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.article-meta{font-size:.575rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.3rem}
+.article-title{font-weight:600;font-size:.9rem;color:var(--ink);line-height:1.35}
+.article-arrow{width:28px;height:28px;border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .18s,background .18s}
+.article-card:hover .article-arrow{border-color:var(--ink);background:var(--ink)}
+.article-card:hover .article-arrow path{stroke:#fff}
+
+/* ══ CV — ACADEMIC FORMAT ════════════════════════════════ */
+.cv-two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem}
+.cv-sec{margin-bottom:1.875rem}
+.cv-sec-label{font-size:.85rem;font-weight:1000;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+
+.skill-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem}
+.skill-pill{font-size:.65rem;font-weight:600;letter-spacing:.04em;padding:.275rem .7rem;border:1px solid var(--border);border-radius:20px;color:var(--ink-2)}
+
+.edu-item{padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--r);margin-bottom:.5rem}
+.edu-degree{font-weight:600;font-size:.875rem;color:var(--ink);margin-bottom:.175rem}
+.edu-school{font-size:.75rem;color:var(--ink-3)}
+.edu-year{font-size:.7rem;color:var(--ink-3);margin-top:.125rem}
+
+/* Publication / article entries */
+.pub-entry{padding:.875rem 0;border-bottom:1px solid var(--border);display:flex;gap:.875rem}
+.pub-entry:last-child{border-bottom:none}
+.pub-year{font-size:.6rem;font-weight:700;color:var(--ink-3);min-width:36px;padding-top:.1rem;flex-shrink:0}
+.pub-body{}
+.pub-type-chip{font-size:.525rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.15rem .45rem;border-radius:3px;display:inline-block;margin-bottom:.3rem}
+.pub-journal{background:#eff6ff;color:#1e40af}
+.pub-conf{background:#f0fdf4;color:#166534}
+.pub-chapter{background:#fefce8;color:#854d0e}
+.pub-article{background:#f5f3ff;color:#6d28d9}
+.pub-title{font-weight:600;font-size:.875rem;color:var(--ink);line-height:1.35;margin-bottom:.2rem}
+.pub-detail{font-size:.75rem;color:var(--ink-3);line-height:1.5;font-style:italic}
+.pub-link{font-size:.65rem;font-weight:600;color:var(--accent);text-decoration:none;letter-spacing:.06em;transition:opacity .15s;display:inline-flex;align-items:center;gap:.25rem;margin-top:.25rem}
+.pub-link:hover{opacity:.7}
+
+.metric-card{padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--r);margin-bottom:.5rem;display:flex;align-items:center;gap:.875rem}
+.metric-card-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.625rem;color:var(--ink);min-width:48px;line-height:1}
+.metric-card-desc{font-size:.775rem;color:var(--ink-2);line-height:1.5}
+
+/* ══ PRO RESUME ══════════════════════════════════════════ */
+.exp-block{margin-bottom:2.25rem;padding-bottom:2.25rem;border-bottom:1px solid var(--border)}
+.exp-block:last-child{border-bottom:none;margin-bottom:0}
+.exp-co{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.02em;margin-bottom:.2rem}
+.exp-scope{font-size:.775rem;color:var(--ink-3);font-style:italic;margin-bottom:.4rem}
+.exp-dates{font-size:.75rem;font-weight:600;color:var(--accent);margin-bottom:1rem}
+.role-block{padding-left:1.125rem;border-left:2px solid var(--border);margin-bottom:1rem}
+.role-block:last-child{margin-bottom:0}
+.role-title{font-weight:600;font-size:.9rem;color:var(--ink-2);margin-bottom:.175rem}
+.role-date{font-size:.725rem;color:var(--ink-3);margin-bottom:.55rem}
+.bullets{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.bullets li{font-size:.85rem;line-height:1.65;color:var(--ink-2);padding-left:1.125rem;position:relative}
+.bullets li::before{content:'·';position:absolute;left:0;color:var(--accent);font-weight:700;font-size:1rem}
+
+/* ══ CASES ════════════════════════════════════════════════ */
+.case-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:1.625rem;margin-bottom:.875rem;transition:box-shadow .18s}
+.case-card:hover{box-shadow:0 3px 16px rgba(0,0,0,.06)}
+.case-num{font-size:.55rem;font-weight:700;letter-spacing:.2em;color:var(--ink-3);margin-bottom:.35rem}
+.case-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-.015em;color:var(--ink);margin-bottom:.275rem}
+.case-sub{font-size:.775rem;color:var(--ink-3);margin-bottom:.8rem}
+.case-desc{font-size:.85rem;line-height:1.7;color:var(--ink-2);margin-bottom:.875rem}
+.case-tags{display:flex;gap:.35rem;flex-wrap:wrap}
+.case-tag{font-size:.575rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .575rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
+
+/* ══ PORTFOLIO ═══════════════════════════════════════════ */
+
+/* ── Section title rows ── */
+.port-section-title{font-size:.85rem;font-weight:1000;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.875rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.port-section-title .tooltip-trigger{width:16px;height:16px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.55rem;font-weight:700;color:var(--ink-3);transition:border-color .15s}
+.port-section-title .tooltip-trigger:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── Social links ── */
+.platform-bar{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.875rem}
+.platform-link{display:flex;align-items:center;gap:.5rem;padding:.55rem .9rem;border:1px solid var(--border);border-radius:var(--r);text-decoration:none;color:var(--ink-2);font-size:.725rem;font-weight:600;letter-spacing:.03em;transition:border-color .18s,color .18s}
+.platform-link:hover{border-color:var(--ink);color:var(--ink)}
+.platform-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+/* ── Tag filter section ── */
+.portfolio-tag-bar{margin-bottom:1.75rem}
+.port-filter-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+
+/* ── Portfolio grid ── */
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.portfolio-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:box-shadow .2s;text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.portfolio-card:hover{box-shadow:0 3px 16px rgba(0,0,0,.07)}
+.portfolio-card.hidden{display:none}
+/* Screenshot thumb — smaller, above content */
+.portfolio-thumb{width:100%;aspect-ratio:16/8;background:var(--bg);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);font-size:.575rem;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;font-weight:600;overflow:hidden;flex-shrink:0}
+.portfolio-thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.portfolio-body{padding:.875rem;flex:1;display:flex;flex-direction:column;gap:.275rem}
+.portfolio-type{font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.portfolio-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9375rem;letter-spacing:-.01em;color:var(--ink);line-height:1.15}
+/* Problem / Direction sections */
+.portfolio-section-label{font-size:.475rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-top:.5rem;margin-bottom:.15rem;display:block}
+.portfolio-problem{font-size:.7rem;color:var(--ink-2);line-height:1.55}
+.portfolio-direction{font-size:.7rem;color:var(--ink-2);line-height:1.55}
+.portfolio-desc{font-size:.725rem;color:var(--ink-3);line-height:1.5;flex:1}
+.portfolio-tags-row{display:flex;gap:.275rem;flex-wrap:wrap;margin-top:.5rem}
+.portfolio-tag{font-size:.5rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .45rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
+/* Mobile: 1 col */
+
+
+/* ══ MODAL — reflection popup ════════════════════════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(17,17,16,.45);backdrop-filter:blur(3px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;width:min(560px,90vw);max-height:80vh;overflow-y:auto;padding:2rem;position:relative;transform:translateY(12px);transition:transform .22s ease;scrollbar-width:thin}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-close{position:absolute;top:1rem;right:1rem;width:28px;height:28px;border:1px solid var(--border);border-radius:50%;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s}
+.modal-close:hover{border-color:var(--ink)}
+.modal-close svg{width:12px;height:12px;stroke:var(--ink-3)}
+.modal-tag{font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.2rem .5rem;border-radius:3px;display:inline-block;margin-bottom:.75rem}
+.modal-date{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.375rem}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:var(--ink);line-height:1.1;margin-bottom:.875rem}
+.modal-body{font-size:.9rem;line-height:1.8;color:var(--ink-2)}
+.modal-body p{margin-bottom:.875rem}
+.modal-body p:last-child{margin-bottom:0}
+
+/* ══ FIRST-VISIT TOOLTIP — portfolio tags ════════════════ */
+.fv-overlay{position:fixed;inset:0;background:rgba(17,17,16,.5);backdrop-filter:blur(2px);z-index:900;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.fv-overlay.show{opacity:1;pointer-events:all}
+.fv-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;width:min(420px,88vw);padding:2rem;position:relative}
+.fv-illo{width:100%;height:90px;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1.25rem}
+/* Illustrative tag demo row */
+.fv-tag-demo{font-size:.65rem;font-weight:700;letter-spacing:.07em;padding:.3rem .7rem;border-radius:20px;border:1.5px solid var(--border);color:var(--ink-3);background:var(--panel);cursor:default;transition:all .4s}
+.fv-tag-demo.lit{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fv-arrow{font-size:1rem;color:var(--ink-3);animation:bounce .8s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.fv-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-.015em;color:var(--ink);margin-bottom:.5rem}
+.fv-desc{font-size:.8125rem;color:var(--ink-2);line-height:1.65;margin-bottom:1.25rem}
+.fv-got-it{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.775rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.375rem;background:var(--ink);color:#fff;border:none;border-radius:var(--r);cursor:pointer;transition:background .18s;width:100%}
+.fv-got-it:hover{background:var(--accent)}
+
+/* ══ ORIGINAL CONCEPTS ══════════════════════════════════ */
+.concept-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin-bottom:.875rem;transition:box-shadow .18s}
+.concept-card:hover{box-shadow:0 3px 16px rgba(0,0,0,.06)}
+.concept-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.5rem}
+.concept-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:-.015em;color:var(--ink);line-height:1.15}
+.concept-status{font-size:.525rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .6rem;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.cs-active{background:#f0fdf4;color:#166534}
+.cs-developing{background:#eff6ff;color:#1e40af}
+.cs-concept{background:#fefce8;color:#854d0e}
+.cs-published{background:#fdf4ff;color:#7e22ce}
+.concept-domain{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
+.concept-desc{font-size:.875rem;line-height:1.7;color:var(--ink-2);margin-bottom:.875rem}
+.concept-tags{display:flex;gap:.35rem;flex-wrap:wrap}
+.concept-tag{font-size:.575rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .55rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--ink-3)}
+/* ══ VOLUNTEER ═══════════════════════════════════════════ */
+.vol-entry{padding:.875rem 0;border-bottom:1px solid var(--border);display:flex;gap:.875rem}
+.vol-entry:last-child{border-bottom:none}
+.vol-year{font-size:.6rem;font-weight:700;color:var(--ink-3);min-width:36px;padding-top:.1rem;flex-shrink:0}
+.vol-title{font-weight:600;font-size:.9rem;color:var(--ink);margin-bottom:.15rem;line-height:1.3}
+.vol-org{font-size:.775rem;color:var(--accent);margin-bottom:.25rem}
+.vol-desc{font-size:.8rem;line-height:1.6;color:var(--ink-2)}
+/* ══ TOOL LOGO FILTER ════════════════════════════════════ */
+.tool-filter-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem;align-items:center}
+.tool-filter-label{font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-right:.25rem}
+.tool-chip{display:flex;align-items:center;gap:.45rem;padding:.35rem .7rem;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .16s;background:#fff;color:var(--ink-3);user-select:none}
+.tool-chip:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.tool-chip.active{border-color:var(--ink);background:var(--ink);color:#fff}
+.tool-chip.active .tool-logo-img{filter:brightness(0) invert(1)}
+.tool-logo-img{width:16px;height:16px;object-fit:contain;flex-shrink:0;display:block}
+.tool-chip-label{font-size:.65rem;font-weight:600;letter-spacing:.04em}
+.tool-chip.all-chip.active{background:var(--accent);border-color:var(--accent)}
+
+/* ══ CHANGELOG ══════════════════════════════════════════ */
+.changelog-entry{padding:1.25rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:auto 1fr;gap:.875rem}
+.changelog-entry:last-child{border-bottom:none}
+.cl-left{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;min-width:72px}
+.cl-version{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.875rem;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.cl-date{font-size:.575rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.cl-type{font-size:.525rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .5rem;border-radius:20px;white-space:nowrap;align-self:flex-end}
+.cl-feature{background:#eff6ff;color:#1e40af}
+.cl-fix{background:#fef2f2;color:#b91c1c}
+.cl-design{background:#fdf4ff;color:#7e22ce}
+.cl-content{background:#f0fdf4;color:#166534}
+.cl-infrastructure{background:#fefce8;color:#854d0e}
+.cl-right{}
+.cl-summary{font-weight:600;font-size:.9375rem;color:var(--ink);margin-bottom:.3rem;line-height:1.35}
+.cl-scope{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.cl-detail{font-size:.85rem;line-height:1.7;color:var(--ink-2)}
+.cl-section-label{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.875rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+.cl-type-filter{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.75rem}
+
+
+
+
+  .home-headline{font-size:clamp(1.75rem,8vw,2.25rem)}
+  .filter-tag{font-size:.6rem;padding:.25rem .575rem}
+  .impact-num{font-size:1rem}
+  .impact-lbl{font-size:.425rem}
+}
+
+
+
+
+/* ── Section labels (Career Impact, Credentials) ── */
+.panel-section-label{
+  font-size:.55rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:.45rem;display:block;
+}
+
+/* ── Dark / Light toggle ── */
+.theme-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:.75rem;
+}
+.theme-toggle{
+  display:flex;align-items:center;gap:.5rem;
+  cursor:pointer;user-select:none;
+}
+.theme-toggle-track{
+  width:32px;height:17px;
+  border-radius:20px;
+  background:var(--border);
+  border:1px solid var(--border);
+  position:relative;
+  transition:background .22s ease, border-color .22s ease;
+  flex-shrink:0;
+}
+.theme-toggle-track::after{
+  content:'';
+  position:absolute;
+  top:2px;left:2px;
+  width:11px;height:11px;
+  border-radius:50%;
+  background:var(--ink-3);
+  transition:transform .22s cubic-bezier(.4,0,.2,1), background .22s;
+}
+.theme-toggle-label{
+  font-size:.5rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);
+  transition:color .2s;
+}
+
+/* Dark mode active state */
+[data-theme="dark"] .theme-toggle-track{
+  background:var(--ink);
+  border-color:var(--ink);
+}
+[data-theme="dark"] .theme-toggle-track::after{
+  transform:translateX(15px);
+  background:#fff;
+}
+[data-theme="dark"] .theme-toggle-label{color:var(--ink-3)}
+
+/* ── Dark mode token overrides ── */
+[data-theme="dark"]{
+  /* ── Dark mode colour palette — matched to screenshot ── */
+  --bg:#141412;          /* page background — very dark warm black  */
+  --panel:#1c1c1a;       /* left panel, card surfaces               */
+  --ink:#d8d4cc;         /* primary text — warm off-white, not bright */
+  --ink-2:#a8a49c;       /* secondary text — warm mid                */
+  --ink-3:#5a5854;       /* tertiary / labels — quiet warm grey      */
+  --border:#2e2c28;      /* borders/strokes — barely-there warm grey */
+  --accent:#c49a4a;      /* gold accent — warmed up for dark bg      */
+  --dark:#0a0a08;        /* metrics band background                  */
+}
+
+/* Surfaces */
+[data-theme="dark"] .right-panel{background:#141412}
+[data-theme="dark"] .page-view{background:#141412}
+[data-theme="dark"] .left-panel{background:#1c1c1a;border-right-color:#2e2c28}
+[data-theme="dark"] .mobile-bar{background:#1c1c1a;border-color:#2e2c28}
+
+/* Nav buttons — active state uses warm light fill, not stark white */
+[data-theme="dark"] .nav-btn{border-color:#2e2c28;color:var(--ink-2)}
+[data-theme="dark"] .nav-btn::before{background:#ccc8be}
+[data-theme="dark"] .nav-btn:hover,[data-theme="dark"] .nav-btn.active{color:#141412;border-color:#ccc8be}
+
+/* Cards and raised surfaces */
+[data-theme="dark"] .concept-card,
+[data-theme="dark"] .case-card,
+[data-theme="dark"] .portfolio-card,
+[data-theme="dark"] .article-card,
+[data-theme="dark"] .edu-item,
+[data-theme="dark"] .metric-card{background:#222220;border-color:#2e2c28}
+[data-theme="dark"] .section-cards .s-card{background:#1c1c1a;border-color:#2e2c28}
+[data-theme="dark"] .home-bio,
+[data-theme="dark"] .page-sub{color:var(--ink-2)}
+
+/* Metrics dark band */
+[data-theme="dark"] .metrics-band,[data-theme="dark"] .mband{background:#0a0a08}
+
+/* Left panel elements */
+[data-theme="dark"] .cred-chip{background:#222220;border-color:#2e2c28}
+[data-theme="dark"] .cred-chip:hover{border-color:var(--accent)}
+[data-theme="dark"] .chip-img{background:#1c1c1a;border-color:#2e2c28}
+[data-theme="dark"] .impact-grid{border-color:#2e2c28}
+[data-theme="dark"] .impact-cell{background:#1c1c1a;border-color:#2e2c28}
+[data-theme="dark"] .cred-row{border-color:#2e2c28}
+[data-theme="dark"] .left-footer{border-color:#2e2c28}
+[data-theme="dark"] .photo-block{background:#2a2826}
+
+/* Filter tags — warm dark pill outlines */
+[data-theme="dark"] .filter-tag{background:#1c1c1a;border-color:#2e2c28;color:var(--ink-3)}
+[data-theme="dark"] .filter-tag:hover{border-color:#5a5854;color:var(--ink-2)}
+[data-theme="dark"] .filter-tag.active{background:#ccc8be;color:#141412;border-color:#ccc8be}
+[data-theme="dark"] .filter-tag.accent-tag.active{background:var(--accent);border-color:var(--accent);color:#141412}
+
+/* Tool chips */
+[data-theme="dark"] .tool-chip{background:#1c1c1a;border-color:#2e2c28;color:var(--ink-3)}
+[data-theme="dark"] .tool-chip:hover{border-color:#5a5854;color:var(--ink-2)}
+[data-theme="dark"] .tool-chip.active{background:#ccc8be;border-color:#ccc8be;color:#141412}
+[data-theme="dark"] .tool-chip.all-chip.active{background:var(--accent);border-color:var(--accent)}
+
+/* Page section dividers */
+[data-theme="dark"] .page-header{border-color:#2e2c28}
+[data-theme="dark"] .section-eyebrow{border-color:#2e2c28}
+[data-theme="dark"] .update-card{border-color:#2e2c28}
+[data-theme="dark"] .reflection-card{border-color:#2e2c28}
+[data-theme="dark"] .blog-section .section-eyebrow{border-color:#2e2c28}
+[data-theme="dark"] .pub-entry{border-color:#2e2c28}
+[data-theme="dark"] .exp-block{border-color:#2e2c28}
+[data-theme="dark"] .role-block{border-color:#2e2c28}
+[data-theme="dark"] .vol-entry{border-color:#2e2c28}
+[data-theme="dark"] .changelog-entry{border-color:#2e2c28}
+
+/* Tag chips on update/reflection cards */
+[data-theme="dark"] .tag-work{background:#1a2535;color:#6b9fd4}
+[data-theme="dark"] .tag-faith{background:#2a2210;color:#c4984a}
+[data-theme="dark"] .tag-academic{background:#2a1515;color:#c47070}
+[data-theme="dark"] .tag-life{background:#1e1a28;color:#9a80c4}
+
+/* Theme toggle track */
+[data-theme="dark"] .theme-toggle-track{background:#2e2c28;border-color:#2e2c28}
+[data-theme="dark"] .theme-toggle-track::after{background:#ccc8be}
+
+/* Skill pills */
+[data-theme="dark"] .skill-pill{background:#222220;border-color:#2e2c28;color:var(--ink-2)}
+
+/* CV concept/pub type chips — keep colour but darken bg */
+[data-theme="dark"] .concept-status.cs-active{background:#0f2010;color:#6fad7f}
+[data-theme="dark"] .concept-status.cs-developing{background:#0f1a2a;color:#6f9fca}
+[data-theme="dark"] .concept-status.cs-concept{background:#2a2210;color:#c4984a}
+[data-theme="dark"] .concept-status.cs-published{background:#1e1428;color:#9a78c4}
+
+/* Portfolio thumb placeholder */
+[data-theme="dark"] .portfolio-thumb{background:#222220;color:var(--ink-3)}
+[data-theme="dark"] .books-section{border-color:#2e2c28}
+[data-theme="dark"] .books-grid{border-color:#2e2c28}
+[data-theme="dark"] .book-card{border-color:#2e2c28}
+[data-theme="dark"] .book-card:hover{background:#1c1c1a}
+[data-theme="dark"] .book-cover-ph{background:#222220;border-color:#2e2c28;color:var(--ink-3)}
+[data-theme="dark"] .book-subtitle{color:var(--ink-2)}
+
+/* Modal */
+[data-theme="dark"] .modal-box{background:#1c1c1a;border-color:#2e2c28}
+
+
+/* ══ PUBLICATIONS — BOOKS ZONE ══════════════════════════ */
+.books-section{margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.books-grid{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border)}
+
+.book-card{
+  display:flex;flex-direction:column;align-items:center;
+  padding:1.25rem 1.5rem 1.25rem;
+  border-right:1px solid var(--border);
+  flex:0 0 auto;
+  width:220px;
+  position:relative;
+  text-decoration:none;color:inherit;
+  transition:background .18s;
+}
+.book-card:hover{background:var(--bg)}
+.book-card:last-child{border-right:none}
+
+/* Year label above card */
+.book-year{
+  font-size:.575rem;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);
+  align-self:flex-start;margin-bottom:.75rem;
+}
+
+/* Cover image */
+.book-cover{
+  width:100%;max-width:185px;
+  aspect-ratio:2/3;
+  object-fit:cover;
+  border-radius:3px;
+  box-shadow:0 4px 18px rgba(0,0,0,.14), 2px 2px 0 rgba(0,0,0,.06);
+  margin-bottom:1rem;
+  display:block;
+}
+/* Placeholder when no image */
+.book-cover-ph{
+  width:100%;max-width:185px;
+  aspect-ratio:2/3;
+  background:var(--bg);border:1px solid var(--border);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:1rem;text-align:center;padding:.5rem;
+}
+
+/* Title and subtitle */
+.book-title{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;
+  font-size:1rem;letter-spacing:-.01em;
+  color:var(--accent);text-align:center;line-height:1.2;
+  margin-bottom:.2rem;
+}
+.book-subtitle{
+  font-size:.725rem;font-weight:500;color:var(--ink-2);
+  text-align:center;line-height:1.4;margin-bottom:.875rem;
+}
+
+/* CTA */
+.book-cta{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);
+  text-decoration:none;transition:opacity .16s;
+}
+.book-cta:hover{opacity:.7}
+.book-cta-soon{
+  font-size:.65rem;font-weight:600;letter-spacing:.06em;
+  color:var(--ink-3);font-style:italic;
+}
+
+/* ══ PUBLICATIONS — ACADEMIC LIST ZONE ══════════════════ */
+/* Already mostly styled — just ensure consistent indentation */
+.pub-list .pub-entry{padding:.875rem 0;border-bottom:1px solid var(--border);display:flex;gap:.875rem}
+.pub-list .pub-entry:last-child{border-bottom:none}
+.pub-list .pub-year{font-size:.6rem;font-weight:700;color:var(--ink-3);min-width:36px;padding-top:.1rem;flex-shrink:0}
+
+
+
+
+/* ══ DM SANS FONT OVERRIDE — toggled via Notion ════════
+   Applied when data.json fontStyle = "DM Sans"
+   Set [data-font="dm-sans"] on <html> element at runtime
+═══════════════════════════════════════════════════════ */
+[data-font="dm-sans"] .name{
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  font-size:1.5rem;
+  letter-spacing:-.01em;
+}
+[data-font="dm-sans"] .name .outline{
+  font-family:'DM Sans',sans-serif;
+  font-weight:800;
+  font-size:1.625rem;
+  letter-spacing:-.03em;
+  color:var(--ink);
+  -webkit-text-stroke:none;
+}
+[data-font="dm-sans"] .photo-ph .mono{font-family:'DM Sans',sans-serif}
+[data-font="dm-sans"] .impact-num{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.03em}
+[data-font="dm-sans"] .nav-btn{font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.04em}
+[data-font="dm-sans"] .page-title{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.04em}
+[data-font="dm-sans"] .home-headline{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.04em}
+[data-font="dm-sans"] .home-headline .outline{color:var(--ink);-webkit-text-stroke:none;font-family:'DM Sans',sans-serif}
+[data-font="dm-sans"] .btn-solid,[data-font="dm-sans"] .btn-ghost{font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.06em}
+[data-font="dm-sans"] .metric-card-num{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.03em}
+[data-font="dm-sans"] .exp-co{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.03em}
+[data-font="dm-sans"] .case-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.025em}
+[data-font="dm-sans"] .portfolio-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.025em}
+[data-font="dm-sans"] .modal-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.025em}
+[data-font="dm-sans"] .fv-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em}
+[data-font="dm-sans"] .fv-got-it{font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.06em}
+[data-font="dm-sans"] .concept-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em}
+[data-font="dm-sans"] .cl-version{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em}
+[data-font="dm-sans"] .mobile-bar-name{font-family:'DM Sans',sans-serif}
+[data-font="dm-sans"] .book-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em}
+[data-font="dm-sans"] .sc-title{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.025em}
+/* Metrics dark band numbers */
+[data-font="dm-sans"] .metric-num,[data-font="dm-sans"] .mn{font-family:'DM Sans',sans-serif;font-weight:900;letter-spacing:-.03em}
+/* Dark mode: same overrides apply */
+
+
+/* ══ MOBILE REDIRECT POPUP ═══════════════════════════════
+   Shows on screens < 768px. Locks interaction.
+═══════════════════════════════════════════════════════════ */
+.mobile-gate{
+  display:none;
+  position:fixed;inset:0;
+  background:#111110;
+  z-index:9999;
+  align-items:center;justify-content:center;
+  padding:2rem;
+}
+@media(max-width:900px){
+  .mobile-gate{display:flex}
+}
+.mobile-gate-card{
+  background:#1c1c1a;
+  border:1px solid #2e2c28;
+  border-radius:12px;
+  padding:2.5rem 2rem;
+  max-width:340px;
+  width:100%;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:1.125rem;
+}
+.mobile-gate-monogram{
+  width:52px;height:52px;
+  border-radius:10px;
+  background:#111110;
+  border:1px solid #2e2c28;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:1.25rem;
+  color:#d8d4cc;letter-spacing:-.02em;
+}
+.mobile-gate-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;font-size:1.5rem;
+  letter-spacing:-.02em;color:#d8d4cc;
+  line-height:1.1;
+}
+.mobile-gate-sub{
+  font-size:.8125rem;font-weight:400;
+  color:#7a7670;line-height:1.7;
+}
+.mobile-gate-sub strong{color:#a8a49c;font-weight:600}
+.mobile-gate-rule{
+  width:32px;height:1.5px;
+  background:#2e2c28;
+}
+.mobile-gate-note{
+  font-size:.7rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:#5a5854;
+}
+
+
+</style>
+<main class="content-panel">
+
+  <!-- ── HOME ─────────────────────────────────────────── -->
+  <div id="view-home" class="page-view active">
+    <div class="home-hero">
+      <p class="page-eyebrow">Hi, I'm Antone</p>
+      <h1 class="home-headline">Strategic Sales &amp;<br><span class="outline">GTM Leader</span><br>With 10+ Years</h1>
+      <p class="home-bio">Scaling Partner ecosystems and revenue across Startup, SMB, and Enterprise at AWS and Comcast. Founder, doctoral candidate, and community builder rooted in Philadelphia.</p>
+      <div class="home-ctas">
+        <a href="mailto:antoneholmes@icloud.com" class="btn-solid">Get In Touch</a>
+        <button class="btn-ghost" style="cursor:pointer" onclick="showPage('cv',document.querySelectorAll('.nav-btn')[1])">View Full CV</button>
+      </div>
+    </div>
+
+    <!-- Working On — filterable -->
+    <div class="blog-section">
+      <p class="section-eyebrow">What I've Been Working On</p>
+      <div class="tag-bar" id="working-tag-bar">
+        <span class="tag-bar-label">Filter:</span>
+        <span class="filter-tag active accent-tag" data-tag="all" onclick="filterCards('working',this)">All</span>
+        <span class="filter-tag" data-tag="Work" onclick="filterCards('working',this)">Work</span>
+        <span class="filter-tag" data-tag="Faith" onclick="filterCards('working',this)">Faith</span>
+        <span class="filter-tag" data-tag="Academic" onclick="filterCards('working',this)">Academic</span>
+        <span class="filter-tag" data-tag="Community" onclick="filterCards('working',this)">Community</span>
+      </div>
+      <div id="working-cards">
+        <div class="update-card" data-tags="Work">
+          <div class="update-date">May 2026</div>
+          <div class="update-body">
+            <span class="update-tag-chip tag-work" onclick="filterCards('working',document.querySelector('[data-tag=Work]'))">Work</span>
+            <div class="update-title">Launched TBI — Truth Bible Institute community rollout</div>
+            <div class="update-excerpt">Finalizing the Google Forms interest survey with curriculum lead Vashti and standing up the shared Notion planning workspace for the fall 2026 cohort.</div>
+          </div>
+        </div>
+        <div class="update-card" data-tags="Faith">
+          <div class="update-date">Apr 2026</div>
+          <div class="update-body">
+            <span class="update-tag-chip tag-faith" onclick="filterCards('working',document.querySelector('[data-tag=Faith]'))">Faith</span>
+            <div class="update-title">Builder's Conference — VOW Center annual leadership weekend</div>
+            <div class="update-excerpt">Led planning and execution of the annual Builder's Conference with programming focused on men's development, stewardship, and community activation.</div>
+          </div>
+        </div>
+        <div class="update-card" data-tags="Academic">
+          <div class="update-date">Mar 2026</div>
+          <div class="update-body">
+            <span class="update-tag-chip tag-academic" onclick="filterCards('working',document.querySelector('[data-tag=Academic]'))">Academic</span>
+            <div class="update-title">Dissertation progress — Black congregations as anchor institutions</div>
+            <div class="update-excerpt">Completing Chapter 3 of the SIAD framework research: Stewardship, Incarnation, Activism, Discipleship as organizing principles for holistic youth development in Philadelphia.</div>
+          </div>
+        </div>
+        <div class="update-card" data-tags="Community">
+          <div class="update-date">Mar 2026</div>
+          <div class="update-body">
+            <span class="update-tag-chip tag-life" onclick="filterCards('working',document.querySelector('[data-tag=Community]'))">Community</span>
+            <div class="update-title">iThirst Street Evangelism — Spring outreach series</div>
+            <div class="update-excerpt">Coordinating the spring outreach calendar for the iThirst team, expanding into two new neighborhoods in North Philadelphia.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reflections — filterable + modal -->
+    <div class="blog-section">
+      <p class="section-eyebrow">Activities &amp; Reflections</p>
+      <div class="tag-bar">
+        <span class="tag-bar-label">Filter:</span>
+        <span class="filter-tag active accent-tag" data-tag="all" onclick="filterCards('reflections',this)">All</span>
+        <span class="filter-tag" data-tag="Faith" onclick="filterCards('reflections',this)">Faith</span>
+        <span class="filter-tag" data-tag="Leadership" onclick="filterCards('reflections',this)">Leadership</span>
+        <span class="filter-tag" data-tag="Community" onclick="filterCards('reflections',this)">Community</span>
+      </div>
+      <div id="reflections-cards">
+        <div class="reflection-card" data-tags="Community Leadership">
+          <div class="reflection-top">
+            <div class="update-date" style="min-width:48px;font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex-shrink:0">May 2026</div>
+            <div class="reflection-body">
+              <span class="update-tag-chip tag-life">Community</span>
+              <div class="update-title">Chess Not Checkers — marriage, leadership &amp; purpose panel</div>
+              <div class="update-excerpt">A room full of honest conversations about building something that lasts. Mixed panel of married and unmarried men navigating purpose, partnership, and presence.</div>
+              <div class="reflection-actions">
+                <button class="read-more-btn" onclick="openModal('r1')">Read More →</button>
+                <button class="popup-icon-btn" title="Open in window" onclick="openModal('r1')">
+                  <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reflection-card" data-tags="Faith Leadership">
+          <div class="reflection-top">
+            <div class="update-date" style="min-width:48px;font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex-shrink:0">Apr 2026</div>
+            <div class="reflection-body">
+              <span class="update-tag-chip tag-faith">Faith</span>
+              <div class="update-title">On Sabbath, rest, and the discipline of stopping</div>
+              <div class="update-excerpt">What practicing Sabbath from Friday evening through Saturday has taught me about presence, productivity, and what actually matters.</div>
+              <div class="reflection-actions">
+                <button class="read-more-btn" onclick="openModal('r2')">Read More →</button>
+                <button class="popup-icon-btn" title="Open in window" onclick="openModal('r2')">
+                  <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Articles -->
+    <div class="blog-section">
+      <p class="section-eyebrow">Most Recent Articles</p>
+      <a href="#" class="article-card"><div><div class="article-meta">Substack · May 2026</div><div class="article-title">Revenue Enablement Is a Systems Problem, Not a Training Problem</div></div><div class="article-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
+      <a href="#" class="article-card"><div><div class="article-meta">Medium · Apr 2026</div><div class="article-title">The Black Church as Anchor Institution: Beyond Sunday Morning</div></div><div class="article-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
+      <a href="#" class="article-card"><div><div class="article-meta">LinkedIn · Mar 2026</div><div class="article-title">What 50+ Promotions Taught Me About Coaching for Growth</div></div><div class="article-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></a>
+    </div>
+  </div>
+
+  <!-- ── CV — ACADEMIC FORMAT ───────────────────────────── -->
+  <div id="view-cv" class="page-view">
+    <div class="page-header">
+      <p class="page-eyebrow">Curriculum Vitae</p>
+      <h2 class="page-title">CV</h2>
+      <p class="page-sub">Academic and professional record — scholarship, teaching, original concepts, and service.</p>
+    </div>
+
+    <!-- NOTION NOTE: All sections below pull from Resume Content DB.
+         Section Type values: "CV-Education", "CV-Research", "CV-Publication",
+         "CV-Teaching", "CV-Concept", "CV-Volunteer", "CV-Service"
+         Fields: Year, Title, Detail, Type (chip), Link, Status, Tags (multi-select)
+         Concept extras: Domain, Status-Concept (Active/Developing/Concept/Published)
+         Volunteer extras: Organization, Role -->
+
+    <!-- Domain filter — Theology / Philanthropy / Social Responsibility -->
+    <div style="margin-bottom:1.875rem">
+      <p class="cv-sec-label">Filter by Domain</p>
+      <div class="tool-filter-bar" id="cv-tool-bar">
+        <span class="tool-chip all-chip active" data-tool="all" onclick="filterCVTool(this)">
+          <span class="tool-chip-label">All</span>
+        </span>
+        <!-- Theology — open book / cross -->
+        <span class="tool-chip" data-tool="Theology" onclick="filterCVTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/>
+          </svg>
+          <span class="tool-chip-label">Theology</span>
+        </span>
+        <!-- Philanthropy — open hands / giving -->
+        <span class="tool-chip" data-tool="Philanthropy" onclick="filterCVTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="tool-chip-label">Philanthropy</span>
+        </span>
+        <!-- Social Responsibility — people / community -->
+        <span class="tool-chip" data-tool="Social" onclick="filterCVTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="tool-chip-label">Social Resp.</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="cv-two-col">
+      <!-- LEFT col -->
+      <div>
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Research Interests</p>
+          <div class="skill-row">
+            <span class="skill-pill">Black Ecclesiology</span><span class="skill-pill">Public Theology</span>
+            <span class="skill-pill">Anchor Institutions</span><span class="skill-pill">Youth Development</span>
+            <span class="skill-pill">SIAD Framework</span><span class="skill-pill">Missional Church</span>
+            <span class="skill-pill">Prophetic Lament</span><span class="skill-pill">Liberation Theology</span>
+          </div>
+        </div>
+
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Education</p>
+          <div class="edu-item"><div class="edu-degree">PhD, Public Theology &amp; Community Engagement</div><div class="edu-school">Hampton University School of Religion</div><div class="edu-year">In Progress — Expected 2026 · Dissertation: <em>Black Congregations as Anchor Institutions</em></div></div>
+          <div class="edu-item"><div class="edu-degree">M.A., Communications</div><div class="edu-school">Indiana University of Pennsylvania</div><div class="edu-year">Completed</div></div>
+          <div class="edu-item"><div class="edu-degree">B.S., Business Administration</div><div class="edu-school">Pierce College</div><div class="edu-year">Completed</div></div>
+        </div>
+
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Teaching &amp; Instruction</p>
+          <div class="pub-entry">
+            <div class="pub-year">2024–</div>
+            <div class="pub-body"><div class="pub-title">Curriculum Director, Truth Bible Institute (TBI)</div><div class="pub-detail">Designing and overseeing community Bible institute curriculum for fall 2026 launch in Philadelphia.</div></div>
+          </div>
+          <div class="pub-entry">
+            <div class="pub-year">2018–</div>
+            <div class="pub-body"><div class="pub-title">Lead Teacher &amp; Preacher, VOW Center</div><div class="pub-detail">Weekly instruction in Hebraic studies, feast theology, and applied discipleship. Courses include Financial Literacy &amp; Stewardship and iThirst Evangelism Training.</div></div>
+          </div>
+        </div>
+
+        <!-- VOLUNTEER ── Notion: Section Type = "CV-Volunteer", fields: Year, Title, Organization, Role, Description -->
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Volunteer &amp; Community Service</p>
+          <div class="vol-entry">
+            <div class="vol-year">2019–</div>
+            <div class="vol-body">
+              <div class="vol-title">Lead Mentor &amp; Facilitator — Chess Not Checkers</div>
+              <div class="vol-org">VOW Center · Philadelphia, PA</div>
+              <div class="vol-desc">Facilitate monthly men's cohort sessions focused on leadership, strategic thinking, and life purpose. Annual panel draws 50+ community members.</div>
+            </div>
+          </div>
+          <div class="vol-entry">
+            <div class="vol-year">2020–</div>
+            <div class="vol-body">
+              <div class="vol-title">Street Evangelist &amp; Team Leader — iThirst</div>
+              <div class="vol-org">VOW Center · North Philadelphia</div>
+              <div class="vol-desc">Lead bi-weekly outreach efforts in North Philadelphia neighborhoods, coordinating teams of 6–12 volunteers for community engagement and resource distribution.</div>
+            </div>
+          </div>
+          <div class="vol-entry">
+            <div class="vol-year">2022–</div>
+            <div class="vol-body">
+              <div class="vol-title">Financial Literacy Instructor</div>
+              <div class="vol-org">VOW Center Financial Literacy &amp; Stewardship Program</div>
+              <div class="vol-desc">Teach a 6-week financial stewardship curriculum covering budgeting, debt elimination, and kingdom economics to community members.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT col -->
+      <div>
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Publications &amp; Scholarship</p>
+
+          <!-- BOOKS ZONE — Section Type = "Book" in Notion -->
+          <!-- Notion fields: Name (title), Title (subtitle), Date Range (year),
+               Image URL (cover), Link (Amazon/store URL), Description (optional) -->
+          <div class="books-section" id="books-zone">
+            <div class="books-grid" id="books-grid">
+
+              <!-- Book 1 — The New Man's Devotional -->
+              <div class="book-card">
+                <span class="book-year">2025</span>
+                <img class="book-cover"
+                  src="https://raw.githubusercontent.com/hjs-ah/AH-Resume-1.0/main/headshots/new-mans-devotional-cover.jpg"
+                  alt="The New Man's Devotional"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="book-cover-ph" style="display:none">Cover image<br>coming soon</div>
+                <div class="book-title">The New Man's Devotional</div>
+                <div class="book-subtitle">FIRST EDITION</div>
+                <a href="https://www.amazon.com" target="_blank" rel="noopener" class="book-cta">
+                  View on Amazon
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg>
+                </a>
+              </div>
+
+              <!-- Book 2 — God's Word -->
+              <div class="book-card">
+                <span class="book-year">2026</span>
+                <img class="book-cover"
+                  src="https://raw.githubusercontent.com/hjs-ah/AH-Resume-1.0/main/headshots/gods-word-cover.jpg"
+                  alt="God's Word"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="book-cover-ph" style="display:none">Cover image<br>coming soon</div>
+                <div class="book-title">God's Word</div>
+                <div class="book-subtitle">The Anchor, Lighthouse, &amp; Captain</div>
+                <span class="book-cta-soon">Coming soon!</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ACADEMIC LIST ZONE — Section Type = "CV-Publication" in Notion -->
+          <div class="pub-list" id="pub-list">
+            <div class="pub-entry">
+              <div class="pub-year">2025</div>
+              <div class="pub-body">
+                <span class="pub-type-chip pub-chapter">Dissertation Chapter</span>
+                <div class="pub-title">"The Shepherd as Activist" — RELO 730 Final Paper</div>
+                <div class="pub-detail">Hampton University School of Religion. 5,000-word examination of incarnational ministry and prophetic activism in the Black church tradition.</div>
+              </div>
+            </div>
+            <div class="pub-entry">
+              <div class="pub-year">2024</div>
+              <div class="pub-body">
+                <span class="pub-type-chip pub-article">Article</span>
+                <div class="pub-title">Revenue Enablement Is a Systems Problem, Not a Training Problem</div>
+                <div class="pub-detail">Substack. Examines the gap between training delivery and capability development in enterprise sales organizations.</div>
+                <a href="https://substack.com/@antoneholmes" target="_blank" rel="noopener" class="pub-link">Read ↗</a>
+              </div>
+            </div>
+            <div class="pub-entry">
+              <div class="pub-year">2024</div>
+              <div class="pub-body">
+                <span class="pub-type-chip pub-article">Article</span>
+                <div class="pub-title">The Black Church as Anchor Institution: Beyond Sunday Morning</div>
+                <div class="pub-detail">Medium. Connects Black ecclesiology to anchor institution theory and community development literature.</div>
+                <a href="https://medium.com/@antoneholmes" target="_blank" rel="noopener" class="pub-link">Read ↗</a>
+              </div>
+            </div>
+            <div class="pub-entry">
+              <div class="pub-year">2023</div>
+              <div class="pub-body">
+                <span class="pub-type-chip pub-chapter">Coursework</span>
+                <div class="pub-title">HBCUs and the Black Church: Theological Partners in Formation</div>
+                <div class="pub-detail">Hampton University RELO 713. APA 7 scholarly paper on institutional alignment between Black higher education and ecclesial formation.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORIGINAL CONCEPTS ── Notion: Section Type = "CV-Concept"
+             Fields: Title, Domain, Description, Status (Active/Developing/Concept/Published), Tags -->
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Original Concepts &amp; Frameworks</p>
+
+          <div class="concept-card">
+            <div class="concept-header">
+              <div class="concept-title">SIAD Framework</div>
+              <span class="concept-status cs-active">Active</span>
+            </div>
+            <div class="concept-domain">Theology · Community Development</div>
+            <div class="concept-desc">Stewardship, Incarnation, Activism, Discipleship — a four-pillar organizing framework for holistic youth and community development within Black congregations. Central to my doctoral dissertation and field programming at VOW Center.</div>
+            <div class="concept-tags"><span class="concept-tag">Ecclesiology</span><span class="concept-tag">Youth Dev</span><span class="concept-tag">Philadelphia</span><span class="concept-tag">Dissertation</span></div>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-header">
+              <div class="concept-title">re:NEW Framework</div>
+              <span class="concept-status cs-developing">Developing</span>
+            </div>
+            <div class="concept-domain">Branding · Community Formation</div>
+            <div class="concept-desc">Religion/Reverence, Education, Nourish, Enlightenment, Wellness — a five-element framework for personal and communal renewal. Developed as a potential organizing acronym for a clothing line or podcast brand concept.</div>
+            <div class="concept-tags"><span class="concept-tag">Branding</span><span class="concept-tag">Formation</span><span class="concept-tag">Identity</span></div>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-header">
+              <div class="concept-title">Revenue Enablement as Systems Design</div>
+              <span class="concept-status cs-published">Published</span>
+            </div>
+            <div class="concept-domain">GTM · Sales Leadership</div>
+            <div class="concept-desc">A conceptual reframe of revenue enablement — from a training/content delivery function to a systems design discipline. Argues that sustainable capability development requires structural intervention, not just programs.</div>
+            <div class="concept-tags"><span class="concept-tag">GTM</span><span class="concept-tag">Enablement</span><span class="concept-tag">Leadership</span></div>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-header">
+              <div class="concept-title">Anchor Institution Model for the Black Church</div>
+              <span class="concept-status cs-concept">Concept</span>
+            </div>
+            <div class="concept-domain">Public Theology · Urban Development</div>
+            <div class="concept-desc">Proposes a theoretical model for understanding Black congregations as anchor institutions — not merely social service providers but structural partners in neighborhood stability, youth formation, and civic life.</div>
+            <div class="concept-tags"><span class="concept-tag">Black Church</span><span class="concept-tag">Public Theology</span><span class="concept-tag">Urban</span></div>
+          </div>
+        </div>
+
+        <div class="cv-sec" data-cv-tools="Theology Philanthropy Social">
+          <p class="cv-sec-label">Service &amp; Leadership</p>
+          <div class="pub-entry">
+            <div class="pub-year">2018–</div>
+            <div class="pub-body"><div class="pub-title">Executive Director, VOW Center</div><div class="pub-detail">Philadelphia-based faith nonprofit. Programs: Chess Not Checkers, Builder's Conference, iThirst, Financial Literacy &amp; Stewardship.</div></div>
+          </div>
+          <div class="pub-entry">
+            <div class="pub-year">2024–</div>
+            <div class="pub-body"><div class="pub-title">Executive Director, Truth Bible Institute (TBI)</div><div class="pub-detail">Community Bible institute initiative; fall 2026 rollout. Curriculum design, faculty coordination, student outreach.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- ── PRO RESUME ─────────────────────────────────────── -->
+  <div id="view-resume" class="page-view">
+    <div class="page-header">
+      <p class="page-eyebrow">Full Experience</p>
+      <h2 class="page-title">Pro Resume</h2>
+      <p class="page-sub">Complete role history with responsibilities, scope, and measurable outcomes.</p>
+    </div>
+
+    <!-- Org filter — logo chips. LIVE: swap chip-img-text for <img src="badges/[org].png"> -->
+    <div class="tool-filter-bar" id="resume-org-bar" style="margin-bottom:1.75rem">
+      <span class="tool-chip all-chip active" data-org="all" onclick="filterResume(this)">
+        <span class="tool-chip-label">All</span>
+      </span>
+      <!-- AWS -->
+      <span class="tool-chip" data-org="AWS" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;border-radius:2px;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/aws.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="currentColor"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.064.056.128.056.184 0 .08-.048.16-.152.24l-.504.336a.384.384 0 0 1-.208.072c-.08 0-.16-.04-.24-.112a2.47 2.47 0 0 1-.288-.376 6.18 6.18 0 0 1-.248-.472c-.624.736-1.408 1.104-2.352 1.104-.672 0-1.208-.192-1.6-.576-.392-.384-.592-.896-.592-1.536 0-.68.24-1.232.728-1.648.488-.416 1.136-.624 1.96-.624.272 0 .552.024.848.064.296.04.6.104.920.176v-.584c0-.608-.128-1.032-.376-1.28-.256-.248-.688-.368-1.304-.368-.28 0-.568.032-.864.104-.296.072-.584.16-.864.272-.128.056-.224.088-.28.104-.056.016-.096.024-.128.024-.112 0-.168-.08-.168-.248v-.392c0-.128.016-.224.056-.28a.59.59 0 0 1 .224-.168c.28-.144.616-.264 1.008-.36.392-.104.808-.152 1.248-.152.952 0 1.648.216 2.096.648.44.432.664 1.088.664 1.968v2.592zm-3.24 1.212c.264 0 .536-.048.824-.144.288-.096.544-.272.76-.512.128-.152.224-.32.272-.512.048-.192.08-.424.08-.696v-.336a6.8 6.8 0 0 0-.736-.136 6.04 6.04 0 0 0-.752-.048c-.536 0-.928.104-1.192.32-.264.216-.392.52-.392.92 0 .376.096.656.296.848.192.2.472.296.84.296zm6.44.88c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.312L7.48 6.492a1.415 1.415 0 0 1-.072-.32c0-.128.064-.2.192-.2h.784c.152 0 .256.024.312.08.064.048.112.16.16.312l1.416 5.576 1.312-5.576c.04-.16.088-.264.152-.312a.556.556 0 0 1 .32-.08h.64c.152 0 .256.024.32.08.064.048.12.16.152.312l1.328 5.648 1.456-5.648c.048-.16.104-.264.16-.312a.52.52 0 0 1 .312-.08h.744c.128 0 .2.064.2.2 0 .04-.008.08-.016.128-.008.048-.032.112-.072.2L14.8 11.736c-.048.16-.104.264-.168.312-.064.048-.168.08-.304.08h-.688c-.152 0-.256-.024-.32-.08-.064-.056-.12-.16-.152-.32l-1.304-5.4-1.296 5.392c-.04.16-.088.272-.152.32-.064.056-.176.08-.32.08zm7.908.168c-.416 0-.832-.048-1.24-.144-.408-.096-.728-.2-.944-.32-.128-.072-.216-.152-.248-.224a.56.56 0 0 1-.048-.224v-.408c0-.168.064-.248.184-.248.048 0 .096.008.144.024.048.016.12.048.2.08.272.12.568.216.888.28.32.064.632.096.952.096.504 0 .896-.088 1.168-.264a.86.86 0 0 0 .408-.752.778.778 0 0 0-.216-.552c-.144-.152-.416-.288-.808-.416l-1.16-.36c-.584-.184-1.016-.456-1.288-.816a1.953 1.953 0 0 1-.408-1.2c0-.344.072-.648.216-.912.144-.264.336-.496.576-.688.24-.192.512-.336.832-.432.32-.096.656-.144 1.008-.144.176 0 .36.008.536.032.184.024.352.056.512.096.152.032.296.072.432.12.136.048.24.096.312.144.104.064.176.128.216.2a.49.49 0 0 1 .056.24v.376c0 .168-.064.256-.184.256a.83.83 0 0 1-.304-.096 3.652 3.652 0 0 0-1.528-.312c-.456 0-.816.072-1.072.224-.256.152-.384.384-.384.704 0 .216.08.4.232.552.152.152.44.304.856.44l1.136.36c.576.184.992.44 1.24.776.248.336.368.72.368 1.144 0 .352-.072.672-.208.952-.144.28-.336.528-.584.736-.248.208-.544.36-.888.464-.36.112-.736.168-1.144.168z"/><path d="M19.66 14.396c-2.392 1.768-5.864 2.704-8.852 2.704-4.184 0-7.952-1.544-10.8-4.112-.224-.2-.024-.472.248-.32 3.08 1.792 6.888 2.872 10.824 2.872 2.656 0 5.576-.552 8.264-1.696.408-.176.744.264.316.552z"/><path d="M20.668 13.236c-.304-.392-2.008-.184-2.776-.096-.232.032-.272-.176-.056-.328 1.36-.952 3.592-.68 3.848-.36.256.328-.072 2.552-1.344 3.616-.2.168-.384.08-.296-.136.288-.704.928-2.304.624-2.696z"/></svg>
+        </span>
+        <span class="tool-chip-label">AWS</span>
+      </span>
+      <!-- Comcast -->
+      <span class="tool-chip" data-org="Comcast" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center;font-size:.45rem;font-weight:800;color:inherit">
+          <!-- LIVE: <img src="badges/comcast.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 12a4 4 0 0 1 8 0" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M5.5 12a6.5 6.5 0 0 1 13 0" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        </span>
+        <span class="tool-chip-label">Comcast</span>
+      </span>
+      <!-- SuitUp -->
+      <span class="tool-chip" data-org="SuitUp" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/suitup.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <span class="tool-chip-label">SuitUp</span>
+      </span>
+      <!-- AWS MLU -->
+      <span class="tool-chip" data-org="MLU" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/aws-mlu.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </span>
+        <span class="tool-chip-label">AWS MLU</span>
+      </span>
+      <!-- Boys & Girls Club -->
+      <span class="tool-chip" data-org="BGC" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/bgc.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </span>
+        <span class="tool-chip-label">Boys &amp; Girls Club</span>
+      </span>
+      <!-- VOW Center -->
+      <span class="tool-chip" data-org="VOW" onclick="filterResume(this)">
+        <span class="chip-img" style="width:18px;height:18px;background:transparent;display:flex;align-items:center;justify-content:center">
+          <!-- LIVE: <img src="badges/vow.png" style="width:18px;height:18px;object-fit:contain"> -->
+          <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <span class="tool-chip-label">VOW Center</span>
+      </span>
+    </div>
+
+    <div class="cv-two-col" style="margin-bottom:1.5rem">
+      <div>
+        <p class="cv-sec-label">Key Impact</p>
+        <div class="metric-card"><div class="metric-card-num">50+</div><div class="metric-card-desc">People promoted through direct coaching</div></div>
+        <div class="metric-card"><div class="metric-card-num">118%</div><div class="metric-card-desc">Quota attainment, SMB Partner FY2020</div></div>
+        <div class="metric-card"><div class="metric-card-num">8</div><div class="metric-card-desc">Executive sponsorships secured</div></div>
+      </div>
+      <div>
+        <p class="cv-sec-label">Core Competencies</p>
+        <div class="skill-row">
+          <span class="skill-pill">GTM Strategy</span><span class="skill-pill">Revenue Enablement</span>
+          <span class="skill-pill">Partner Co-Sell</span><span class="skill-pill">Sales Leadership</span>
+          <span class="skill-pill">Startup Ecosystems</span><span class="skill-pill">Operational Excellence</span>
+          <span class="skill-pill">Coaching &amp; Development</span><span class="skill-pill">Executive Engagement</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-block" data-org="AWS">
+      <div class="exp-co">Amazon Web Services</div><div class="exp-scope">Partner Development &amp; Startup Ecosystem, NAMER</div><div class="exp-dates">2018 – Present</div>
+      <div class="role-block"><div class="role-title">Sr. Partner Development Manager, Startup Segment</div><div class="role-date">2021 – Present</div><ul class="bullets"><li>Designed and executed co-sell motion with 40+ ISV partners, contributing to $XM ARR pipeline across NAMER startup segment.</li><li>Built partner enablement programming adopted across 3 regions, reducing time-to-revenue by 30%.</li><li>Promoted 8 direct reports into senior IC or management roles through structured coaching frameworks.</li></ul></div>
+      <div class="role-block"><div class="role-title">Partner Development Manager, SMB</div><div class="role-date">2018 – 2021</div><ul class="bullets"><li>Grew SMB partner portfolio from 12 to 40+ active partners, exceeding quota by 118% in FY2020.</li><li>Developed operational-excellence playbook now used as standard PDM onboarding resource.</li></ul></div>
+    </div>
+    <div class="exp-block" data-org="Comcast">
+      <div class="exp-co">Comcast Business</div><div class="exp-scope">Enterprise Sales &amp; Channel Development</div><div class="exp-dates">2012 – 2018</div>
+      <div class="role-block"><div class="role-title">Senior Sales Manager, Enterprise Accounts</div><div class="role-date">2015 – 2018</div><ul class="bullets"><li>Led team of 12 enterprise AEs covering Greater Philadelphia; ranked #2 nationally FY2017.</li><li>Channel partner initiative added $2.4M incremental annual revenue within first 18 months.</li></ul></div>
+      <div class="role-block"><div class="role-title">Account Executive, SMB</div><div class="role-date">2012 – 2015</div><ul class="bullets"><li>Top 10% of AEs nationally; promoted to manager track after 2 years of 130%+ attainment.</li></ul></div>
+    </div>
+    <div class="exp-block" data-org="VOW SuitUp BGC MLU">
+      <div class="exp-co">VOW Center</div><div class="exp-scope">Verity Outreach Worship Center — Philadelphia, PA</div><div class="exp-dates">2018 – Present</div>
+      <div class="role-block"><div class="role-title">Executive Director &amp; Founder</div><div class="role-date">2018 – Present</div><ul class="bullets"><li>Founded and lead a Philadelphia-based faith nonprofit delivering programs in mentorship, financial literacy, street evangelism, and community leadership development.</li><li>Programs: Chess Not Checkers, Builder's Conference, iThirst Street Evangelism, Financial Literacy &amp; Stewardship.</li></ul></div>
+    </div>
+  </div>
+
+  <!-- ── CASES ──────────────────────────────────────────── -->
+  <div id="view-cases" class="page-view">
+    <div class="page-header"><p class="page-eyebrow">GTM &amp; Strategy</p><h2 class="page-title">Cases</h2><p class="page-sub">Frameworks, programs, and strategies — with the outcomes they produced.</p></div>
+
+    <!-- Cases filter bar -->
+    <div class="tag-bar" style="margin-bottom:1.5rem">
+      <span class="tag-bar-label">Filter:</span>
+      <span class="filter-tag active accent-tag" data-tag="all" onclick="filterCases(this)">All</span>
+      <span class="filter-tag" data-tag="Cross-Functional" onclick="filterCases(this)">Cross-Functional</span>
+      <span class="filter-tag" data-tag="Strategy" onclick="filterCases(this)">Strategy</span>
+      <span class="filter-tag" data-tag="Community-Dev" onclick="filterCases(this)">Community Dev</span>
+      <span class="filter-tag" data-tag="Community-Leadership" onclick="filterCases(this)">Community Leadership</span>
+      <span class="filter-tag" data-tag="Enablement" onclick="filterCases(this)">Enablement</span>
+      <span class="filter-tag" data-tag="Partner-Collaboration" onclick="filterCases(this)">Partner Collaboration</span>
+      <span class="filter-tag" data-tag="Executive-Sponsorship" onclick="filterCases(this)">Executive Sponsorship</span>
+    </div>
+
+    <div id="cases-list">
+      <div class="case-card" data-case-tags="Strategy Partner-Collaboration Enablement Cross-Functional Executive-Sponsorship">
+        <div class="case-num">(001)</div>
+        <div class="case-title">Partner Co-Sell Motion — AWS Startup Segment</div>
+        <div class="case-sub">Amazon Web Services · 2021–2023</div>
+        <div class="case-desc">Designed and operationalized a structured co-sell framework for 40+ ISV partners in NAMER. Built joint pipeline tracking, partner QBR cadence, and field alignment playbook — adopted across 3 regions.</div>
+        <div class="case-tags"><span class="case-tag">Strategy</span><span class="case-tag">Partner Collaboration</span><span class="case-tag">Enablement</span><span class="case-tag">Executive Sponsorship</span></div>
+      </div>
+      <div class="case-card" data-case-tags="Enablement Strategy Cross-Functional">
+        <div class="case-num">(002)</div>
+        <div class="case-title">Operational Excellence Playbook — PDM Onboarding</div>
+        <div class="case-sub">Amazon Web Services · 2019–2020</div>
+        <div class="case-desc">Developed a comprehensive operational playbook for partner development managers that became the standard onboarding resource for the SMB PDM team. Reduced ramp time by an estimated 25%.</div>
+        <div class="case-tags"><span class="case-tag">Enablement</span><span class="case-tag">Strategy</span><span class="case-tag">Cross-Functional</span></div>
+      </div>
+      <div class="case-card" data-case-tags="Community-Dev Community-Leadership Cross-Functional">
+        <div class="case-num">(003)</div>
+        <div class="case-title">Chess Not Checkers — Men's Community Development</div>
+        <div class="case-sub">VOW Center · 2018 – Present</div>
+        <div class="case-desc">Founded and lead a structured mentorship program combining strategic life-skills frameworks with accountability, coaching, and community events. Annual panel draws 50+ attendees.</div>
+        <div class="case-tags"><span class="case-tag">Community Dev</span><span class="case-tag">Community Leadership</span><span class="case-tag">Cross-Functional</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PORTFOLIO ──────────────────────────────────────── -->
+  <div id="view-portfolio" class="page-view">
+    <div class="page-header"><p class="page-eyebrow">Creative Work</p><h2 class="page-title">Portfolio</h2><p class="page-sub">Design, builds, and published work across platforms.</p></div>
+
+    <!-- Social Links section -->
+    <div style="margin-bottom:1.875rem">
+      <div class="port-section-title">Social Links</div>
+      <div class="platform-bar">
+        <a href="https://medium.com/@antoneholmes" target="_blank" class="platform-link">
+          <div class="platform-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></div>
+          Medium
+        </a>
+        <a href="https://behance.net/antoneholmes" target="_blank" class="platform-link">
+          <div class="platform-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/></svg></div>
+          Behance
+        </a>
+        <a href="https://linkedin.com/in/antone-h" target="_blank" class="platform-link">
+          <div class="platform-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+          LinkedIn
+        </a>
+        <a href="https://github.com/hjs-ah" target="_blank" class="platform-link">
+          <div class="platform-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <!-- Software / Tool filter (moved from CV) -->
+    <div style="margin-bottom:1.875rem">
+      <div class="port-section-title">Tools &amp; Stack</div>
+      <div class="tool-filter-bar" id="portfolio-tool-bar">
+        <span class="tool-chip all-chip active" data-ptool="all" onclick="filterPortfolioTool(this)">
+          <span class="tool-chip-label">All</span>
+        </span>
+        <span class="tool-chip" data-ptool="Notion" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933z"/></svg>
+          <span class="tool-chip-label">Notion</span>
+        </span>
+        <span class="tool-chip" data-ptool="React" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38a2.167 2.167 0 0 0-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44a23.476 23.476 0 0 0-3.107-.534A23.892 23.892 0 0 0 12.769 4.7c1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442a22.73 22.73 0 0 0-3.113.538 15.02 15.02 0 0 1-.254-1.42c-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132z"/></svg>
+          <span class="tool-chip-label">React</span>
+        </span>
+        <span class="tool-chip" data-ptool="Figma" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49c2.476 0 4.49 2.014 4.49 4.49-.001 2.476-2.015 4.49-4.392 4.49z"/></svg>
+          <span class="tool-chip-label">Figma</span>
+        </span>
+        <span class="tool-chip" data-ptool="Supabase" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C.111 12.876.636 14.09 1.71 14.09h9.5l.19 8.867c.015.986 1.26 1.409 1.873.636l9.262-11.653c.653-.826.128-2.039-.946-2.039h-9.5L11.9 1.036z"/></svg>
+          <span class="tool-chip-label">Supabase</span>
+        </span>
+        <span class="tool-chip" data-ptool="Vercel" onclick="filterPortfolioTool(this)">
+          <svg class="tool-logo-img" viewBox="0 0 24 24" fill="currentColor"><path d="M24 22.525H0l12-21.05 12 21.05z"/></svg>
+          <span class="tool-chip-label">Vercel</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Tags filter section -->
+    <div class="portfolio-tag-bar">
+      <div class="port-section-title">
+        Tags
+        <span class="tooltip-trigger" id="tag-help-btn" onclick="showTagTooltip()" title="How tags work">?</span>
+      </div>
+      <div class="port-filter-tags" id="portfolio-tag-bar">
+        <span class="filter-tag active accent-tag" data-tag="all" onclick="filterPortfolio(this)">All</span>
+        <span class="filter-tag" data-tag="Full-Stack" onclick="filterPortfolio(this)">Full-Stack</span>
+        <span class="filter-tag" data-tag="Design" onclick="filterPortfolio(this)">Design</span>
+        <span class="filter-tag" data-tag="Branding" onclick="filterPortfolio(this)">Branding</span>
+        <span class="filter-tag" data-tag="Education" onclick="filterPortfolio(this)">Education</span>
+        <span class="filter-tag" data-tag="Community" onclick="filterPortfolio(this)">Community</span>
+      </div>
+    </div>
+
+    <!-- Portfolio grid -->
+    <div class="portfolio-grid" id="portfolio-grid">
+      <a href="https://star-story-cards.vercel.app" target="_blank" rel="noopener" class="portfolio-card" data-tags="Full-Stack Education">
+        <div class="portfolio-thumb">Screenshot — star-story-cards.vercel.app</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Full-Stack Build</div>
+          <div class="portfolio-title">Impact Narratives — Star Story Cards</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Sales leaders and coaches lack a structured, visual way to document and share impact narratives tied to measurable outcomes.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a CAAR-framed interactive card system that surfaces achievement narratives in a scannable, shareable format for coaching and portfolio use.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Notion</span><span class="portfolio-tag">Vercel</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Full-Stack Education">
+        <div class="portfolio-thumb">Screenshot — Learning with Verity</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Full-Stack Build</div>
+          <div class="portfolio-title">Learning with Verity — Teaching Platform</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Faith educators need real-time audience engagement tools that work in live teaching settings without complex AV setups.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a real-time interactive teaching deck with Ably sync, Notion CMS backend, and PIN-gated presenter controls across a 13-slide experience.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Ably</span><span class="portfolio-tag">Notion</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Full-Stack Design">
+        <div class="portfolio-thumb">Screenshot — Dissertation Dashboard</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Full-Stack Build</div>
+          <div class="portfolio-title">Dissertation Dashboard — SIAD Framework</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Doctoral candidates need a centralized command center to track research progress, sources, and chapter milestones across a multi-year project.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a Vercel/React/Notion app with 6 databases, role-gated views, AI research bar, and light/dark theme organized around the SIAD framework.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Notion</span><span class="portfolio-tag">Supabase</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Full-Stack Education">
+        <div class="portfolio-thumb">Screenshot — LearnOP</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Product Build</div>
+          <div class="portfolio-title">LearnOP — Multi-Org LMS</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Community organizations and small institutions need an affordable, role-based LMS without the complexity or cost of enterprise platforms.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a Canvas-inspired multi-org LMS with role-based access (Student, Instructor, Director), gradebook, discussions, and executive dashboard.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">React</span><span class="portfolio-tag">Supabase</span><span class="portfolio-tag">Resend</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Branding Design Community">
+        <div class="portfolio-thumb">Screenshot — Chess Not Checkers</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Brand Identity</div>
+          <div class="portfolio-title">Chess Not Checkers — Visual Identity</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">The program had a growing audience and clear mission but lacked a consistent visual identity to anchor its community presence.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Designed a complete brand system including logo, color palette, and print/digital materials that reflect the program's strategic and purposeful character.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">Figma</span><span class="portfolio-tag">Branding</span><span class="portfolio-tag">Community</span></div>
+        </div>
+      </a>
+      <a href="#" class="portfolio-card" data-tags="Full-Stack">
+        <div class="portfolio-thumb">Screenshot — VOW Center Giving Portal</div>
+        <div class="portfolio-body">
+          <div class="portfolio-type">Full-Stack Build</div>
+          <div class="portfolio-title">VOW Center Giving Statement Portal</div>
+          <span class="portfolio-section-label">The Problem</span>
+          <p class="portfolio-problem">Faith nonprofits need a dignified, self-service way to generate donor giving statements without manual spreadsheet work or expensive software.</p>
+          <span class="portfolio-section-label">The Direction</span>
+          <p class="portfolio-direction">Built a static Vercel-deployed portal with PDF generation via jsPDF — greyscale/green aesthetic, VOW branding, and donor-facing self-service download.</p>
+          <div class="portfolio-tags-row"><span class="portfolio-tag">Vercel</span><span class="portfolio-tag">jsPDF</span><span class="portfolio-tag">Community</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── CHANGELOG / VERSION UPDATES ───────────────────── -->
+  <div id="view-changelog" class="page-view">
+    <div class="page-header">
+      <p class="page-eyebrow">Site History</p>
+      <h2 class="page-title">Updates</h2>
+      <p class="page-sub">Version history, content updates, and feature releases — managed from Notion.</p>
+    </div>
+
+    <!-- Type filter -->
+    <div class="cl-type-filter" id="cl-filter-bar">
+      <span class="filter-tag active accent-tag" data-cl="all" onclick="filterChangelog(this)">All</span>
+      <span class="filter-tag" data-cl="Feature" onclick="filterChangelog(this)">Feature</span>
+      <span class="filter-tag" data-cl="Fix" onclick="filterChangelog(this)">Fix</span>
+      <span class="filter-tag" data-cl="Design" onclick="filterChangelog(this)">Design</span>
+      <span class="filter-tag" data-cl="Content" onclick="filterChangelog(this)">Content</span>
+      <span class="filter-tag" data-cl="Infrastructure" onclick="filterChangelog(this)">Infrastructure</span>
+    </div>
+
+    <div id="changelog-list">
+      <!-- Seeded entries — replaced by Notion data at build time -->
+      <div class="changelog-entry" data-cl-type="Feature">
+        <div class="cl-left">
+          <div class="cl-version">v2.0.0</div>
+          <div class="cl-date">May 2026</div>
+          <span class="cl-type cl-feature">Feature</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">All Pages</div>
+          <div class="cl-summary">Full SPA rebuild — single-page app with panel navigation</div>
+          <div class="cl-detail">Rebuilt from a multi-page site to a single-page application with a fixed left identity panel and swappable right-panel content views. Navigation, filtering, and modal system all new.</div>
+        </div>
+      </div>
+      <div class="changelog-entry" data-cl-type="Feature">
+        <div class="cl-left">
+          <div class="cl-version">v2.0.0</div>
+          <div class="cl-date">May 2026</div>
+          <span class="cl-type cl-feature">Feature</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">CV</div>
+          <div class="cl-summary">CV page — academic format with Original Concepts and Volunteer sections</div>
+          <div class="cl-detail">Added Publications & Scholarship, Original Concepts & Frameworks, Volunteer & Community Service, and domain filtering (Theology / Philanthropy / Social Responsibility).</div>
+        </div>
+      </div>
+      <div class="changelog-entry" data-cl-type="Feature">
+        <div class="cl-left">
+          <div class="cl-version">v2.0.0</div>
+          <div class="cl-date">May 2026</div>
+          <span class="cl-type cl-feature">Feature</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">Home</div>
+          <div class="cl-summary">Reflections — tag filtering and full-text modals</div>
+          <div class="cl-detail">Home page reflections now support tag-based filtering and include a Read More button plus popup window icon to open full content in a modal overlay.</div>
+        </div>
+      </div>
+      <div class="changelog-entry" data-cl-type="Design">
+        <div class="cl-left">
+          <div class="cl-version">v1.2.0</div>
+          <div class="cl-date">Apr 2026</div>
+          <span class="cl-type cl-design">Design</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">Left Panel</div>
+          <div class="cl-summary">Credential chips — fitted image containers, auto-width layout</div>
+          <div class="cl-detail">Credential badges in the left panel now size to their content rather than stretching full width. Image containers are fixed 28×28px for consistent logo display.</div>
+        </div>
+      </div>
+      <div class="changelog-entry" data-cl-type="Infrastructure">
+        <div class="cl-left">
+          <div class="cl-version">v1.1.0</div>
+          <div class="cl-date">Mar 2026</div>
+          <span class="cl-type cl-infrastructure">Infrastructure</span>
+        </div>
+        <div class="cl-right">
+          <div class="cl-scope">Build Pipeline</div>
+          <div class="cl-summary">Notion CMS integration — full data pipeline with build-time fetch</div>
+          <div class="cl-detail">All content now managed from Notion. build-data.js fetches 12 content types at Vercel build time and writes data.json. Published checkbox on each row controls visibility.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ── Page navigation ─────────────────────────────────── */
+function showPage(id, btn) {
+  document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn, .header-nav-btn').forEach(b => b.classList.remove('active'));
+  const view = document.getElementById('view-' + id);
+  if (view) view.classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+  if (id === 'portfolio') maybeShowTagTooltip();
+}
+
+/* ── Impact grid layout ──────────────────────────────── */
+function setImpactCount(n) {
+  const grid = document.getElementById('impact-grid');
+  if (!grid) return;
+  Array.from(grid.querySelectorAll('.impact-cell')).forEach((c,i) => c.style.display = i < n ? '' : 'none');
+  grid.setAttribute('data-count', String(n));
+}
+
+/* ── Notion data loader ──────────────────────────────── */
+async function loadData() {
+  let data;
+  try {
+    const res = await fetch('/data.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    data = await res.json();
+    console.log('data.json loaded:', data._buildTime);
+  } catch(e) {
+    console.warn('data.json not available — using static fallback. Error:', e.message);
+    return;
+  }
+
+  const s = data.settings || {};
+
+  // ── Top-nav header — detect which layout we're in
+  const isTopNav = !!document.querySelector('.site-header');
+
+  // ── Settings ──────────────────────────────────────────
+  if (s.accentColor) document.documentElement.style.setProperty('--accent', s.accentColor);
+  if (s.borderColor) document.documentElement.style.setProperty('--border', s.borderColor);
+
+  // Font style toggle — controlled from Notion Settings "Font Style" checkbox
+  if (s.fontStyle === 'DM Sans') {
+    document.documentElement.dataset.font = 'dm-sans';
+  } else {
+    delete document.documentElement.dataset.font; // revert to Barlow Condensed
+  }
+
+  if (s.name) {
+    const nameEl = document.querySelector('.name');
+    if (nameEl) {
+      const parts = s.name.trim().split(' ');
+      const first = parts[0];
+      const rest = parts.slice(1).join(' ');
+      nameEl.innerHTML = first + (rest ? '<br><span class="outline">' + rest + '</span>' : '');
+    }
+    document.title = s.name + ' \u2014 Portfolio';
+  }
+  if (s.tagline) { const tl = document.querySelector('.title-line'); if (tl) tl.textContent = s.tagline; }
+  if (s.profilePhotoUrl) {
+    const photoBlock = document.querySelector('.photo-block');
+    const ph = document.querySelector('.photo-ph');
+    if (photoBlock) {
+      // Remove any existing img first
+      const existing = photoBlock.querySelector('img');
+      if (existing) existing.remove();
+      // Create new img
+      const img = document.createElement('img');
+      img.alt = s.name || 'Antone Holmes';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center 12%;display:block;position:absolute;inset:0;';
+      img.onload = function() {
+        if (ph) ph.style.display = 'none';
+      };
+      img.onerror = function() {
+        this.remove();
+        if (ph) ph.style.display = 'flex';
+        console.warn('Photo failed to load:', s.profilePhotoUrl);
+      };
+      img.src = s.profilePhotoUrl; // set src AFTER handlers
+      photoBlock.insertBefore(img, photoBlock.firstChild);
+    }
+  }
+
+  // Nav labels + Notion-controlled visibility
+  const navPages   = ['home','cv','resume','cases','portfolio','changelog'];
+  const navLabels  = ['navHome','navCV','navResume','navCases','navPortfolio','navChangelog'];
+  const navVisible = ['showHome','showCV','showResume','showCases','showPortfolio','showChangelog'];
+  var navBtnSel = isTopNav ? '.header-nav-btn' : '.nav-btn';
+  document.querySelectorAll(navBtnSel).forEach(btn => {
+    const onclick = btn.getAttribute('onclick') || '';
+    const match = onclick.match(/showPage\('(\w+)'/);
+    if (!match) return;
+    const page = match[1];
+    const idx = navPages.indexOf(page);
+    if (idx < 0) return;
+    // Update label
+    if (s[navLabels[idx]]) btn.querySelector('span').textContent = s[navLabels[idx]];
+    // Hide if Notion says so (field must exist AND be explicitly false to hide)
+    if (s.hasOwnProperty(navVisible[idx]) && s[navVisible[idx]] === false) {
+      btn.style.display = 'none';
+    }
+  });
+
+  // ── Impact stats ──────────────────────────────────────
+  const stats = data.impactStats || [];
+  if (stats.length) {
+    const grid = document.getElementById('impact-grid');
+    if (grid) {
+      grid.innerHTML = stats.map(st =>
+        '<div class="impact-cell"><div class="impact-num">' + st.value + '</div><div class="impact-lbl">' + st.label + '</div></div>'
+      ).join('');
+      setImpactCount(stats.length);
+    }
+  }
+
+  // ── Credentials — render in rows of 3 ───────────────
+  const creds = data.credentials || [];
+  if (creds.length) {
+    const cr = isTopNav
+      ? document.getElementById('header-creds')
+      : document.querySelector('.cred-row');
+    if (cr) {
+      cr.innerHTML = '';
+      for (var ri = 0; ri < creds.length; ri += 3) {
+        var row = document.createElement('div');
+        row.className = 'cred-row-inner';
+        var rowCreds = creds.slice(ri, ri + 3);
+        rowCreds.forEach(function(cred) {
+          if (isTopNav) {
+            var pill = document.createElement('span');
+            pill.className = 'cred-pill';
+            var dot = document.createElement('span');
+            dot.className = 'cred-dot';
+            var txt = document.createElement('span');
+            txt.textContent = cred.name + (cred.subtitle ? ' · ' + cred.subtitle : '');
+            pill.appendChild(dot);
+            pill.appendChild(txt);
+            cr.appendChild(pill);
+            return;
+          }
+          var chip = document.createElement('div');
+          chip.className = 'cred-chip';
+          var imgWrap = document.createElement('div');
+          imgWrap.className = 'chip-img';
+          // Acronym: use explicit field, then capital letters of name, then first 3 chars
+          var acronym = cred.acronym || cred.name.replace(/[^A-Z]/g,'').substring(0,4) || cred.name.substring(0,3).toUpperCase();
+          if (cred.imageUrl) {
+            var img = document.createElement('img');
+            img.alt = cred.name;
+            img.onerror = (function(wrap, acr) { return function() {
+              this.remove();
+              var sp = document.createElement('span');
+              sp.className = 'chip-img-text';
+              sp.textContent = acr;
+              wrap.appendChild(sp);
+            };})(imgWrap, acronym);
+            img.src = cred.imageUrl;
+            imgWrap.appendChild(img);
+          } else {
+            var sp = document.createElement('span');
+            sp.className = 'chip-img-text';
+            sp.textContent = acronym;
+            imgWrap.appendChild(sp);
+          }
+          var detail = document.createElement('div');
+          detail.className = 'chip-detail';
+          var primary = document.createElement('span');
+          primary.className = 'chip-text';
+          primary.textContent = cred.name.split(' ').slice(0,2).join(' ');
+          var sub = document.createElement('span');
+          sub.className = 'chip-sub';
+          sub.textContent = cred.subtitle || '';
+          detail.appendChild(primary);
+          detail.appendChild(sub);
+          var hint = document.createElement('span');
+          hint.className = 'chip-hint';
+          hint.innerHTML = 'Details <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9L9 1M9 1H4M9 1V6"/></svg>';
+          chip.appendChild(imgWrap);
+          chip.appendChild(detail);
+          chip.appendChild(hint);
+          row.appendChild(chip);
+        });
+        cr.appendChild(row);
+      }
+    }
+  }
+
+  // ── Home: Updates ────────────────────────────────────
+  const updates = data.home?.updates || [];
+  if (updates.length) {
+    const tagColors = { Work:'tag-work', Faith:'tag-faith', Academic:'tag-academic', Community:'tag-life' };
+    const wc = document.getElementById('working-cards');
+    if (wc) {
+      wc.innerHTML = '';
+      updates.forEach(function(u) {
+        const tc = tagColors[u.tag] || 'tag-work';
+        const dateStr = u.date ? new Date(u.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
+        const card = document.createElement('div');
+        card.className = 'update-card';
+        card.dataset.tags = u.tag || '';
+        const dateEl = document.createElement('div');
+        dateEl.className = 'update-date';
+        dateEl.textContent = dateStr;
+        const body = document.createElement('div');
+        body.className = 'update-body';
+        const chip = document.createElement('span');
+        chip.className = 'update-tag-chip ' + tc;
+        chip.textContent = u.tag || '';
+        chip.onclick = (function(tag) { return function() {
+          var btn = document.querySelector('[data-tag="' + tag + '"]');
+          if (btn) filterCards('working', btn);
+        }; })(u.tag || 'all');
+        const titleEl = document.createElement('div');
+        titleEl.className = 'update-title';
+        titleEl.textContent = u.title;
+        const excerptEl = document.createElement('div');
+        excerptEl.className = 'update-excerpt';
+        excerptEl.textContent = u.excerpt;
+        body.appendChild(chip); body.appendChild(titleEl); body.appendChild(excerptEl);
+        card.appendChild(dateEl); card.appendChild(body);
+        wc.appendChild(card);
+      });
+    }
+  }
+
+  // ── Home: Reflections ─────────────────────────────────
+  const reflections = data.home?.reflections || [];
+  if (reflections.length) {
+    const refTagColors = { Faith:'tag-faith', Leadership:'tag-faith', Community:'tag-life' };
+    const rc = document.getElementById('reflections-cards');
+    if (rc) {
+      rc.innerHTML = '';
+      reflections.forEach(function(r, i) {
+        const tc = refTagColors[r.tag] || 'tag-life';
+        const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
+        const modalId = 'notion-r' + i;
+        window['_modal_' + modalId] = { title: r.title, tag: r.tag, date: dateStr, body: r.fullText || r.excerpt, tagClass: tc };
+
+        const card = document.createElement('div');
+        card.className = 'reflection-card';
+        card.dataset.tags = r.tag || '';
+
+        const top = document.createElement('div');
+        top.className = 'reflection-top';
+
+        const dateEl = document.createElement('div');
+        dateEl.className = 'update-date';
+        dateEl.style.cssText = 'min-width:48px;font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex-shrink:0';
+        dateEl.textContent = dateStr;
+
+        const body = document.createElement('div');
+        body.className = 'reflection-body';
+
+        const chip = document.createElement('span');
+        chip.className = 'update-tag-chip ' + tc;
+        chip.textContent = r.tag || '';
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'update-title';
+        titleEl.textContent = r.title;
+
+        const excerptEl = document.createElement('div');
+        excerptEl.className = 'update-excerpt';
+        excerptEl.textContent = r.excerpt;
+
+        const actions = document.createElement('div');
+        actions.className = 'reflection-actions';
+
+        const readBtn = document.createElement('button');
+        readBtn.className = 'read-more-btn';
+        readBtn.textContent = 'Read More \u2192';
+        readBtn.onclick = (function(id) { return function() { openDynamicModal(id); }; })(modalId);
+
+        const popupBtn = document.createElement('button');
+        popupBtn.className = 'popup-icon-btn';
+        popupBtn.title = 'Open in window';
+        popupBtn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"/></svg>';
+        popupBtn.onclick = (function(id) { return function() { openDynamicModal(id); }; })(modalId);
+
+        actions.appendChild(readBtn); actions.appendChild(popupBtn);
+        body.appendChild(chip); body.appendChild(titleEl); body.appendChild(excerptEl); body.appendChild(actions);
+        top.appendChild(dateEl); top.appendChild(body);
+        card.appendChild(top);
+        rc.appendChild(card);
+      });
+    }
+  }
+
+  // ── Home: Articles ────────────────────────────────────
+  const articles = data.home?.articles || [];
+  if (articles.length) {
+    const allBlogSections = document.querySelectorAll('.blog-section');
+    const articleSection = allBlogSections[allBlogSections.length - 1];
+    if (articleSection) {
+      articleSection.querySelectorAll('.article-card').forEach(function(e) { e.remove(); });
+      articles.forEach(function(a) {
+        const dateStr = a.date ? new Date(a.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
+        const card = document.createElement('a');
+        card.className = 'article-card';
+        card.href = a.url || '#';
+        if (a.url) { card.target = '_blank'; card.rel = 'noopener'; }
+        const left = document.createElement('div');
+        const meta = document.createElement('div');
+        meta.className = 'article-meta';
+        meta.textContent = (a.platform || '') + ' \u00b7 ' + dateStr;
+        const title = document.createElement('div');
+        title.className = 'article-title';
+        title.textContent = a.title;
+        left.appendChild(meta); left.appendChild(title);
+        const arrow = document.createElement('div');
+        arrow.className = 'article-arrow';
+        arrow.innerHTML = '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2V7" stroke="#111110" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        card.appendChild(left); card.appendChild(arrow);
+        articleSection.appendChild(card);
+      });
+    }
+  }
+
+  // ── Resume ────────────────────────────────────────────
+  const resume = data.resume || [];
+  if (resume.length) {
+    const companies = {};
+    resume.forEach(function(r) {
+      if (!companies[r.company]) companies[r.company] = [];
+      companies[r.company].push(r);
+    });
+    const resumeView = document.getElementById('view-resume');
+    if (resumeView) {
+      resumeView.querySelectorAll('.exp-block').forEach(function(b) { b.remove(); });
+      const insertBefore = resumeView.querySelector('.cv-two-col');
+      const parent = insertBefore ? insertBefore.parentElement : resumeView;
+      Object.entries(companies).forEach(function(entry) {
+        const co = entry[0], roles = entry[1];
+        const org = roles[0].org || '';
+        const block = document.createElement('div');
+        block.className = 'exp-block';
+        block.dataset.org = org;
+        const coEl = document.createElement('div'); coEl.className = 'exp-co'; coEl.textContent = co;
+        const scopeEl = document.createElement('div'); scopeEl.className = 'exp-scope'; scopeEl.textContent = roles[0].scope || '';
+        const datesEl = document.createElement('div'); datesEl.className = 'exp-dates'; datesEl.textContent = roles[0].dateRange || '';
+        block.appendChild(coEl); block.appendChild(scopeEl); block.appendChild(datesEl);
+        roles.forEach(function(r) {
+          const rb = document.createElement('div'); rb.className = 'role-block';
+          const rt = document.createElement('div'); rt.className = 'role-title'; rt.textContent = r.role;
+          const rd = document.createElement('div'); rd.className = 'role-date'; rd.textContent = r.dateRange;
+          rb.appendChild(rt); rb.appendChild(rd);
+          if (r.bullets && r.bullets.length) {
+            const ul = document.createElement('ul'); ul.className = 'bullets';
+            r.bullets.forEach(function(b) {
+              if (!b.trim()) return;
+              const li = document.createElement('li'); li.textContent = b; ul.appendChild(li);
+            });
+            rb.appendChild(ul);
+          }
+          block.appendChild(rb);
+        });
+        parent.appendChild(block);
+      });
+    }
+  }
+
+  // ── Books (CV — Book type) ──────────────────────────────
+  const books = (data.cv && data.cv['Book']) || [];
+  if (books.length) {
+    const grid = document.getElementById('books-grid');
+    if (grid) {
+      grid.innerHTML = '';
+      books.sort(function(a,b){ return (b.year||'').localeCompare(a.year||''); }).forEach(function(book) {
+        var card = document.createElement('div');
+        card.className = 'book-card';
+        var yr = document.createElement('span'); yr.className = 'book-year'; yr.textContent = book.year || ''; card.appendChild(yr);
+        if (book.imageUrl) {
+          var img = document.createElement('img'); img.className = 'book-cover'; img.alt = book.name;
+          var ph = document.createElement('div'); ph.className = 'book-cover-ph'; ph.style.display = 'none'; ph.innerHTML = 'Cover<br>coming soon';
+          img.onerror = (function(p){ return function(){ this.style.display='none'; p.style.display='flex'; }; })(ph);
+          img.src = book.imageUrl; card.appendChild(img); card.appendChild(ph);
+        } else {
+          var ph2 = document.createElement('div'); ph2.className = 'book-cover-ph'; ph2.innerHTML = 'Cover<br>coming soon'; card.appendChild(ph2);
+        }
+        var t = document.createElement('div'); t.className = 'book-title'; t.textContent = book.name; card.appendChild(t);
+        if (book.subtitle) { var s = document.createElement('div'); s.className = 'book-subtitle'; s.textContent = book.subtitle; card.appendChild(s); }
+        if (book.link) {
+          var a = document.createElement('a'); a.className = 'book-cta'; a.href = book.link; a.target = '_blank'; a.rel = 'noopener';
+          a.innerHTML = 'View on Amazon <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H5M10 2V7"/></svg>';
+          card.appendChild(a);
+        } else {
+          var soon = document.createElement('span'); soon.className = 'book-cta-soon'; soon.textContent = (book.detail || 'Coming soon!'); card.appendChild(soon);
+        }
+        grid.appendChild(card);
+      });
+    }
+  }
+
+  // ── Cases ─────────────────────────────────────────────
+  const cases = data.cases || [];
+  if (cases.length) {
+    const cl = document.getElementById('cases-list');
+    if (cl) {
+      cl.innerHTML = '';
+      cases.forEach(function(c, i) {
+        const card = document.createElement('div');
+        card.className = 'case-card';
+        card.dataset.caseTags = (c.tags || []).join(' ');
+        const num = document.createElement('div'); num.className = 'case-num'; num.textContent = '(' + String(i+1).padStart(3,'0') + ')';
+        const title = document.createElement('div'); title.className = 'case-title'; title.textContent = c.name;
+        const sub = document.createElement('div'); sub.className = 'case-sub'; sub.textContent = c.sub || '';
+        const desc = document.createElement('div'); desc.className = 'case-desc'; desc.textContent = c.desc;
+        const tags = document.createElement('div'); tags.className = 'case-tags';
+        (c.tags || []).forEach(function(t) {
+          const span = document.createElement('span'); span.className = 'case-tag'; span.textContent = t; tags.appendChild(span);
+        });
+        card.appendChild(num); card.appendChild(title); card.appendChild(sub); card.appendChild(desc); card.appendChild(tags);
+        cl.appendChild(card);
+      });
+    }
+  }
+
+  // ── Portfolio ─────────────────────────────────────────
+  const portfolio = data.portfolio || [];
+  if (portfolio.length) {
+    const pg = document.getElementById('portfolio-grid');
+    if (pg) {
+      pg.innerHTML = '';
+      portfolio.forEach(function(p) {
+        const card = document.createElement('a');
+        card.className = 'portfolio-card';
+        card.href = p.link || '#';
+        card.dataset.tags = (p.filterTags || []).join(' ');
+        if (p.link) { card.target = '_blank'; card.rel = 'noopener'; }
+        const thumb = document.createElement('div');
+        thumb.className = 'portfolio-thumb';
+        if (p.imageUrl) {
+          const img = document.createElement('img'); img.src = p.imageUrl; img.alt = p.name; thumb.appendChild(img);
+        } else { thumb.textContent = 'Screenshot placeholder'; }
+        const body = document.createElement('div');
+        body.className = 'portfolio-body';
+        const type = document.createElement('div'); type.className = 'portfolio-type'; type.textContent = p.type || '';
+        const title = document.createElement('div'); title.className = 'portfolio-title'; title.textContent = p.name;
+        // Problem / Direction sections
+        if (p.problem) {
+          const pl = document.createElement('span'); pl.className = 'portfolio-section-label'; pl.textContent = 'The Problem';
+          const pt = document.createElement('p'); pt.className = 'portfolio-problem'; pt.textContent = p.problem;
+          body.appendChild(type); body.appendChild(title); body.appendChild(pl); body.appendChild(pt);
+        } else { body.appendChild(type); body.appendChild(title); }
+        if (p.direction) {
+          const dl = document.createElement('span'); dl.className = 'portfolio-section-label'; dl.textContent = 'The Direction';
+          const dt = document.createElement('p'); dt.className = 'portfolio-direction'; dt.textContent = p.direction;
+          body.appendChild(dl); body.appendChild(dt);
+        } else if (p.desc) {
+          const desc = document.createElement('div'); desc.className = 'portfolio-desc'; desc.textContent = p.desc;
+          body.appendChild(desc);
+        }
+        const tagRow = document.createElement('div'); tagRow.className = 'portfolio-tags-row';
+        (p.stackTags || []).forEach(function(t) {
+          const span = document.createElement('span'); span.className = 'portfolio-tag'; span.textContent = t; tagRow.appendChild(span);
+        });
+        body.appendChild(tagRow);
+        card.appendChild(thumb); card.appendChild(body);
+        pg.appendChild(card);
+      });
+    }
+  }
+
+  // ── Changelog ─────────────────────────────────────────
+  const changelog = data.changelog || [];
+  if (changelog.length) {
+    const typeClassMap = { Feature:'cl-feature', Fix:'cl-fix', Design:'cl-design', Content:'cl-content', Infrastructure:'cl-infrastructure' };
+    const cl2 = document.getElementById('changelog-list');
+    if (cl2) {
+      cl2.innerHTML = '';
+      changelog.forEach(function(entry) {
+        const tc = typeClassMap[entry.type] || 'cl-feature';
+        const dateStr = entry.date ? new Date(entry.date).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
+        const row = document.createElement('div');
+        row.className = 'changelog-entry';
+        row.dataset.clType = entry.type || '';
+        row.innerHTML = '<div class="cl-left">'
+          + '<div class="cl-version">' + (entry.version||'') + '</div>'
+          + '<div class="cl-date">' + dateStr + '</div>'
+          + '<span class="cl-type ' + tc + '">' + (entry.type||'') + '</span>'
+          + '</div>'
+          + '<div class="cl-right">'
+          + (entry.scope ? '<div class="cl-scope">' + entry.scope + '</div>' : '')
+          + '<div class="cl-summary">' + (entry.summary||'') + '</div>'
+          + (entry.detail ? '<div class="cl-detail">' + entry.detail + '</div>' : '')
+          + '</div>';
+        cl2.appendChild(row);
+      });
+    }
+  }
+}
+
+
+/* ── Dynamic modal for Notion reflections ────────────── */
+function openDynamicModal(id) {
+  const stored = window['_modal_' + id];
+  if (!stored) return;
+  let overlay = document.getElementById('dynamic-modal');
+  if (!overlay) {
+    // Build entirely with DOM — no innerHTML quoting issues
+    overlay = document.createElement('div');
+    overlay.id = 'dynamic-modal';
+    overlay.className = 'modal-overlay';
+    overlay.onclick = function(e) { if (e.target === overlay) { overlay.classList.remove('open');  } };
+
+    const box = document.createElement('div');
+    box.className = 'modal-box';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    closeBtn.onclick = function() { overlay.classList.remove('open');  };
+
+    const dateEl = document.createElement('div'); dateEl.id = 'dyn-date'; dateEl.className = 'modal-date';
+    const tagEl  = document.createElement('span'); tagEl.id  = 'dyn-tag';  tagEl.className  = 'modal-tag';
+    const titleEl= document.createElement('div'); titleEl.id = 'dyn-title';titleEl.className= 'modal-title';
+    const bodyEl = document.createElement('div'); bodyEl.id  = 'dyn-body'; bodyEl.className = 'modal-body';
+
+    box.appendChild(closeBtn); box.appendChild(dateEl); box.appendChild(tagEl);
+    box.appendChild(titleEl); box.appendChild(bodyEl);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+  }
+  document.getElementById('dyn-date').textContent = stored.date;
+  const tagEl = document.getElementById('dyn-tag');
+  tagEl.textContent = stored.tag || '';
+  tagEl.className = 'modal-tag ' + (stored.tagClass || '');
+  document.getElementById('dyn-title').textContent = stored.title || '';
+  const bodyEl = document.getElementById('dyn-body');
+  bodyEl.innerHTML = '';
+  (stored.body || '').split('\n\n').forEach(function(para) {
+    if (!para.trim()) return;
+    const p = document.createElement('p');
+    p.textContent = para;
+    bodyEl.appendChild(p);
+  });
+  overlay.classList.add('open');
+  
+}
+
+/* ── Card filtering (home: working + reflections) ────── */
+function filterCards(section, clickedBtn) {
+  if (!clickedBtn) return;
+  const tag = clickedBtn.dataset.tag;
+
+  // Update active state — walk up to tag-bar safely
+  const bar = clickedBtn.closest('.tag-bar') || clickedBtn.closest('.blog-section');
+  if (bar) {
+    bar.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+  }
+  clickedBtn.classList.add('active');
+
+  // Filter cards
+  const containerId = section === 'working' ? 'working-cards' : 'reflections-cards';
+  const cards = document.querySelectorAll('#' + containerId + ' [data-tags]');
+  cards.forEach(card => {
+    const cardTags = card.dataset.tags || '';
+    if (tag === 'all' || cardTags.includes(tag)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+/* ── Portfolio tag filter ────────────────────────────── */
+let activePortfolioTags = new Set(['all']);
+
+function filterPortfolio(clickedBtn) {
+  const tag = clickedBtn.dataset.tag;
+
+  if (tag === 'all') {
+    activePortfolioTags.clear();
+    activePortfolioTags.add('all');
+    document.querySelectorAll('#portfolio-tag-bar .filter-tag').forEach(b => b.classList.remove('active'));
+    clickedBtn.classList.add('active');
+  } else {
+    // Remove "all" if a specific tag is chosen
+    activePortfolioTags.delete('all');
+    document.querySelector('#portfolio-tag-bar [data-tag="all"]').classList.remove('active');
+    clickedBtn.classList.toggle('active');
+    if (clickedBtn.classList.contains('active')) {
+      activePortfolioTags.add(tag);
+    } else {
+      activePortfolioTags.delete(tag);
+    }
+    // If nothing selected, revert to All
+    if (activePortfolioTags.size === 0) {
+      activePortfolioTags.add('all');
+      document.querySelector('#portfolio-tag-bar [data-tag="all"]').classList.add('active');
+    }
+  }
+
+  // Show/hide portfolio cards
+  document.querySelectorAll('#portfolio-grid .portfolio-card').forEach(card => {
+    if (activePortfolioTags.has('all')) {
+      card.classList.remove('hidden');
+    } else {
+      const cardTags = (card.dataset.tags || '').split(' ');
+      const match = [...activePortfolioTags].some(t => cardTags.includes(t));
+      card.classList.toggle('hidden', !match);
+    }
+  });
+}
+
+/* ── Reflection modals ───────────────────────────────── */
+function openModal(id) {
+  const overlay = document.getElementById('modal-' + id);
+  if (overlay) overlay.classList.add('open');
+  
+}
+function closeModal(id) {
+  const overlay = document.getElementById(id);
+  if (overlay) overlay.classList.remove('open');
+  
+}
+function closeModalOutside(e, id) {
+  if (e.target === e.currentTarget) closeModal(id);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+
+/* ── First-visit portfolio tag tooltip ───────────────── */
+function maybeShowTagTooltip() {
+  if (localStorage.getItem('ah-tag-tooltip-seen')) return;
+  setTimeout(() => document.getElementById('fv-overlay').classList.add('show'), 400);
+  // Animate demo tags
+  animateDemoTags();
+}
+function showTagTooltip() {
+  document.getElementById('fv-overlay').classList.add('show');
+  animateDemoTags();
+}
+function dismissTagTooltip() {
+  document.getElementById('fv-overlay').classList.remove('show');
+  localStorage.setItem('ah-tag-tooltip-seen', '1');
+}
+function animateDemoTags() {
+  const tags = ['demo-t1','demo-t2','demo-t3'];
+  let i = 0;
+  tags.forEach(t => document.getElementById(t).classList.remove('lit'));
+  const cycle = setInterval(() => {
+    tags.forEach(t => document.getElementById(t).classList.remove('lit'));
+    document.getElementById(tags[i % tags.length]).classList.add('lit');
+    i++;
+    if (!document.getElementById('fv-overlay').classList.contains('show')) clearInterval(cycle);
+  }, 700);
+}
+
+
+/* ── Cases filter ────────────────────────────────────── */
+function filterCases(clickedBtn) {
+  const tag = clickedBtn.dataset.tag;
+  clickedBtn.closest('.tag-bar').querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+  clickedBtn.classList.add('active');
+  document.querySelectorAll('#cases-list [data-case-tags]').forEach(card => {
+    card.style.display = (tag === 'all' || card.dataset.caseTags.includes(tag)) ? '' : 'none';
+  });
+}
+
+/* ── Resume org filter ───────────────────────────────── */
+function filterResume(clickedChip) {
+  const org = clickedChip.dataset.org;
+  document.querySelectorAll('#resume-org-bar .tool-chip').forEach(c => c.classList.remove('active'));
+  clickedChip.classList.add('active');
+  document.querySelectorAll('#view-resume .exp-block').forEach(block => {
+    const blockOrg = block.dataset.org || '';
+    block.style.display = (org === 'all' || blockOrg.includes(org)) ? '' : 'none';
+  });
+}
+
+/* ── Portfolio tool filter ───────────────────────────── */
+let activePortfolioTools = new Set(['all']);
+function filterPortfolioTool(clickedChip) {
+  const tool = clickedChip.dataset.ptool;
+  const allChip = document.querySelector('#portfolio-tool-bar .all-chip');
+  if (tool === 'all') {
+    activePortfolioTools = new Set(['all']);
+    document.querySelectorAll('#portfolio-tool-bar .tool-chip').forEach(c => c.classList.remove('active'));
+    clickedChip.classList.add('active');
+  } else {
+    allChip.classList.remove('active');
+    activePortfolioTools.delete('all');
+    clickedChip.classList.toggle('active');
+    if (clickedChip.classList.contains('active')) { activePortfolioTools.add(tool); }
+    else { activePortfolioTools.delete(tool); }
+    if (activePortfolioTools.size === 0) { activePortfolioTools.add('all'); allChip.classList.add('active'); }
+  }
+  document.querySelectorAll('#portfolio-grid .portfolio-card').forEach(card => {
+    if (activePortfolioTools.has('all')) { card.classList.remove('hidden'); return; }
+    // Match against portfolio-tag text content
+    const cardTagText = [...card.querySelectorAll('.portfolio-tag')].map(t => t.textContent).join(' ');
+    const match = [...activePortfolioTools].some(t => cardTagText.includes(t));
+    card.classList.toggle('hidden', !match);
+  });
+}
+
+/* ── CV tool filter ──────────────────────────────────── */
+function filterCVTool(clickedChip) {
+  const tool = clickedChip.dataset.tool;
+  const allChips = document.querySelectorAll('#cv-tool-bar .tool-chip');
+  
+  if (tool === 'all') {
+    allChips.forEach(c => c.classList.remove('active'));
+    clickedChip.classList.add('active');
+    document.querySelectorAll('#view-cv [data-cv-tools]').forEach(s => s.style.display = '');
+    return;
+  }
+  
+  // Deactivate all-chip
+  document.querySelector('#cv-tool-bar .all-chip').classList.remove('active');
+  clickedChip.classList.toggle('active');
+  
+  // Collect active tools
+  const active = [...document.querySelectorAll('#cv-tool-bar .tool-chip.active')].map(c => c.dataset.tool);
+  
+  if (active.length === 0) {
+    document.querySelector('#cv-tool-bar .all-chip').classList.add('active');
+    document.querySelectorAll('#view-cv [data-cv-tools]').forEach(s => s.style.display = '');
+    return;
+  }
+  
+  document.querySelectorAll('#view-cv [data-cv-tools]').forEach(section => {
+    const sTools = section.dataset.cvTools.split(' ');
+    const match = active.some(t => sTools.includes(t) || sTools.includes('all'));
+    section.style.display = match ? '' : 'none';
+  });
+}
+
+
+/* ── Changelog filter ────────────────────────────────── */
+function filterChangelog(clickedBtn) {
+  const type = clickedBtn.dataset.cl;
+  document.querySelectorAll('#cl-filter-bar .filter-tag').forEach(b => b.classList.remove('active'));
+  clickedBtn.classList.add('active');
+  document.querySelectorAll('#changelog-list .changelog-entry').forEach(entry => {
+    entry.style.display = (type === 'all' || entry.dataset.clType === type) ? '' : 'none';
+  });
+}
+
+
+
+
+// Close drawer on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeDrawer();
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
+
+
+
+/* ── Theme toggle ─────────────────────────────────── */
+function toggleTheme() {
+  const current = document.documentElement.dataset.theme || 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('ah-theme', next);
+  const label = document.getElementById('theme-label');
+  if (label) label.textContent = next === 'dark' ? 'Dark' : 'Light';
+}
+
+// Restore saved theme on load
+(function() {
+  const saved = localStorage.getItem('ah-theme');
+  if (saved) {
+    document.documentElement.dataset.theme = saved;
+    // label updated after DOM loads via DOMContentLoaded
+  }
+})();
+
+/* ── Init — run after ALL functions defined ─────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  // Restore theme label after DOM ready
+  const savedTheme = localStorage.getItem('ah-theme') || 'light';
+  document.documentElement.dataset.theme = savedTheme;
+  const lbl = document.getElementById('theme-label');
+  if (lbl) lbl.textContent = savedTheme === 'dark' ? 'Dark' : 'Light';
+  setImpactCount(5);
+  loadData();
+});
+</script>
+
+</body>
+</html>
