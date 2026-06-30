@@ -68,10 +68,13 @@ body{
   line-height:1.6;margin-bottom:1.125rem;
 }
 
-/* Credential pills */
-.cred-pills{
-  display:flex;flex-wrap:wrap;gap:.35rem;
-  justify-content:center;margin-bottom:1.125rem;
+/* Credential pills — two rows: schools on top, certs below */
+.cred-pills-group{
+  display:flex;flex-direction:column;align-items:center;
+  gap:.4rem;margin-bottom:1.125rem;
+}
+.cred-pills-row{
+  display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center;
 }
 .cred-pill{
   display:inline-flex;align-items:center;gap:.3rem;
@@ -96,16 +99,14 @@ body{
   width:100%;
   justify-content:center;
 }
-.row-label{
-  font-size:.475rem;font-weight:700;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--ink-3);
-  white-space:nowrap;flex-shrink:0;min-width:56px;
-  text-align:right;
-}
 .row-divider{width:1px;height:16px;background:var(--border);flex-shrink:0}
-.row-content{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.row-content{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;justify-content:center}
 
-/* Social links */
+/* Social links — icon only row, no label */
+.social-row{
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  padding:.75rem 0;width:100%;
+}
 .social-link{
   display:inline-flex;align-items:center;gap:.3rem;
   font-size:.6rem;font-weight:600;letter-spacing:.1em;
@@ -114,6 +115,19 @@ body{
 }
 .social-link:hover{color:var(--ink)}
 .social-link svg{opacity:.5}
+
+/* Navigation row — bordered top + bottom, vertically centered content */
+.nav-row{
+  display:flex;align-items:center;justify-content:center;
+  width:calc(100% + 5rem);margin-left:-2.5rem;
+  padding:.875rem 2.5rem;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.nav-row-content{
+  display:flex;align-items:center;justify-content:center;
+  gap:.4rem;flex-wrap:wrap;
+}
 
 /* Nav buttons */
 .header-nav-btn{
@@ -128,7 +142,6 @@ body{
 }
 .header-nav-btn:hover{border-color:var(--border);color:var(--ink-2)}
 .header-nav-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-.header-row:last-child{padding-bottom:1.25rem}
 
 /* ══ CONTENT PANEL ═══════════════════════════════════════ */
 .content-panel{
@@ -206,53 +219,49 @@ body{
     <!-- Subtitle -->
     <p class="header-subtitle" id="header-subtitle">Sales &amp; GTM Leader &nbsp;·&nbsp; Educator &nbsp;·&nbsp; Builder</p>
 
-    <!-- Credential pills -->
-    <div class="cred-pills" id="header-creds">
-      <span class="cred-pill"><span class="cred-dot"></span>AWS — Cloud Practitioner</span>
-      <span class="cred-pill"><span class="cred-dot"></span>AWS — Solutions Architect</span>
-      <span class="cred-pill"><span class="cred-dot"></span>AWS — AI Practitioner</span>
-      <span class="cred-pill"><span class="cred-dot"></span>Hampton University &middot; PhD Candidate</span>
-      <span class="cred-pill"><span class="cred-dot"></span>Indiana Univ. of PA &middot; M.A.</span>
-      <span class="cred-pill"><span class="cred-dot"></span>Pierce College &middot; B.S.</span>
-    </div>
-
-    <div class="header-rule"></div>
-
-    <!-- Social row -->
-    <div class="header-row">
-      <span class="row-label">Social</span>
-      <div class="row-divider"></div>
-      <div class="row-content" id="social-row">
-        <a class="social-link" href="mailto:antoneholmes@icloud.com">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Email
-        </a>
-        <a class="social-link" href="https://linkedin.com/in/antone-h/" target="_blank" rel="noopener">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          LinkedIn
-        </a>
-        <a class="social-link" href="https://github.com/hjs-ah" target="_blank" rel="noopener">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          GitHub
-        </a>
-        <a class="social-link" href="https://medium.com/@antoneholmes" target="_blank" rel="noopener">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Medium
-        </a>
-        <a class="social-link" href="https://behance.net/antoneholmes" target="_blank" rel="noopener">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          Behance
-        </a>
+    <!-- Credential pills — schools on top row, certs below -->
+    <div class="cred-pills-group" id="header-creds">
+      <div class="cred-pills-row" id="header-creds-schools">
+        <span class="cred-pill"><span class="cred-dot"></span>Hampton University &middot; PhD Candidate</span>
+        <span class="cred-pill"><span class="cred-dot"></span>Indiana Univ. of PA &middot; M.A.</span>
+        <span class="cred-pill"><span class="cred-dot"></span>Pierce College &middot; B.S.</span>
+      </div>
+      <div class="cred-pills-row" id="header-creds-certs">
+        <span class="cred-pill"><span class="cred-dot"></span>AWS — Cloud Practitioner</span>
+        <span class="cred-pill"><span class="cred-dot"></span>AWS — Solutions Architect</span>
+        <span class="cred-pill"><span class="cred-dot"></span>AWS — AI Practitioner</span>
       </div>
     </div>
 
     <div class="header-rule"></div>
 
-    <!-- Navigation row -->
-    <div class="header-row">
-      <span class="row-label">Navigation</span>
-      <div class="row-divider"></div>
-      <div class="row-content">
+    <!-- Social row — icons/links only, no label -->
+    <div class="social-row" id="social-row">
+      <a class="social-link" href="mailto:antoneholmes@icloud.com">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email
+      </a>
+      <a class="social-link" href="https://linkedin.com/in/antone-h/" target="_blank" rel="noopener">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a class="social-link" href="https://github.com/hjs-ah" target="_blank" rel="noopener">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+      <a class="social-link" href="https://medium.com/@antoneholmes" target="_blank" rel="noopener">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Medium
+      </a>
+      <a class="social-link" href="https://behance.net/antoneholmes" target="_blank" rel="noopener">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        Behance
+      </a>
+    </div>
+
+    <!-- Navigation row — bordered top + bottom, vertically centered -->
+    <div class="nav-row">
+      <div class="nav-row-content">
         <button class="header-nav-btn active" onclick="showPage('home',this)"><span>Home</span></button>
         <button class="header-nav-btn" id="tnav-cv" onclick="showPage('cv',this)"><span>CV</span></button>
         <button class="header-nav-btn" id="tnav-resume" onclick="showPage('resume',this)"><span>Pro Resume</span></button>
@@ -1716,12 +1725,32 @@ async function loadData() {
     }
   }
 
-  // ── Credentials — render in rows of 3 ───────────────
+  // ── Credentials ──────────────────────────────────────
   const creds = data.credentials || [];
-  if (creds.length) {
-    const cr = isTopNav
-      ? document.getElementById('header-creds')
-      : document.querySelector('.cred-row');
+  if (creds.length && isTopNav) {
+    // Top-nav layout: split into Schools row (top) and Certs row (below)
+    var schoolsRow = document.getElementById('header-creds-schools');
+    var certsRow = document.getElementById('header-creds-certs');
+    if (schoolsRow && certsRow) {
+      schoolsRow.innerHTML = '';
+      certsRow.innerHTML = '';
+      creds.forEach(function(cred) {
+        var pill = document.createElement('span');
+        pill.className = 'cred-pill';
+        var dot = document.createElement('span');
+        dot.className = 'cred-dot';
+        var txt = document.createElement('span');
+        txt.textContent = cred.name + (cred.subtitle ? ' · ' + cred.subtitle : '');
+        pill.appendChild(dot);
+        pill.appendChild(txt);
+        // Route: certifications (AWS, AI, Cloud, Solutions, etc.) go to certsRow,
+        // everything else (universities/schools) goes to schoolsRow
+        var isCert = /AWS|Certified|Certificate|Certification/i.test(cred.name + ' ' + (cred.subtitle||''));
+        (isCert ? certsRow : schoolsRow).appendChild(pill);
+      });
+    }
+  } else if (creds.length) {
+    const cr = document.querySelector('.cred-row');
     if (cr) {
       cr.innerHTML = '';
       for (var ri = 0; ri < creds.length; ri += 3) {
@@ -1729,18 +1758,6 @@ async function loadData() {
         row.className = 'cred-row-inner';
         var rowCreds = creds.slice(ri, ri + 3);
         rowCreds.forEach(function(cred) {
-          if (isTopNav) {
-            var pill = document.createElement('span');
-            pill.className = 'cred-pill';
-            var dot = document.createElement('span');
-            dot.className = 'cred-dot';
-            var txt = document.createElement('span');
-            txt.textContent = cred.name + (cred.subtitle ? ' · ' + cred.subtitle : '');
-            pill.appendChild(dot);
-            pill.appendChild(txt);
-            cr.appendChild(pill);
-            return;
-          }
           var chip = document.createElement('div');
           chip.className = 'cred-chip';
           var imgWrap = document.createElement('div');
