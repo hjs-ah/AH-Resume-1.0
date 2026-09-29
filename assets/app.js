@@ -638,12 +638,17 @@
     photo.textContent = '';
     var initials = name.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
     var mono = el('span', { class: 'monogram', text: initials });
-    photo.appendChild(mono);
     if (s.profilePhotoUrl && safeUrl(s.profilePhotoUrl)) {
-      var img = el('img', { alt: '', src: safeUrl(s.profilePhotoUrl), fetchpriority: 'high' });
-      img.addEventListener('load', function () { mono.remove(); });
-      img.addEventListener('error', function () { img.remove(); });
-      photo.appendChild(img);
+      /* No placeholder flash: the photo fades in once it has fully loaded and decoded. */
+      photoReady = new Promise(function (resolve) {
+        var img = el('img', { alt: '', fetchpriority: 'high' });
+        function show() { photo.appendChild(img); requestAnimationFrame(function () { requestAnimationFrame(function () { img.classList.add('is-loaded'); }); }); resolve(); }
+        img.addEventListener('load', function () { (img.decode ? img.decode() : Promise.resolve()).then(show, show); });
+        img.addEventListener('error', function () { photo.appendChild(mono); resolve(); });
+        img.src = safeUrl(s.profilePhotoUrl);
+      });
+    } else {
+      photo.appendChild(mono);
     }
     var blurb = document.getElementById('profile-blurb');
     blurb.textContent = s.bioShort || '';
@@ -711,6 +716,7 @@
 
   /* Loader → (desktop) profile appears centred, holds, then slides left as the content slides out. */
   var loaded = false;
+  var photoReady = null;
   function finishLoad() {
     if (loaded) return; loaded = true;
     var root = document.documentElement, loader = document.getElementById('loader');
@@ -745,6 +751,7 @@
         window.addEventListener('hashchange', function () { show(location.hash.replace('#', ''), true); });
         show(location.hash.replace('#', ''));
       })
+      .then(function () { return photoReady ? Promise.race([photoReady, new Promise(function (r) { setTimeout(r, 2500); })]) : null; })
       .then(finishLoad, finishLoad);
     setTimeout(finishLoad, 8000);
   }
