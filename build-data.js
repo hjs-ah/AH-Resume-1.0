@@ -189,7 +189,9 @@ async function main() {
     }));
 
     // Project → Cases (existing) + Portfolio (existing)
-    const cases = projectRows.map((r, i) => ({
+    // Prefer real 'Case' rows; fall back to legacy 'Project' rows if none exist yet.
+    const caseSource = caseRows.length ? caseRows : projectRows;
+    const cases = caseSource.map((r, i) => ({
       name:  _title(r.properties, 'Name'),
       sub:   _rt(r.properties, 'Title'),
       desc:  _rtFull(r.properties, 'Description'),

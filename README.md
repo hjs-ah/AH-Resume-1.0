@@ -29,7 +29,10 @@ Push to GitHub → Vercel auto-deploys. See `NOTION-SETUP.md` for full Notion co
 
 ## File Structure
 ```
-index.html          — SPA (all views)
+index.html          — page shell (profile card + top tabs)
+assets/site.css     — all styles (light default, dark via data-theme)
+assets/app.js       — renders every tab from data.json
+legacy/index-v2.html — previous UI, kept for reference
 build-data.js       — Notion fetch → data.json
 data.json           — Generated at build time (gitignored)
 package.json
