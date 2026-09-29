@@ -479,20 +479,39 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 }
 
 /* ── Career Summary timeline ───────────────────────────── */
-.tl { margin: 4px 0 22px; }
+.tl { --co-h: 44px; margin: 4px 0 22px; }
 .tl-hint { text-align: center; font-size: max(9.5px, .75rem); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
 .tl-scroll { overflow-x: auto; padding: 4px 0 10px; }
 .tl-rail { position: relative; min-width: min-content; padding: 0 22px; }
-.tl-line { position: absolute; left: 0; right: 0; top: 40px; height: 2px; background: var(--line); }
+.tl-line { position: absolute; left: 0; right: 0; top: calc(var(--co-h) + 40px); height: 2px; background: var(--line); }
 .tl-line::before, .tl-line::after {
   content: ''; position: absolute; top: -4px; width: 9px; height: 9px;
   border-top: 2px solid var(--ink-3); border-left: 2px solid var(--ink-3);
 }
 .tl-line::before { left: 4px; transform: rotate(-45deg); }
 .tl-line::after { right: 4px; transform: rotate(135deg); }
-.tl-track { position: relative; display: grid; list-style: none; margin: 0; padding: 0; gap: 0; }
+.tl-groups { position: relative; display: flex; gap: 10px; }
+/* One cell per company; the focused company grows (zoom) while the others shrink and blur. */
+.tl-group {
+  flex: var(--n) 1 0; min-width: calc(var(--n) * 58px);
+  transition: flex-grow .65s cubic-bezier(.65, 0, .25, 1), min-width .65s cubic-bezier(.65, 0, .25, 1), filter .5s ease, opacity .5s ease;
+}
+.tl-group.is-focus { flex-grow: 14; min-width: calc(var(--n) * 96px); }
+.tl-group.is-blur { flex-grow: .4; min-width: 52px; filter: blur(2.5px); opacity: .4; overflow: hidden; }
+.tl-co { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; height: var(--co-h); padding: 4px 2px 0; background: none; border: 0; color: var(--ink-2); }
+.tl-co-name { font-size: max(9.5px, .74rem); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.tl-co-arrow { position: relative; display: block; width: 100%; height: 2px; margin-top: 8px; background: var(--ink-3); border-radius: 2px; transition: background .2s; }
+.tl-co-arrow::before, .tl-co-arrow::after { content: ''; position: absolute; top: -3px; width: 7px; height: 7px; border-top: 2px solid var(--ink-3); border-left: 2px solid var(--ink-3); transition: border-color .2s; }
+.tl-co-arrow::before { left: 0; transform: rotate(-45deg); }
+.tl-co-arrow::after { right: 0; transform: rotate(135deg); }
+.tl-co:hover, .tl-co[aria-pressed="true"] { color: var(--accent-text); }
+.tl-co:hover .tl-co-arrow, .tl-co[aria-pressed="true"] .tl-co-arrow { background: var(--accent); }
+.tl-co:hover .tl-co-arrow::before, .tl-co:hover .tl-co-arrow::after,
+.tl-co[aria-pressed="true"] .tl-co-arrow::before, .tl-co[aria-pressed="true"] .tl-co-arrow::after { border-color: var(--accent); }
+.tl-nodes { display: flex; list-style: none; margin: 0; padding: 0; }
+.tl-nodes li { flex: 1 1 0; min-width: 0; }
 .tl-node {
-  width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px 4px 8px;
+  width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px 2px 8px;
   background: none; border: 0; border-radius: var(--radius-sm); text-align: center; color: var(--ink-2); transition: color .15s, opacity .2s;
 }
 .tl-node:hover { color: var(--accent-text); }
@@ -503,14 +522,15 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 .tl-node:hover .tl-tick { background: var(--accent); transform: scaleY(1.25); }
 .tl-node[aria-pressed="true"] { color: var(--accent-text); }
 .tl-node[aria-pressed="true"] .tl-tick { background: var(--accent); transform: scaleY(1.35); box-shadow: 0 0 0 3px var(--accent-soft); }
-.tl-label { font-size: max(9.5px, .72rem); font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* Role titles appear once a company is focused. */
+.tl-label { font-size: max(9.5px, .72rem); font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-height: 0; opacity: 0; transition: opacity .4s ease .25s; }
+.tl.has-co .tl-group.is-focus .tl-label { max-height: 5em; opacity: 1; }
 .tl-years { justify-content: center; margin: 4px 0 0; }
 .tl-years[hidden], .tl-clear[hidden] { display: none; }
 .tl-actions { display: flex; justify-content: center; margin-top: 10px; min-height: 0; }
 .tl-clear { font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .tl-detail { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); padding: 18px 20px; margin-top: 8px; }
-.tl-detail-head { margin-bottom: 6px; }
-.tl-role { font-size: 1.15rem; font-weight: 600; }
+.tl-role { font-size: 1rem; font-weight: 600; }
 .tl-meta { margin-top: 3px; font-size: max(9.5px, .8rem); color: var(--accent-text); font-weight: 500; }
 .tl-detail .card-label { margin-top: 14px; }
 .tl-detail .card-label:first-child { margin-top: 0; }
@@ -527,3 +547,11 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 /* Book covers: greyscale until hovered */
 .book-cover { filter: grayscale(1); transition: filter .4s ease; }
 .card:hover .book-cover, .card:focus-within .book-cover { filter: none; }
+
+/* Step-down view: company → role → cases */
+.step-co + .step-co { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+.step-co-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.step-co-name { font-size: 1.2rem; font-weight: 700; }
+.step-role { margin: 12px 0 0 14px; padding-left: 16px; border-left: 2px solid var(--line); }
+.step-cases { margin: 8px 0 0 12px; padding-left: 14px; border-left: 2px solid var(--accent-soft); }
+.step-cases .case-links { margin-top: 0; }
