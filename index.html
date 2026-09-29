@@ -16,6 +16,8 @@
     var t = localStorage.getItem('theme');
     if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
+  /* Colour preview: add ?accent=burnt to the URL (blue is the default). */
+  try { var a = new URLSearchParams(location.search).get('accent'); if (a === 'burnt') document.documentElement.setAttribute('data-accent', a); } catch (e) {}
   /* Desktop intro animation: profile starts centred, then slides left. */
   if (window.matchMedia('(min-width: 861px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches)
     document.documentElement.classList.add('intro');
