@@ -483,7 +483,7 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 .tl-hint { text-align: center; font-size: max(9.5px, .75rem); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
 .tl-scroll { overflow-x: auto; padding: 4px 0 10px; }
 .tl-rail { position: relative; min-width: min-content; padding: 0 22px; }
-.tl-line { position: absolute; left: 0; right: 0; top: calc(var(--co-h) + 40px); height: 2px; background: var(--line); }
+.tl-line { position: absolute; left: 0; right: 0; top: calc(var(--co-h) + 11px); height: 2px; background: var(--line); }
 .tl-line::before, .tl-line::after {
   content: ''; position: absolute; top: -4px; width: 9px; height: 9px;
   border-top: 2px solid var(--ink-3); border-left: 2px solid var(--ink-3);
@@ -518,10 +518,10 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 .tl-node.is-dim { opacity: .45; }
 .tl-node.is-dim:hover { opacity: 1; }
 .tl-year { font-size: max(9.5px, .75rem); font-weight: 600; letter-spacing: .06em; height: 1.2em; }
-.tl-tick { width: 3px; height: 24px; border-radius: 2px; background: var(--ink-3); transition: transform .2s cubic-bezier(.3,1.4,.5,1), background .2s, box-shadow .2s; }
-.tl-node:hover .tl-tick { background: var(--accent); transform: scaleY(1.25); }
+.tl-tick { width: 3px; height: 10px; border-radius: 2px; background: var(--ink-3); transition: transform .2s cubic-bezier(.3,1.4,.5,1), background .2s, box-shadow .2s; }
+.tl-node:hover .tl-tick { background: var(--accent); transform: scaleY(1.4); }
 .tl-node[aria-pressed="true"] { color: var(--accent-text); }
-.tl-node[aria-pressed="true"] .tl-tick { background: var(--accent); transform: scaleY(1.35); box-shadow: 0 0 0 3px var(--accent-soft); }
+.tl-node[aria-pressed="true"] .tl-tick { background: var(--accent); transform: scaleY(1.6); box-shadow: 0 0 0 3px var(--accent-soft); }
 /* Role titles appear once a company is focused. */
 .tl-label { font-size: max(9.5px, .72rem); font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-height: 0; opacity: 0; transition: opacity .4s ease .25s; }
 .tl.has-co .tl-group.is-focus .tl-label { max-height: 5em; opacity: 1; }

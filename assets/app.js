@@ -567,8 +567,8 @@
             if (co !== gi) co = gi;
             job = job === r ? null : r; year = null; paint();
           } },
-          el('span', { class: 'tl-year', text: r._span.start || '' }),
           el('span', { class: 'tl-tick' }),
+          el('span', { class: 'tl-year', text: r._span.start || '' }),
           el('span', { class: 'tl-label', text: r.title }));
         nodeEls.push({ btn: btn, role: r });
         return el('li', null, btn);
