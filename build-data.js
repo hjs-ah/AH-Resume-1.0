@@ -53,9 +53,11 @@ async function fetchAllContent() {
   console.log('📦 Fetching all published content rows...');
   const rows = await safeQuery(
     CONTENT_DB,
-    { or: [
-      { property: 'Status', select: { equals: 'Published' } },
+    // A row is live only if the Published box is checked AND Status is not Draft.
+    // Unchecking the box OR setting Status to Draft hides it.
+    { and: [
       { property: 'Published', checkbox: { equals: true } },
+      { property: 'Status', select: { does_not_equal: 'Draft' } },
     ]},
     [{ property: 'Order', direction: 'ascending' }]
   );
