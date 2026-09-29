@@ -601,6 +601,9 @@
       img.addEventListener('error', function () { img.remove(); });
       photo.appendChild(img);
     }
+    var blurb = document.getElementById('profile-blurb');
+    blurb.textContent = s.bioShort || '';
+    blurb.style.display = s.bioShort ? '' : 'none';
 
     var socials = document.getElementById('socials');
     socials.textContent = '';

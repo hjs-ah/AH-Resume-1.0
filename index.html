@@ -25,20 +25,25 @@
 
   <!-- ══ PROFILE CARD ══════════════════════════════════════ -->
   <aside class="profile" aria-label="Profile">
-    <div class="profile-photo" id="profile-photo" aria-hidden="true"></div>
-    <div class="profile-body">
+    <div class="profile-deco" aria-hidden="true"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></div>
+    <div class="profile-head">
+      <div class="avatar" id="profile-photo" aria-hidden="true"></div>
       <h1 class="profile-name" id="profile-name">Antone Holmes</h1>
       <p class="profile-sub" id="profile-sub"></p>
+    </div>
+    <hr class="dots">
+    <div class="profile-body">
+      <p class="profile-blurb" id="profile-blurb"></p>
       <ul class="socials" id="socials" aria-label="Social links"></ul>
     </div>
     <div class="profile-actions">
       <button type="button" class="pa-btn" id="btn-download">
-        <span>Download CV</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+        <span>Download CV</span>
       </button>
       <a class="pa-btn" id="btn-contact" href="mailto:antoneholmes@icloud.com">
-        <span>Contact Me</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3zM3 7l9 6 9-6"/></svg>
+        <span>Contact Me</span>
       </a>
     </div>
   </aside>
