@@ -189,7 +189,7 @@
   var TABS = [
     { id: 'home', def: 'Home', icon: 'user', labelKey: 'navHome', showKey: 'showHome', render: renderHome },
     { id: 'cv', def: 'CV', icon: 'list', labelKey: 'navCV', showKey: 'showCV', render: renderCV },
-    { id: 'resume', def: 'Pro Resume', icon: 'briefcase', labelKey: 'navResume', showKey: 'showResume', render: renderResume },
+    { id: 'resume', def: 'Career Summary', icon: 'briefcase', labelKey: 'navResume', showKey: 'showResume', render: renderResume },
     { id: 'cases', def: 'Cases', icon: 'layers', labelKey: 'navCases', showKey: 'showCases', render: renderCases },
     { id: 'portfolio', def: 'Portfolio', icon: 'grid', labelKey: 'navPortfolio', showKey: 'showPortfolio', render: renderPortfolio },
     { id: 'changelog', def: 'Updates', icon: 'clock', labelKey: 'navChangelog', showKey: 'showChangelog', render: renderChangelog }
@@ -223,6 +223,43 @@
   }
   function emptyNote(text) { return el('p', { class: 'empty', text: text }); }
 
+  /* ── stat icons + number roll ── */
+  var STAT_ICONS = [
+    [/year|lead|revenue|org/i, 'M3 17l6-6 4 4 8-8M15 7h6v6'],
+    [/people|promot|advanc|team/i, 'M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2M10 11a4 4 0 100-8 4 4 0 000 8zM21 21v-2a4 4 0 00-3-3.9M16 3.1a4 4 0 010 7.8'],
+    [/volunteer|hour|mobiliz|service/i, 'M20.8 5.6a5.5 5.5 0 00-7.8 0L12 6.7l-1-1.1a5.5 5.5 0 00-7.8 7.8L12 22l8.8-8.6a5.5 5.5 0 000-7.8z'],
+    [/achiever|circle|award|recipient|winner/i, 'M12 15a6 6 0 100-12 6 6 0 000 12zM8.2 13.9L7 22l5-3 5 3-1.2-8.1'],
+    [/top|%|rank|national|percent/i, 'M12 21a9 9 0 100-18 9 9 0 000 18zM12 17a5 5 0 100-10 5 5 0 000 10zM12 13a1 1 0 100-2 1 1 0 000 2z']
+  ];
+  function statIcon(text) {
+    for (var i = 0; i < STAT_ICONS.length; i++) if (STAT_ICONS[i][0].test(text)) return STAT_ICONS[i][1];
+    return 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z';
+  }
+  function scrambleNum(text) {
+    if (reducedMotion()) return text;
+    return String(text).replace(/\d/g, function (d) { var r = Math.floor(Math.random() * 10); return String(r); });
+  }
+  /* Digits shuffle randomly, then the shuffle slows and settles on the real figure. */
+  function rollNumber(node, finalText) {
+    if (reducedMotion() || !/\d/.test(finalText)) { node.textContent = finalText; return; }
+    var dur = 1900, t0 = performance.now(), next = 0;
+    function frame(now) {
+      if (!node.isConnected) return;
+      var p = Math.min(1, (now - t0) / dur);
+      if (p >= 1) { node.textContent = finalText; return; }
+      if (now >= next) { node.textContent = scrambleNum(finalText); next = now + 40 + 320 * p * p; }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* Things that should start once the page is actually on screen (after fade-in / intro). */
+  var pendingHooks = [], introQueue = [];
+  function runWhenVisible(fn) {
+    var root = document.documentElement;
+    if (root.classList.contains('intro') && !root.classList.contains('intro-go')) introQueue.push(fn); else fn();
+  }
+
   /* ═══ HOME ═══ */
   function renderHome(root) {
     var s = DATA.settings || {};
@@ -239,7 +276,10 @@
     var stats = (DATA.impactStats || []).slice().sort(byOrder);
     if (stats.length) {
       root.appendChild(section('Career Impact', el('div', { class: 'stats' }, stats.map(function (st) {
-        return el('div', { class: 'stat' }, el('div', { class: 'stat-num', text: st.value }), el('div', { class: 'stat-lbl', text: st.label }));
+        var num = el('div', { class: 'stat-num', text: scrambleNum(st.value) });
+        num.setAttribute('aria-label', st.value);
+        pendingHooks.push(function () { rollNumber(num, st.value); });
+        return el('div', { class: 'stat' }, svg(statIcon(st.label + ' ' + st.value), 'stat-ico'), num, el('div', { class: 'stat-lbl', text: st.label }));
       }))));
     }
 
@@ -373,41 +413,93 @@
   }
 
   /* ═══ RESUME ═══ */
+  /* ═══ CAREER SUMMARY — one straight timeline; each chapter points to its case studies ═══ */
+  var pendingCase = '';
+  function span(text) {
+    var yrs = String(text || '').match(/\d{4}/g) || [];
+    var pres = /present|current|now/i.test(String(text || ''));
+    var start = yrs[0] ? +yrs[0] : null;
+    return { start: start, end: pres ? 9999 : (yrs[1] ? +yrs[1] : start) };
+  }
+  function shortEmployer(e) {
+    var t = String(e || '').replace(/\s*\(.*?\)\s*/g, ' ').trim();
+    return /^amazon web services$/i.test(t) ? 'AWS' : t;
+  }
+  function openCase(name) { pendingCase = norm(name); go('cases'); }
   function renderResume(root) {
-    var rows = (DATA.resume || []).slice().sort(byOrder);
-    root.appendChild(pageHeader('Professional Experience'));
+    var rows = (DATA.resume || []).slice();
+    var cases = (DATA.cases || []).slice().sort(byOrder);
+    root.appendChild(pageHeader('Career Summary', 'Select a point on the timeline to see the role and the case studies behind it.'));
     if (!rows.length) { root.appendChild(emptyNote('No experience is published yet.')); return; }
 
-    var groups = []; var index = {};
-    rows.forEach(function (r) {
-      var key = norm(r.employer);
-      if (!(key in index)) { index[key] = groups.length; groups.push({ company: r.employer, org: r.org, roles: [] }); }
-      groups[index[key]].roles.push(r);
+    rows.forEach(function (r) { r._span = span(r.dateRange); });
+    rows.sort(function (x, y) {
+      return ((x._span.start || 0) - (y._span.start || 0)) || ((x._span.end || 0) - (y._span.end || 0));
     });
-    var list = el('div', { class: 'section' });
-    var draw = function (org) {
-      list.textContent = '';
-      groups.filter(function (g) { return !org || g.org === org; }).forEach(function (g) {
-        var scope = (g.roles.filter(function (r) { return r.scope; })[0] || {}).scope;
-        list.appendChild(el('article', { class: 'exp' },
-          el('div', { class: 'exp-top' }, el('h2', { class: 'exp-co', text: g.company }), el('div', { class: 'exp-dates', text: spanOf(g.roles) })),
-          scope ? el('p', { class: 'exp-scope', text: scope }) : null,
-          g.roles.map(function (r) {
-            return el('div', { class: 'role' },
-              el('div', { class: 'role-head' }, el('h3', { class: 'role-title', text: r.title }), r.dateRange ? el('span', { class: 'role-date', text: r.dateRange }) : null),
-              (r.bullets && r.bullets.length) ? el('ul', { class: 'bullets' }, r.bullets.map(function (b) {
-                // Lines like "2025–2026 | Strategic Lead, …" act as sub-headings inside a role.
-                return /^\d{4}\s*[–—-]\s*(\d{4}|present)\s*\|/i.test(b)
-                  ? el('li', { class: 'sub', text: b.replace(/\s*\|\s*/, '  ·  ') })
-                  : el('li', { text: b });
-              })) : null);
-          })));
+    function casesFor(r) {
+      var ek = norm(r.employer);
+      if (!ek) return [];
+      return cases.filter(function (c) {
+        var comp = norm(String(c.sub || '').split('·')[0]);
+        if (!comp || !(ek.indexOf(comp) > -1 || comp.indexOf(ek) > -1)) return false;
+        var cs = span(c.sub);
+        if (!cs.start || !r._span.start) return true;
+        return cs.start <= r._span.end && cs.end >= r._span.start;
       });
-    };
-    draw('');
-    var orgs = unique(groups.map(function (g) { return g.org; }));
-    if (orgs.length > 1) root.appendChild(el('div', { class: 'section' }, filterChips(orgs, draw)));
-    root.appendChild(list);
+    }
+
+    var detail = el('div', { class: 'tl-detail', id: 'tl-detail', 'aria-live': 'polite' });
+    var nodes = [];
+    function select(i, focus) {
+      var r = rows[i];
+      nodes.forEach(function (n, j) { n.setAttribute('aria-pressed', j === i ? 'true' : 'false'); n.tabIndex = j === i ? 0 : -1; });
+      if (focus) nodes[i].focus();
+      detail.textContent = '';
+      var cs = casesFor(r);
+      detail.appendChild(el('div', { class: 'tl-detail-head' },
+        el('h2', { class: 'tl-role', text: r.title }),
+        el('div', { class: 'tl-meta', text: [r.employer, r.dateRange].filter(Boolean).join('  ·  ') })));
+      if (r.scope) detail.appendChild(el('p', { class: 'exp-scope', text: r.scope }));
+      if (cs.length) {
+        detail.appendChild(el('div', { class: 'card-label', text: 'Case studies from this chapter' }));
+        detail.appendChild(el('ul', { class: 'bullets case-links' }, cs.map(function (c) {
+          var btn = el('button', { type: 'button', class: 'link-btn', onclick: function () { openCase(c.name); } }, c.name, svg(ICON.arrow));
+          return el('li', null, btn, c.sub ? el('span', { class: 'case-links-sub', text: '  ' + c.sub.split('·').slice(1).join('·').trim() }) : null);
+        })));
+      } else {
+        detail.appendChild(el('p', { class: 'empty', text: 'No case studies are linked to this chapter yet.' }));
+      }
+      if (r.bullets && r.bullets.length) {
+        detail.appendChild(el('details', { class: 'tl-more' },
+          el('summary', { text: 'Role highlights' }),
+          el('ul', { class: 'bullets' }, r.bullets.map(function (b) {
+            return /^\d{4}\s*[–—-]\s*(\d{4}|present)\s*\|/i.test(b)
+              ? el('li', { class: 'sub', text: b.replace(/\s*\|\s*/, '  ·  ') })
+              : el('li', { text: b });
+          }))));
+      }
+    }
+
+    var track = el('ol', { class: 'tl-track', style: 'grid-template-columns:repeat(' + rows.length + ',minmax(66px,1fr))' });
+    rows.forEach(function (r, i) {
+      var btn = el('button', { type: 'button', class: 'tl-node', 'aria-pressed': 'false', title: r.title + ' — ' + (r.employer || ''), 'aria-controls': 'tl-detail',
+        onclick: function () { select(i); },
+        onkeydown: function (e) {
+          var k = e.key, to = k === 'ArrowRight' ? i + 1 : k === 'ArrowLeft' ? i - 1 : k === 'Home' ? 0 : k === 'End' ? rows.length - 1 : null;
+          if (to === null || to < 0 || to >= rows.length) return;
+          e.preventDefault(); select(to, true);
+        } },
+        el('span', { class: 'tl-year', text: r._span.start || '' }),
+        el('span', { class: 'tl-dot' }),
+        el('span', { class: 'tl-label', text: shortEmployer(r.employer) }));
+      nodes.push(btn);
+      track.appendChild(el('li', null, btn));
+    });
+    root.appendChild(el('div', { class: 'tl' }, el('div', { class: 'tl-scroll' }, el('div', { class: 'tl-rail' }, el('div', { class: 'tl-line' }), track))));
+    root.appendChild(detail);
+    var cur = rows.length - 1;
+    rows.forEach(function (r, i) { if (r._span.end === 9999 && (rows[cur]._span.end !== 9999 || r._span.start >= rows[cur]._span.start)) cur = i; });
+    select(cur);
   }
 
   /* ═══ CASES ═══ */
@@ -432,7 +524,7 @@
       cases.forEach(function (c, i) {
         if (tag && (c.tags || []).indexOf(tag) < 0) return;
         var sections = parts(c.desc || '');
-        grid.appendChild(el('article', { class: 'card case' }, el('div', { class: 'card-body' },
+        grid.appendChild(el('article', { class: 'card case', id: 'case-' + norm(c.name).replace(/ /g, '-') }, el('div', { class: 'card-body' },
           el('div', { class: 'card-kicker', text: '(' + String(i + 1).padStart(3, '0') + ')' }),
           el('h3', { class: 'card-title', text: c.name }),
           c.sub ? el('div', { class: 'card-sub', text: c.sub }) : null,
@@ -448,6 +540,15 @@
     var tags = unique([].concat.apply([], cases.map(function (c) { return c.tags || []; })));
     var wrap = el('div', { class: 'section' }, tags.length > 1 ? filterChips(tags, draw) : null, grid);
     root.appendChild(wrap);
+    if (pendingCase) {
+      var want = 'case-' + pendingCase.replace(/ /g, '-'); pendingCase = '';
+      pendingHooks.push(function () {
+        var t = document.getElementById(want);
+        if (!t) return;
+        t.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' });
+        t.classList.add('is-flash'); setTimeout(function () { t.classList.remove('is-flash'); }, 1800);
+      });
+    }
   }
 
   /* ═══ PORTFOLIO ═══ */
@@ -534,7 +635,7 @@
       var b = el('button', {
         type: 'button', class: 'tab', role: 'tab', id: 'tab-' + t.id,
         'aria-selected': 'false', 'aria-controls': 'panel', tabindex: '-1'
-      }, svg(ICON[t.icon]), el('span', { text: s[t.labelKey] || t.def }));
+      }, svg(ICON[t.icon]), el('span', { text: tabLabel(s[t.labelKey], t.def) }));
       b.addEventListener('click', function () { go(t.id); });
       b.addEventListener('keydown', function (e) {
         var i = visibleTabs.indexOf(t), j = -1;
@@ -549,6 +650,8 @@
     tabsList.appendChild(indicator);
     activeTab = null;
   }
+  /* Notion may still say "Pro Resume"; the site calls it Career Summary. */
+  function tabLabel(v, def) { return (!v || /^pro resume$/i.test(String(v).trim())) ? def : v; }
   function go(id) {
     if (location.hash.replace('#', '') !== id) location.hash = id; else show(id);
   }
@@ -591,7 +694,19 @@
       }
       panel.appendChild(page);
       panel.scrollTop = 0;
-      if (animate) requestAnimationFrame(function () { requestAnimationFrame(function () { page.classList.remove('is-entering'); }); });
+      var hooks = pendingHooks.splice(0);
+      /* Reveal (blur/fade in) only once layout is settled: fonts ready and images decoded. */
+      function reveal() {
+        if (token !== swapToken) return;
+        page.classList.remove('is-entering');
+        runWhenVisible(function () { hooks.forEach(function (f) { try { f(); } catch (e) {} }); });
+      }
+      if (animate) {
+        var waits = [new Promise(function (r) { requestAnimationFrame(function () { requestAnimationFrame(r); }); })];
+        if (document.fonts && document.fonts.ready) waits.push(document.fonts.ready);
+        [].forEach.call(page.querySelectorAll('img'), function (im) { if (!im.complete) waits.push(new Promise(function (r) { im.addEventListener('load', r); im.addEventListener('error', r); })); });
+        Promise.race([Promise.all(waits), new Promise(function (r) { setTimeout(r, 600); })]).then(reveal);
+      } else reveal();
       /* Mobile: the profile card sits above the content, so bring the panel into view after a tab tap. */
       if (scrollIntoView && window.matchMedia('(max-width: 860px)').matches) {
         var top = panel.getBoundingClientRect().top + window.scrollY - (document.querySelector('.tabs').offsetHeight + 12);
@@ -674,16 +789,7 @@
     });
   }
 
-  function wireProfileButtons() {
-    document.getElementById('btn-download').addEventListener('click', function () {
-      /* Prints the CV tab; the browser's "Save as PDF" makes the download. */
-      if (!visibleTabs.some(function (t) { return t.id === 'cv'; })) return;
-      var prevTitle = document.title;
-      document.title = ((DATA.settings || {}).name || 'CV') + ' — CV';
-      show('cv', false);
-      setTimeout(function () { window.print(); document.title = prevTitle; }, 150);
-    });
-  }
+  function wireProfileButtons() { /* "View CV" is a plain #cv link handled by the hash router. */ }
 
   /* ── boot ── */
   /* Eased wheel scrolling for the content panel (desktop, mouse wheels only). */
@@ -723,7 +829,7 @@
     if (loader) { loader.classList.add('is-done'); setTimeout(function () { loader.hidden = true; }, 320); }
     if (root.classList.contains('intro')) {
       root.classList.add('intro-show');
-      setTimeout(function () { root.classList.add('intro-go'); }, 950);
+      setTimeout(function () { root.classList.add('intro-go'); introQueue.splice(0).forEach(function (f) { f(); }); }, 950);
       setTimeout(function () { root.classList.remove('intro', 'intro-show', 'intro-go'); moveIndicator(false); }, 2000);
     }
   }
