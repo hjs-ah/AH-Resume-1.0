@@ -480,9 +480,10 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 
 /* ── Career Summary timeline ───────────────────────────── */
 .tl { margin: 4px 0 22px; }
+.tl-hint { text-align: center; font-size: max(9.5px, .75rem); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
 .tl-scroll { overflow-x: auto; padding: 4px 0 10px; }
 .tl-rail { position: relative; min-width: min-content; padding: 0 22px; }
-.tl-line { position: absolute; left: 0; right: 0; top: 36px; height: 2px; background: var(--line); }
+.tl-line { position: absolute; left: 0; right: 0; top: 40px; height: 2px; background: var(--line); }
 .tl-line::before, .tl-line::after {
   content: ''; position: absolute; top: -4px; width: 9px; height: 9px;
   border-top: 2px solid var(--ink-3); border-left: 2px solid var(--ink-3);
@@ -492,20 +493,27 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 .tl-track { position: relative; display: grid; list-style: none; margin: 0; padding: 0; gap: 0; }
 .tl-node {
   width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px 4px 8px;
-  background: none; border: 0; border-radius: var(--radius-sm); text-align: center; color: var(--ink-2); transition: color .15s, background .15s;
+  background: none; border: 0; border-radius: var(--radius-sm); text-align: center; color: var(--ink-2); transition: color .15s, opacity .2s;
 }
 .tl-node:hover { color: var(--accent-text); }
+.tl-node.is-dim { opacity: .45; }
+.tl-node.is-dim:hover { opacity: 1; }
 .tl-year { font-size: max(9.5px, .75rem); font-weight: 600; letter-spacing: .06em; height: 1.2em; }
-.tl-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 2px solid var(--ink-3); transition: transform .2s cubic-bezier(.3,1.4,.5,1), background .2s, border-color .2s, box-shadow .2s; }
-.tl-node:hover .tl-dot { border-color: var(--accent); transform: scale(1.2); }
+.tl-tick { width: 3px; height: 24px; border-radius: 2px; background: var(--ink-3); transition: transform .2s cubic-bezier(.3,1.4,.5,1), background .2s, box-shadow .2s; }
+.tl-node:hover .tl-tick { background: var(--accent); transform: scaleY(1.25); }
 .tl-node[aria-pressed="true"] { color: var(--accent-text); }
-.tl-node[aria-pressed="true"] .tl-dot { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); transform: scale(1.15); }
+.tl-node[aria-pressed="true"] .tl-tick { background: var(--accent); transform: scaleY(1.35); box-shadow: 0 0 0 3px var(--accent-soft); }
 .tl-label { font-size: max(9.5px, .72rem); font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.tl-detail { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); padding: 18px 20px; }
+.tl-years { justify-content: center; margin: 4px 0 0; }
+.tl-years[hidden], .tl-clear[hidden] { display: none; }
+.tl-actions { display: flex; justify-content: center; margin-top: 10px; min-height: 0; }
+.tl-clear { font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.tl-detail { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); padding: 18px 20px; margin-top: 8px; }
 .tl-detail-head { margin-bottom: 6px; }
 .tl-role { font-size: 1.15rem; font-weight: 600; }
 .tl-meta { margin-top: 3px; font-size: max(9.5px, .8rem); color: var(--accent-text); font-weight: 500; }
 .tl-detail .card-label { margin-top: 14px; }
+.tl-detail .card-label:first-child { margin-top: 0; }
 .case-links { margin-top: 8px; display: grid; gap: 6px; }
 .case-links .link-btn { display: inline-flex; align-items: center; gap: 6px; text-align: left; }
 .case-links .link-btn svg { width: 13px; height: 13px; flex: none; }
@@ -515,3 +523,7 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 .tl-more .bullets { margin-top: 10px; }
 .case.is-flash { animation: caseFlash 1.8s ease; }
 @keyframes caseFlash { 0%, 60% { box-shadow: 0 0 0 3px var(--accent); } 100% { box-shadow: none; } }
+
+/* Book covers: greyscale until hovered */
+.book-cover { filter: grayscale(1); transition: filter .4s ease; }
+.card:hover .book-cover, .card:focus-within .book-cover { filter: none; }

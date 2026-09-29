@@ -242,12 +242,12 @@
   /* Digits shuffle randomly, then the shuffle slows and settles on the real figure. */
   function rollNumber(node, finalText) {
     if (reducedMotion() || !/\d/.test(finalText)) { node.textContent = finalText; return; }
-    var dur = 1900, t0 = performance.now(), next = 0;
+    var dur = 1000, t0 = performance.now(), next = 0;
     function frame(now) {
       if (!node.isConnected) return;
       var p = Math.min(1, (now - t0) / dur);
       if (p >= 1) { node.textContent = finalText; return; }
-      if (now >= next) { node.textContent = scrambleNum(finalText); next = now + 40 + 320 * p * p; }
+      if (now >= next) { node.textContent = scrambleNum(finalText); next = now + 30 + 170 * p * p; }
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
@@ -391,9 +391,15 @@
         }));
       }],
       ['Books', cv['Book'], function (rows) {
+        /* Covers that live in the repo, used when the Notion row has no working image URL. */
+        var LOCAL_COVERS = { 'god s word': '/assets/books/gods-word.jpg' };
         return el('div', { class: 'cards' }, rows.slice().sort(function (a, b) { return (b.year || '').localeCompare(a.year || ''); }).map(function (b) {
-          var img = b.imageUrl && safeUrl(b.imageUrl) ? el('img', { class: 'book-cover', alt: 'Cover of ' + b.name, src: safeUrl(b.imageUrl), loading: 'lazy' }) : null;
-          if (img) img.addEventListener('error', function () { img.remove(); });
+          var local = LOCAL_COVERS[norm(b.name)];
+          var src = (b.imageUrl && safeUrl(b.imageUrl)) || local || '';
+          var img = src ? el('img', { class: 'book-cover', alt: 'Cover of ' + b.name, src: src, loading: 'lazy' }) : null;
+          if (img) img.addEventListener('error', function () {
+            if (local && img.getAttribute('src') !== local) img.src = local; else img.remove();
+          });
           var card = el('div', { class: 'card' }, img, el('div', { class: 'card-body' },
             b.year ? el('div', { class: 'card-kicker', text: b.year }) : null,
             el('h3', { class: 'card-title', text: b.name }),
@@ -429,47 +435,73 @@
   function renderResume(root) {
     var rows = (DATA.resume || []).slice();
     var cases = (DATA.cases || []).slice().sort(byOrder);
-    root.appendChild(pageHeader('Career Summary', 'Select a point on the timeline to see the role and the case studies behind it.'));
+    var thisYear = new Date().getFullYear();
+    root.appendChild(pageHeader('Career Summary'));
     if (!rows.length) { root.appendChild(emptyNote('No experience is published yet.')); return; }
 
     rows.forEach(function (r) { r._span = span(r.dateRange); });
     rows.sort(function (x, y) {
       return ((x._span.start || 0) - (y._span.start || 0)) || ((x._span.end || 0) - (y._span.end || 0));
     });
-    function casesFor(r) {
+    function casesFor(r, year) {
       var ek = norm(r.employer);
       if (!ek) return [];
       return cases.filter(function (c) {
         var comp = norm(String(c.sub || '').split('·')[0]);
         if (!comp || !(ek.indexOf(comp) > -1 || comp.indexOf(ek) > -1)) return false;
         var cs = span(c.sub);
+        if (year) return !cs.start || (cs.start <= year && cs.end >= year);
         if (!cs.start || !r._span.start) return true;
         return cs.start <= r._span.end && cs.end >= r._span.start;
       });
     }
+    function caseList(list) {
+      return el('ul', { class: 'bullets case-links' }, list.map(function (c) {
+        var btn = el('button', { type: 'button', class: 'link-btn', onclick: function () { openCase(c.name); } }, c.name, svg(ICON.arrow));
+        return el('li', null, btn, c.sub ? el('span', { class: 'case-links-sub', text: '  ' + c.sub.split('·').slice(1).join('·').trim() }) : null);
+      }));
+    }
 
-    var detail = el('div', { class: 'tl-detail', id: 'tl-detail', 'aria-live': 'polite' });
+    var job = -1, year = null;
+    var hint = el('p', { class: 'tl-hint', text: 'Click to Filter' });
     var nodes = [];
-    function select(i, focus) {
-      var r = rows[i];
-      nodes.forEach(function (n, j) { n.setAttribute('aria-pressed', j === i ? 'true' : 'false'); n.tabIndex = j === i ? 0 : -1; });
-      if (focus) nodes[i].focus();
+    var yearsRow = el('div', { class: 'tl-years chips', role: 'group', 'aria-label': 'Filter by year', hidden: true });
+    var clearBtn = el('button', { type: 'button', class: 'chip tl-clear', text: 'Clear filters', hidden: true,
+      onclick: function () { job = -1; year = null; paint(); } });
+    var detail = el('div', { class: 'tl-detail', id: 'tl-detail', 'aria-live': 'polite' });
+
+    function paint(focusIdx) {
+      nodes.forEach(function (n, j) {
+        n.setAttribute('aria-pressed', j === job ? 'true' : 'false');
+        n.classList.toggle('is-dim', job > -1 && j !== job);
+      });
+      if (focusIdx !== undefined) nodes[focusIdx].focus();
+      clearBtn.hidden = job < 0;
+      yearsRow.textContent = '';
+      yearsRow.hidden = job < 0;
       detail.textContent = '';
-      var cs = casesFor(r);
+
+      if (job < 0) {
+        detail.appendChild(el('div', { class: 'card-label', text: 'All case studies' }));
+        detail.appendChild(cases.length ? caseList(cases) : el('p', { class: 'empty', text: 'No case studies are published yet.' }));
+        return;
+      }
+      var r = rows[job];
+      var y0 = r._span.start, y1 = Math.min(r._span.end || y0, thisYear);
+      if (y0) for (var y = y0; y <= y1 && y - y0 < 30; y++) {
+        (function (yy) {
+          yearsRow.appendChild(el('button', { type: 'button', class: 'chip', 'aria-pressed': year === yy ? 'true' : 'false', text: String(yy),
+            onclick: function () { year = year === yy ? null : yy; paint(); } }));
+        })(y);
+      }
+      var cs = casesFor(r, year);
       detail.appendChild(el('div', { class: 'tl-detail-head' },
         el('h2', { class: 'tl-role', text: r.title }),
-        el('div', { class: 'tl-meta', text: [r.employer, r.dateRange].filter(Boolean).join('  ·  ') })));
-      if (r.scope) detail.appendChild(el('p', { class: 'exp-scope', text: r.scope }));
-      if (cs.length) {
-        detail.appendChild(el('div', { class: 'card-label', text: 'Case studies from this chapter' }));
-        detail.appendChild(el('ul', { class: 'bullets case-links' }, cs.map(function (c) {
-          var btn = el('button', { type: 'button', class: 'link-btn', onclick: function () { openCase(c.name); } }, c.name, svg(ICON.arrow));
-          return el('li', null, btn, c.sub ? el('span', { class: 'case-links-sub', text: '  ' + c.sub.split('·').slice(1).join('·').trim() }) : null);
-        })));
-      } else {
-        detail.appendChild(el('p', { class: 'empty', text: 'No case studies are linked to this chapter yet.' }));
-      }
-      if (r.bullets && r.bullets.length) {
+        el('div', { class: 'tl-meta', text: [r.employer, year ? String(year) : r.dateRange].filter(Boolean).join('  ·  ') })));
+      if (r.scope && !year) detail.appendChild(el('p', { class: 'exp-scope', text: r.scope }));
+      detail.appendChild(el('div', { class: 'card-label', text: year ? 'Case studies in ' + year : 'Case studies from this chapter' }));
+      detail.appendChild(cs.length ? caseList(cs) : el('p', { class: 'empty', text: year ? 'No case studies are linked to ' + year + '.' : 'No case studies are linked to this chapter yet.' }));
+      if (r.bullets && r.bullets.length && !year) {
         detail.appendChild(el('details', { class: 'tl-more' },
           el('summary', { text: 'Role highlights' }),
           el('ul', { class: 'bullets' }, r.bullets.map(function (b) {
@@ -482,24 +514,28 @@
 
     var track = el('ol', { class: 'tl-track', style: 'grid-template-columns:repeat(' + rows.length + ',minmax(66px,1fr))' });
     rows.forEach(function (r, i) {
-      var btn = el('button', { type: 'button', class: 'tl-node', 'aria-pressed': 'false', title: r.title + ' — ' + (r.employer || ''), 'aria-controls': 'tl-detail',
-        onclick: function () { select(i); },
+      var btn = el('button', { type: 'button', class: 'tl-node', 'aria-pressed': 'false', 'aria-controls': 'tl-detail',
+        title: r.title + ' — ' + (r.employer || ''),
+        onclick: function () { job = job === i ? -1 : i; year = null; paint(); },
         onkeydown: function (e) {
           var k = e.key, to = k === 'ArrowRight' ? i + 1 : k === 'ArrowLeft' ? i - 1 : k === 'Home' ? 0 : k === 'End' ? rows.length - 1 : null;
           if (to === null || to < 0 || to >= rows.length) return;
-          e.preventDefault(); select(to, true);
+          e.preventDefault(); nodes.forEach(function (n, j) { n.tabIndex = j === to ? 0 : -1; }); nodes[to].focus();
         } },
         el('span', { class: 'tl-year', text: r._span.start || '' }),
-        el('span', { class: 'tl-dot' }),
+        el('span', { class: 'tl-tick' }),
         el('span', { class: 'tl-label', text: shortEmployer(r.employer) }));
+      btn.tabIndex = i === 0 ? 0 : -1;
       nodes.push(btn);
       track.appendChild(el('li', null, btn));
     });
-    root.appendChild(el('div', { class: 'tl' }, el('div', { class: 'tl-scroll' }, el('div', { class: 'tl-rail' }, el('div', { class: 'tl-line' }), track))));
+    root.appendChild(el('div', { class: 'tl' },
+      hint,
+      el('div', { class: 'tl-scroll' }, el('div', { class: 'tl-rail' }, el('div', { class: 'tl-line' }), track)),
+      yearsRow,
+      el('div', { class: 'tl-actions' }, clearBtn)));
     root.appendChild(detail);
-    var cur = rows.length - 1;
-    rows.forEach(function (r, i) { if (r._span.end === 9999 && (rows[cur]._span.end !== 9999 || r._span.start >= rows[cur]._span.start)) cur = i; });
-    select(cur);
+    paint();
   }
 
   /* ═══ CASES ═══ */
