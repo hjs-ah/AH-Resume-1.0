@@ -93,6 +93,82 @@
     return svg(ICON.globe);
   }
 
+
+  /* ── data hygiene ──
+     Notion currently holds some rows twice, and a few resume rows have employer / title swapped.
+     We never modify Notion; we just render each item once and pick the right field as the employer. */
+  function norm(s) {
+    return String(s || '').toLowerCase().replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+      .replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+  function dedupe(rows, keyFn, richFn) {
+    var out = [], at = {};
+    (rows || []).forEach(function (r) {
+      var k = keyFn(r);
+      if (!(k in at)) { at[k] = out.length; out.push(r); return; }
+      if (richFn && richFn(r) > richFn(out[at[k]])) out[at[k]] = r;
+    });
+    return out;
+  }
+  function textLen() { var n = 0; for (var i = 0; i < arguments.length; i++) n += String(arguments[i] || '').length; return n; }
+
+  function prepare(d) {
+    var home = d.home || {};
+    home.updates = dedupe(home.updates, function (r) { return norm(r.title); }, function (r) { return textLen(r.excerpt); });
+    home.reflections = dedupe(home.reflections, function (r) { return norm(r.title); }, function (r) { return textLen(r.fullText, r.excerpt); });
+    home.articles = dedupe(home.articles, function (r) { return norm(r.title); });
+    d.home = home;
+    d.socialLinks = dedupe(d.socialLinks, function (r) { return norm(r.platform) + '|' + r.url; });
+    d.portfolio = dedupe(d.portfolio, function (r) { return norm(r.name); }, function (r) { return textLen(r.desc, r.problem, r.direction); });
+    d.cases = dedupe(d.cases, function (r) { return norm(r.name); }, function (r) { return textLen(r.desc); });
+    d.changelog = dedupe(d.changelog, function (r) { return norm(r.version) + '|' + norm(r.summary); }, function (r) { return textLen(r.detail); });
+    d.impactStats = dedupe(d.impactStats, function (r) { return norm(r.value) + norm(r.label); });
+    d.credentials = dedupe(d.credentials, function (r) { return norm(r.name) + norm(r.subtitle); });
+    var cv = d.cv || {};
+    Object.keys(cv).forEach(function (k) {
+      cv[k] = dedupe(cv[k], function (r) { return norm(r.name) + '|' + norm(r.year); }, function (r) { return textLen(r.detail); });
+    });
+    d.cv = cv;
+
+    // Resume: decide which of company/role holds the employer, using how often each value repeats.
+    var rows = d.resume || [], freq = {};
+    rows.forEach(function (r) { [r.company, r.role].forEach(function (v) { var k = norm(v); if (k) freq[k] = (freq[k] || 0) + 1; }); });
+    function score(v, org) {
+      var k = norm(v), o = norm(org);
+      return (freq[k] || 0) + (o && k.indexOf(o) > -1 ? 3 : 0) + (/(amazon|comcast|center|inc|llc|university|corp)/.test(k) ? 2 : 0);
+    }
+    rows = rows.map(function (r) {
+      var swap = score(r.role, r.org) > score(r.company, r.org);
+      return Object.assign({}, r, { employer: swap ? r.role : r.company, title: swap ? r.company : r.role });
+    });
+    d.resume = dedupe(rows, function (r) { return norm(r.employer) + '|' + norm(r.title) + '|' + norm(r.dateRange); },
+      function (r) { return (r.bullets || []).length; });
+    return d;
+  }
+  function spanOf(roles) {
+    var years = [], open = false;
+    roles.forEach(function (r) {
+      (String(r.dateRange || '').match(/\d{4}/g) || []).forEach(function (y) { years.push(parseInt(y, 10)); });
+      if (/present|current/i.test(r.dateRange || '')) open = true;
+    });
+    if (!years.length) return '';
+    var lo = Math.min.apply(null, years), hi = Math.max.apply(null, years);
+    return lo + ' – ' + (open ? 'Present' : hi);
+  }
+  function inkFor(color) {
+    /* Pick black or white text for a filled accent so it stays readable (e.g. a gold accent). */
+    try {
+      var ctx = document.createElement('canvas').getContext('2d');
+      ctx.fillStyle = '#000'; ctx.fillStyle = color;
+      var v = ctx.fillStyle, r, g, b;
+      if (v.charAt(0) === '#') { r = parseInt(v.substr(1, 2), 16); g = parseInt(v.substr(3, 2), 16); b = parseInt(v.substr(5, 2), 16); }
+      else { var m = v.match(/[\d.]+/g); r = +m[0]; g = +m[1]; b = +m[2]; }
+      function lin(c) { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+      var L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+      return L > 0.32 ? '#14181f' : '#ffffff';
+    } catch (e) { return '#ffffff'; }
+  }
+
   /* ── state ── */
   var DATA = null;
   var TABS = [
@@ -289,21 +365,27 @@
 
     var groups = []; var index = {};
     rows.forEach(function (r) {
-      if (!(r.company in index)) { index[r.company] = groups.length; groups.push({ company: r.company, org: r.org, roles: [] }); }
-      groups[index[r.company]].roles.push(r);
+      var key = norm(r.employer);
+      if (!(key in index)) { index[key] = groups.length; groups.push({ company: r.employer, org: r.org, roles: [] }); }
+      groups[index[key]].roles.push(r);
     });
     var list = el('div', { class: 'section' });
     var draw = function (org) {
       list.textContent = '';
       groups.filter(function (g) { return !org || g.org === org; }).forEach(function (g) {
-        var first = g.roles[0];
+        var scope = (g.roles.filter(function (r) { return r.scope; })[0] || {}).scope;
         list.appendChild(el('article', { class: 'exp' },
-          el('div', { class: 'exp-top' }, el('h2', { class: 'exp-co', text: g.company }), first.dateRange ? el('div', { class: 'exp-dates', text: first.dateRange }) : null),
-          first.scope ? el('p', { class: 'exp-scope', text: first.scope }) : null,
+          el('div', { class: 'exp-top' }, el('h2', { class: 'exp-co', text: g.company }), el('div', { class: 'exp-dates', text: spanOf(g.roles) })),
+          scope ? el('p', { class: 'exp-scope', text: scope }) : null,
           g.roles.map(function (r) {
             return el('div', { class: 'role' },
-              el('div', { class: 'role-head' }, el('h3', { class: 'role-title', text: r.role }), r.dateRange ? el('span', { class: 'role-date', text: r.dateRange }) : null),
-              (r.bullets && r.bullets.length) ? el('ul', { class: 'bullets' }, r.bullets.map(function (b) { return el('li', { text: b }); })) : null);
+              el('div', { class: 'role-head' }, el('h3', { class: 'role-title', text: r.title }), r.dateRange ? el('span', { class: 'role-date', text: r.dateRange }) : null),
+              (r.bullets && r.bullets.length) ? el('ul', { class: 'bullets' }, r.bullets.map(function (b) {
+                // Lines like "2025–2026 | Strategic Lead, …" act as sub-headings inside a role.
+                return /^\d{4}\s*[–—-]\s*(\d{4}|present)\s*\|/i.test(b)
+                  ? el('li', { class: 'sub', text: b.replace(/\s*\|\s*/, '  ·  ') })
+                  : el('li', { text: b });
+              })) : null);
           })));
       });
     };
@@ -318,16 +400,32 @@
     var cases = (DATA.cases || []).slice().sort(byOrder);
     root.appendChild(pageHeader('Case Studies', 'GTM, enablement, and strategy work.'));
     if (!cases.length) { root.appendChild(emptyNote('No case studies are published yet.')); return; }
-    var grid = el('div', { class: 'cards' });
+    var grid = el('div', { class: 'stack' });
+    // Case descriptions are written as "CHALLENGE: … ACTION: … ACHIEVEMENT: … RESULT: …" — split into labeled blocks.
+    function parts(desc) {
+      var re = /(CHALLENGE|ACTION|ACHIEVEMENT|RESULT)S?:\s*/g, out = [], m, last = null;
+      while ((m = re.exec(desc)) !== null) {
+        if (last) last.text = desc.slice(last.from, m.index).trim();
+        last = { label: m[1].charAt(0) + m[1].slice(1).toLowerCase(), from: re.lastIndex, text: '' };
+        out.push(last);
+      }
+      if (last) last.text = desc.slice(last.from).trim();
+      return out.filter(function (x) { return x.text; });
+    }
     var draw = function (tag) {
       grid.textContent = '';
       cases.forEach(function (c, i) {
         if (tag && (c.tags || []).indexOf(tag) < 0) return;
-        grid.appendChild(el('article', { class: 'card' }, el('div', { class: 'card-body' },
+        var sections = parts(c.desc || '');
+        grid.appendChild(el('article', { class: 'card case' }, el('div', { class: 'card-body' },
           el('div', { class: 'card-kicker', text: '(' + String(i + 1).padStart(3, '0') + ')' }),
           el('h3', { class: 'card-title', text: c.name }),
           c.sub ? el('div', { class: 'card-sub', text: c.sub }) : null,
-          c.desc ? el('p', { class: 'card-text', text: c.desc }) : null,
+          sections.length
+            ? el('div', { class: 'case-grid' }, sections.map(function (x) {
+                return el('div', null, el('div', { class: 'card-label', text: x.label }), el('p', { class: 'card-text', text: x.text }));
+              }))
+            : (c.desc ? el('p', { class: 'card-text', text: c.desc }) : null),
           (c.tags && c.tags.length) ? el('div', { class: 'card-tags' }, c.tags.map(function (t) { return el('span', { class: 'tag', text: t }); })) : null)));
       });
     };
@@ -482,6 +580,7 @@
     var s = DATA.settings || {};
     if (s.accentColor && window.CSS && CSS.supports('color', s.accentColor)) {
       document.documentElement.style.setProperty('--accent', s.accentColor);
+      document.documentElement.style.setProperty('--accent-ink', inkFor(s.accentColor));
     }
     var name = s.name || 'Antone Holmes';
     var sub = s.subtitle || s.tagline || '';
@@ -542,7 +641,7 @@
 
     fetch('/data.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function (d) { DATA = d; })
+      .then(function (d) { DATA = prepare(d); })
       .catch(function (err) { console.warn('data.json unavailable:', err.message); DATA = null; })
       .then(function () {
         if (!DATA) {
