@@ -392,7 +392,7 @@
       }],
       ['Books', cv['Book'], function (rows) {
         /* Covers that live in the repo, used when the Notion row has no working image URL. */
-        var LOCAL_COVERS = { 'god s word': '/assets/books/gods-word.jpg' };
+        var LOCAL_COVERS = { 'god s word': '/assets/books/gods-word.jpg', 'the new man s devotional': '/assets/books/newman_thumb.jpg' };
         return el('div', { class: 'cards' }, rows.slice().sort(function (a, b) { return (b.year || '').localeCompare(a.year || ''); }).map(function (b) {
           var local = LOCAL_COVERS[norm(b.name)];
           var src = (b.imageUrl && safeUrl(b.imageUrl)) || local || '';
