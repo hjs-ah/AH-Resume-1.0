@@ -82,6 +82,16 @@
     play: 'M5 4l14 8-14 8z',
     book: 'M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2V5zM4 19a2 2 0 012-2h13'
   };
+  function brandSvg(children) {
+    var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); s.setAttribute('class', 'brand');
+    children.forEach(function (c) {
+      var e = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+      Object.keys(c).forEach(function (k) { e.setAttribute(k, c[k]); });
+      s.appendChild(e);
+    });
+    return s;
+  }
   function socialIcon(name) {
     var n = (name || '').toLowerCase();
     if (n.indexOf('linkedin') > -1) return svg(ICON.linkedin);
@@ -89,7 +99,9 @@
     if (n.indexOf('mail') > -1 || n.indexOf('email') > -1) return svg(ICON.mail);
     if (n === 'x' || n.indexOf('twitter') > -1) return svg(ICON.x);
     if (n.indexOf('youtube') > -1 || n.indexOf('twitch') > -1) return svg(ICON.play);
-    if (n.indexOf('medium') > -1 || n.indexOf('substack') > -1) return svg(ICON.book);
+    if (n.indexOf('medium') > -1) return brandSvg([{ cx: 7.2, cy: 12, rx: 5.2, ry: 5.6 }, { cx: 16.2, cy: 12, rx: 2.7, ry: 5.6 }, { cx: 21, cy: 12, rx: 1.1, ry: 5 }]);
+    if (n.indexOf('behance') > -1) return el('span', { class: 'social-text', text: 'B\u0113', 'aria-hidden': 'true' });
+    if (n.indexOf('substack') > -1) return svg(ICON.book);
     return svg(ICON.globe);
   }
 
@@ -168,6 +180,9 @@
       return L > 0.32 ? '#14181f' : '#ffffff';
     } catch (e) { return '#ffffff'; }
   }
+
+  /* The design's accent is blue (see --accent in site.css). Flip to true to let Notion's "Accent Color" override it. */
+  var USE_NOTION_ACCENT = false;
 
   /* ── state ── */
   var DATA = null;
@@ -530,31 +545,60 @@
       });
       tabsList.appendChild(b);
     });
+    indicator = el('span', { class: 'tab-indicator', 'aria-hidden': 'true' });
+    tabsList.appendChild(indicator);
+    activeTab = null;
   }
   function go(id) {
     if (location.hash.replace('#', '') !== id) location.hash = id; else show(id);
   }
+  var swapToken = 0, indicator = null, activeTab = null;
+  function reducedMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  function moveIndicator(animate) {
+    if (!indicator || !activeTab) return;
+    var b = document.getElementById('tab-' + activeTab.id);
+    if (!b) return;
+    var inset = 12;   // matches the tab's horizontal padding so the line sits under the text
+    if (!animate) indicator.classList.add('no-anim');
+    indicator.style.width = Math.max(0, b.offsetWidth - inset * 2) + 'px';
+    indicator.style.transform = 'translateX(' + (b.offsetLeft + inset) + 'px)';
+    if (!animate) { void indicator.offsetWidth; indicator.classList.remove('no-anim'); }
+  }
   function show(id, scrollIntoView) {
     var tab = visibleTabs.filter(function (t) { return t.id === id; })[0] || visibleTabs[0];
     if (!tab) return;
+    var first = !activeTab;
+    activeTab = tab;
     visibleTabs.forEach(function (t) {
       var b = document.getElementById('tab-' + t.id);
       var on = t === tab;
       b.setAttribute('aria-selected', on ? 'true' : 'false'); b.tabIndex = on ? 0 : -1;
       if (on) b.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     });
+    moveIndicator(!first);
     panel.setAttribute('aria-labelledby', 'tab-' + tab.id);
-    panel.textContent = '';
-    try { tab.render(panel); } catch (err) {
-      console.error(err);
-      panel.appendChild(el('p', { class: 'notice', text: 'Something went wrong showing this section.' }));
+
+    var token = ++swapToken;
+    var old = panel.querySelector('.page');
+    var animate = !!old && !reducedMotion();
+    function swap() {
+      if (token !== swapToken) return;
+      panel.textContent = '';
+      var page = el('div', { class: 'page' + (animate ? ' is-entering' : '') });
+      try { tab.render(page); } catch (err) {
+        console.error(err);
+        page.appendChild(el('p', { class: 'notice', text: 'Something went wrong showing this section.' }));
+      }
+      panel.appendChild(page);
+      panel.scrollTop = 0;
+      if (animate) requestAnimationFrame(function () { requestAnimationFrame(function () { page.classList.remove('is-entering'); }); });
+      /* Mobile: the profile card sits above the content, so bring the panel into view after a tab tap. */
+      if (scrollIntoView && window.matchMedia('(max-width: 860px)').matches) {
+        var top = panel.getBoundingClientRect().top + window.scrollY - (document.querySelector('.tabs').offsetHeight + 12);
+        window.scrollTo({ top: Math.max(0, top) });
+      }
     }
-    panel.scrollTop = 0;
-    /* Mobile: the profile card sits above the content, so bring the panel into view after a tab tap. */
-    if (scrollIntoView && window.matchMedia('(max-width: 860px)').matches) {
-      var top = panel.getBoundingClientRect().top + window.scrollY - (document.querySelector('.tabs').offsetHeight + 12);
-      window.scrollTo({ top: Math.max(0, top) });
-    }
+    if (animate) { old.classList.add('is-leaving'); setTimeout(swap, 150); } else swap();
   }
 
   /* ── theme ── */
@@ -578,7 +622,7 @@
   /* ── settings → profile card ── */
   function applySettings() {
     var s = DATA.settings || {};
-    if (s.accentColor && window.CSS && CSS.supports('color', s.accentColor)) {
+    if (USE_NOTION_ACCENT && s.accentColor && window.CSS && CSS.supports('color', s.accentColor)) {
       document.documentElement.style.setProperty('--accent', s.accentColor);
       document.documentElement.style.setProperty('--accent-ink', inkFor(s.accentColor));
     }
@@ -654,6 +698,8 @@
           return;
         }
         applySettings(); buildTabs(); wireProfileButtons();
+        window.addEventListener('resize', function () { moveIndicator(false); });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { moveIndicator(false); });
         window.addEventListener('hashchange', function () { show(location.hash.replace('#', ''), true); });
         show(location.hash.replace('#', ''));
       });
