@@ -709,6 +709,19 @@
     }, { passive: false });
   }
 
+  /* Loader → (desktop) profile appears centred, holds, then slides left as the content slides out. */
+  var loaded = false;
+  function finishLoad() {
+    if (loaded) return; loaded = true;
+    var root = document.documentElement, loader = document.getElementById('loader');
+    if (loader) { loader.classList.add('is-done'); setTimeout(function () { loader.hidden = true; }, 320); }
+    if (root.classList.contains('intro')) {
+      root.classList.add('intro-show');
+      setTimeout(function () { root.classList.add('intro-go'); }, 950);
+      setTimeout(function () { root.classList.remove('intro', 'intro-show', 'intro-go'); moveIndicator(false); }, 2000);
+    }
+  }
+
   function boot() {
     panel = document.getElementById('panel');
     initSmoothScroll();
@@ -731,7 +744,9 @@
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { moveIndicator(false); });
         window.addEventListener('hashchange', function () { show(location.hash.replace('#', ''), true); });
         show(location.hash.replace('#', ''));
-      });
+      })
+      .then(finishLoad, finishLoad);
+    setTimeout(finishLoad, 8000);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

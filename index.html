@@ -16,10 +16,15 @@
     var t = localStorage.getItem('theme');
     if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
+  /* Desktop intro animation: profile starts centred, then slides left. */
+  if (window.matchMedia('(min-width: 861px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    document.documentElement.classList.add('intro');
 </script>
 </head>
 <body>
 <a class="skip-link" href="#panel">Skip to content</a>
+
+<div id="loader" class="loader" role="status">Loading…</div>
 
 <div class="app">
 
@@ -47,7 +52,8 @@
       </a>
     </div>
   </aside>
-  <a class="badge-ah" href="#home" aria-label="AH — back to Home">AH</a>
+  <a class="logo-tab" href="#home" aria-label="Antone Holmes — Home"><img src="/assets/logo.png" alt=""></a>
+  <p class="crafted">Crafted by Antone Holmes</p>
   </div>
 
   <!-- ══ CONTENT CARD (tabs on top) ════════════════════════ -->
@@ -66,7 +72,6 @@
     </nav>
 
     <main class="panel" id="panel" role="tabpanel" tabindex="-1" aria-live="polite">
-      <p class="loading">Loading…</p>
     </main>
   </div>
 
