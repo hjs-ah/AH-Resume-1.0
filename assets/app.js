@@ -603,10 +603,13 @@
       if (last) last.text = desc.slice(last.from).trim();
       return out.filter(function (x) { return x.text; });
     }
-    var draw = function (tag) {
+    var selCo = '', selTag = '';
+    function companyOf(c) { return String(c.sub || '').split('·')[0].trim(); }
+    var draw = function () {
       grid.textContent = '';
       cases.forEach(function (c, i) {
-        if (tag && (c.tags || []).indexOf(tag) < 0) return;
+        if (selTag && (c.tags || []).indexOf(selTag) < 0) return;
+        if (selCo && companyOf(c) !== selCo) return;
         var sections = parts(c.desc || '');
         grid.appendChild(el('article', { class: 'card case', id: 'case-' + norm(c.name).replace(/ /g, '-') }, el('div', { class: 'card-body' },
           el('div', { class: 'card-kicker', text: '(' + String(i + 1).padStart(3, '0') + ')' }),
@@ -620,9 +623,13 @@
           (c.tags && c.tags.length) ? el('div', { class: 'card-tags' }, c.tags.map(function (t) { return el('span', { class: 'tag', text: t }); })) : null)));
       });
     };
-    draw('');
+    draw();
     var tags = unique([].concat.apply([], cases.map(function (c) { return c.tags || []; })));
-    var wrap = el('div', { class: 'section' }, tags.length > 1 ? filterChips(tags, draw) : null, grid);
+    var companies = unique(cases.map(companyOf));
+    var wrap = el('div', { class: 'section' },
+      companies.length > 1 ? filterChips(companies, function (v) { selCo = v; draw(); }, 'All companies') : null,
+      tags.length > 1 ? filterChips(tags, function (v) { selTag = v; draw(); }) : null,
+      grid);
     root.appendChild(wrap);
     if (pendingCase) {
       var want = 'case-' + pendingCase.replace(/ /g, '-'); pendingCase = '';
@@ -924,8 +931,9 @@
     tabsList = document.getElementById('tabs-list');
     wireTheme(); wireReader();
 
-    fetch('/data.json', { cache: 'no-cache' })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    /* Live content from Notion (cached ~60s at the edge); falls back to the build-time snapshot. */
+    function getJson(url) { return fetch(url, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
+    getJson('/api/data').catch(function () { return getJson('/data.json'); })
       .then(function (d) { DATA = prepare(d); })
       .catch(function (err) { console.warn('data.json unavailable:', err.message); DATA = null; })
       .then(function () {

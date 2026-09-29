@@ -101,9 +101,9 @@ async function fetchSettings() {
 }
 
 // ─── MAIN ──────────────────────────────────────────────────────────────────────
-async function main() {
+async function buildData(opts = {}) {
   console.log('🚀 Starting Notion data fetch...\n');
-  if (!process.env.NOTION_API_KEY) { console.error('❌ NOTION_API_KEY not set'); process.exit(1); }
+  if (!process.env.NOTION_API_KEY) { throw new Error('NOTION_API_KEY not set'); }
 
   try {
     const [settings, allRows] = await Promise.all([
@@ -319,6 +319,7 @@ async function main() {
       })),
     };
 
+    if (!opts.write) return data;
     fs.writeFileSync(path.join(__dirname, 'data.json'), JSON.stringify(data, null, 2));
 
     console.log('\n✅ data.json written successfully');
@@ -331,12 +332,16 @@ async function main() {
     console.log('   Updates:          ' + updates.length + (updates.length === 0 ? ' (add Update rows in Notion)' : ''));
     console.log('   Reflections:      ' + reflections.length);
     console.log('   Changelog:        ' + changelog.length);
+    return data;
 
   } catch (err) {
     console.error('\n❌ Build failed:', err.message);
     console.error(err.stack);
-    process.exit(1);
+    if (opts.write) process.exit(1);
+    throw err;
   }
 }
 
-main();
+// CLI (Vercel build): writes data.json. Also exported for the /api/data function.
+if (require.main === module) buildData({ write: true });
+module.exports = { buildData };
