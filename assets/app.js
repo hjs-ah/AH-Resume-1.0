@@ -681,8 +681,37 @@
   }
 
   /* ── boot ── */
+  /* Eased wheel scrolling for the content panel (desktop, mouse wheels only). */
+  function initSmoothScroll() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var target = 0, raf = 0;
+    function desktop() { return window.matchMedia('(min-width: 861px)').matches; }
+    function tick() {
+      var d = target - panel.scrollTop;
+      if (Math.abs(d) < 0.5) { panel.scrollTop = target; raf = 0; return; }
+      panel.scrollTop += d * 0.14;
+      raf = requestAnimationFrame(tick);
+    }
+    panel.addEventListener('scroll', function () { if (!raf) target = panel.scrollTop; }, { passive: true });
+    panel.addEventListener('wheel', function (e) {
+      if (e.ctrlKey || e.shiftKey || !desktop()) return;
+      var dy = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY;
+      /* Small, fine-grained deltas = trackpad, which is already smooth. */
+      if (e.deltaMode === 0 && Math.abs(dy) < 40 && !raf) return;
+      var max = panel.scrollHeight - panel.clientHeight;
+      if (max <= 0) return;
+      if (!raf) target = panel.scrollTop;
+      var next = Math.max(0, Math.min(max, target + dy));
+      if (next === target && (next === 0 || next === max)) return;
+      e.preventDefault();
+      target = next;
+      if (!raf) raf = requestAnimationFrame(tick);
+    }, { passive: false });
+  }
+
   function boot() {
     panel = document.getElementById('panel');
+    initSmoothScroll();
     tabsList = document.getElementById('tabs-list');
     wireTheme(); wireReader();
 

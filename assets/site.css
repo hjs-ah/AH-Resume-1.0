@@ -22,7 +22,8 @@
   --radius: 14px;           /* slightly rounded corners */
   --radius-sm: 8px;
   --gap: 20px;
-  --profile-w: 300px;
+  --profile-w: 340px;
+  --overlap: 44px;
   --type-scale: .7;        /* one dial for overall text size (1 = original) */
   --font: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color-scheme: light;
@@ -84,7 +85,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   position: relative; z-index: 1;
   display: grid;
   grid-template-columns: var(--profile-w) minmax(0, 1fr);
-  gap: 16px;
+  gap: 0;
   width: min(1280px, 100%);
   height: min(700px, 100vh);       /* the stage is 1280 × 700 */
   padding: 20px;
@@ -100,7 +101,20 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 }
 
 /* ── Profile card: framed avatar, dotted divider, blurb + socials ─ */
-.profile { position: relative; display: flex; flex-direction: column; }
+.profile-col { position: relative; z-index: 3; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
+.profile { position: relative; display: flex; flex-direction: column; flex: 1; z-index: 3;
+  transition: border-color .4s ease, box-shadow .4s ease; }
+.profile:hover, .profile:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow);
+}
+.badge-ah {
+  align-self: flex-start; flex: none; margin-left: 2px;
+  padding: 4px 10px; border-radius: 7px; background: var(--accent); color: #fff;
+  font-size: max(9.5px, .8rem); font-weight: 700; letter-spacing: .08em; line-height: 1.3; text-decoration: none;
+  box-shadow: var(--shadow); transition: transform .18s cubic-bezier(.3,1.4,.5,1);
+}
+.badge-ah:hover, .badge-ah:focus-visible { transform: translateY(-2px); }
 .profile-head { position: relative; padding: 34px 22px 18px; text-align: center; flex: none; }
 .avatar {
   position: relative; width: 124px; height: 124px; margin: 0 auto 14px; border-radius: 50%; overflow: hidden;
@@ -138,7 +152,7 @@ svg.brand { fill: currentColor; stroke: none; }
 .pa-btn:hover { color: var(--accent-text); background: var(--accent-soft); }
 
 /* ── Content card: tabs + panel ────────────────────────── */
-.content-card { display: flex; flex-direction: column; }
+.content-card { display: flex; flex-direction: column; margin: 14px 0 44px calc(var(--overlap) * -1); padding-left: var(--overlap); }
 
 .tabs {
   display: flex; align-items: center; gap: 12px;
@@ -194,7 +208,6 @@ svg.brand { fill: currentColor; stroke: none; }
 
 /* ── Type & section furniture ──────────────────────────── */
 .page-title { font-size: 1.75rem; line-height: 1.2; font-weight: 600; letter-spacing: -.01em; }
-.page-title::first-letter { color: var(--accent-text); }
 .page-lede { margin-top: 8px; color: var(--ink-2); max-width: 62ch; }
 
 .section { margin-top: 32px; }
@@ -204,7 +217,6 @@ svg.brand { fill: currentColor; stroke: none; }
   padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid var(--line);
 }
 .section-title { font-size: 1.15rem; font-weight: 600; }
-.section-title::first-letter { color: var(--accent-text); }
 
 /* Hero (home) */
 .hero-eyebrow { font-size: max(9.5px, .8rem); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-text); }
@@ -364,7 +376,7 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 
 /* ── Tablet ────────────────────────────────────────────── */
 @media (max-width: 1100px) {
-  :root { --profile-w: 290px; }
+  :root { --profile-w: 310px; --overlap: 36px; }
   .panel { padding: 22px 24px 32px; }
   .tab { padding: 14px 9px; }
   .tab svg { display: none; }
@@ -377,7 +389,9 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
   .app {
     display: flex; flex-direction: column; width: 100%; height: auto; padding: 0 0 20px; gap: 16px;
   }
-  .content-card { display: contents; }
+  .content-card { display: contents; margin: 0; padding: 0; }
+  .profile-col { display: contents; }
+  .badge-ah { margin: 0 16px; }
 
   .tabs {
     order: -1; position: sticky; top: 0; z-index: 20;
