@@ -529,6 +529,8 @@ a.card:hover { border-color: var(--accent-text); transform: translateY(-2px); }
 .tl-years[hidden], .tl-clear[hidden] { display: none; }
 .tl-actions { display: flex; justify-content: center; margin-top: 10px; min-height: 0; }
 .tl-clear { font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.tl-detail { transition: opacity .17s ease, filter .17s ease; }
+.tl-detail.is-swap { opacity: 0; filter: blur(6px); }
 .tl-detail { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); padding: 18px 20px; margin-top: 8px; }
 .tl-role { font-size: 1rem; font-weight: 600; }
 .tl-meta { margin-top: 3px; font-size: max(9.5px, .8rem); color: var(--accent-text); font-weight: 500; }

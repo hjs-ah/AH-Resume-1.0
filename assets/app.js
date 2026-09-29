@@ -496,7 +496,7 @@
     var clearBtn = el('button', { type: 'button', class: 'chip tl-clear', text: 'Clear filters', hidden: true,
       onclick: function () { co = -1; job = null; year = null; paint(); } });
     var detail = el('div', { class: 'tl-detail', id: 'tl-detail', 'aria-live': 'polite' });
-    var groupEls = [], nodeEls = [];
+    var groupEls = [], nodeEls = [], detailSwap = 0, detailReady = false;
     var tl = el('div', { class: 'tl' });
 
     function roleBlock(r, full) {
@@ -543,6 +543,18 @@
         }
       }
 
+      /* Roles blur/fade out, then the new set blurs/fades in. */
+      var mySwap = ++detailSwap;
+      if (!detailReady || reducedMotion()) { detailReady = true; buildDetail(); return; }
+      detail.classList.add('is-swap');
+      setTimeout(function () {
+        if (mySwap !== detailSwap) return;
+        buildDetail();
+        requestAnimationFrame(function () { requestAnimationFrame(function () { detail.classList.remove('is-swap'); }); });
+      }, 170);
+    }
+
+    function buildDetail() {
       detail.textContent = '';
       var shown = co > -1 ? [groups[co]] : recent;
       shown.forEach(function (g) {
