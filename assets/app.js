@@ -858,7 +858,7 @@
     document.getElementById('brand-name').textContent = name;
     document.getElementById('profile-sub').textContent = sub;
     document.getElementById('brand-sub').textContent = sub;
-    document.title = name + ' — Portfolio';
+    document.title = name;
 
     var photo = document.getElementById('profile-photo');
     photo.textContent = '';
