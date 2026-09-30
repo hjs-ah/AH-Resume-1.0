@@ -824,7 +824,7 @@
         window.scrollTo({ top: Math.max(0, top) });
       }
     }
-    if (animate) { old.classList.add('is-leaving'); setTimeout(swap, 150); } else swap();
+    if (animate) { old.classList.add('is-leaving'); setTimeout(swap, 320); } else swap();
   }
 
   /* ── theme ── */

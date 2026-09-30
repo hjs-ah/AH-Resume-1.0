@@ -208,8 +208,9 @@ svg.brand { fill: currentColor; stroke: none; }
 .tab-indicator.no-anim { transition: none; }
 
 /* Page swap: quick blur + fade */
-.page { transition: opacity .16s ease, filter .16s ease; }
-.page.is-leaving, .page.is-entering { opacity: 0; filter: blur(6px); }
+.page { transition: opacity .34s ease, filter .34s ease; }
+.page.is-leaving { pointer-events: none; }
+.page.is-leaving, .page.is-entering { opacity: 0; filter: blur(8px); }
 
 .theme-btn {
   display: inline-flex; align-items: center; gap: 8px; flex: none;
