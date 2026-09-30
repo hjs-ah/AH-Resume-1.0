@@ -567,11 +567,19 @@
       });
     }
 
+    // Unified greyscale logo marks for select employers (same box, same tint)
+    function coLabel(name) {
+      var logo = /comcast/i.test(name) ? 'comcast' : (/\baws\b|amazon web/i.test(name) ? 'aws' : '');
+      if (!logo) return el('span', { class: 'tl-co-name', text: name });
+      return el('span', { class: 'tl-co-name has-logo', title: name },
+        el('span', { class: 'tl-logo tl-logo-' + logo, role: 'img', 'aria-label': name }));
+    }
+
     var track = el('div', { class: 'tl-groups' });
     groups.forEach(function (g, gi) {
       var coBtn = el('button', { type: 'button', class: 'tl-co', 'aria-pressed': 'false',
         onclick: function () { co = co === gi ? -1 : gi; job = null; year = null; paint(); } },
-        el('span', { class: 'tl-co-name', text: g.name }), el('span', { class: 'tl-co-arrow' }));
+        coLabel(g.name), el('span', { class: 'tl-co-arrow' }));
       var nodes = el('ol', { class: 'tl-nodes' }, g.roles.map(function (r) {
         var btn = el('button', { type: 'button', class: 'tl-node', 'aria-pressed': 'false', 'aria-controls': 'tl-detail',
           title: r.title + ' — ' + (r.employer || ''),
